@@ -35,7 +35,7 @@ import {
   updateInsuranceCompany,
   deleteInsuranceCompany,
   getTopInsuranceCompany,
-} from '../controllers/insuranceCompanyController.js';
+} from '../controllers/insurance_CompanyController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 
 // @desc    Fetch all insurance companies
