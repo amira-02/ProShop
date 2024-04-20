@@ -29,6 +29,8 @@ import ProductListScreen from './screens/admin/ProductListScreen';
 import ProductEditScreen from './screens/admin/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
+import InsuranceCompanyListScreen from './screens/admin/InsuranceCompanyListScreen';
+import InsuranceCompanyEditScreen from './screens/admin/InsuranceCompanyEditScreen';
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -63,9 +65,11 @@ const router = createBrowserRouter(
           path='/admin/productlist/:pageNumber'
           element={<ProductListScreen />}
         />
+          <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
         <Route path='/admin/userlist' element={<UserListScreen />} />
         <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
+        <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
       </Route>
     </Route>
   )
