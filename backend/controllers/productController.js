@@ -123,6 +123,8 @@ const createProductReview = asyncHandler(async (req, res) => {
     }
     //test de push
 
+    //test de pull
+
     const review = {
       name: req.user.name,
       rating: Number(rating),
