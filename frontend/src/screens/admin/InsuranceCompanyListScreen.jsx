@@ -37,7 +37,7 @@ const InsuranceCompanyListScreen = () => {
     useCreateInsuranceCompanyMutation();
 
   const createInsuranceCompanyHandler = async () => {
-    if (window.confirm('Are you sure you want to create a new InsuranceCompany?')) {
+    if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
       try {
         await createInsuranceCompany();
         refetch();
@@ -51,11 +51,11 @@ const InsuranceCompanyListScreen = () => {
     <>
       <Row className='align-items-center'>
         <Col>
-          <h1>Insurance Company </h1>
+          <h1>Insurance Company</h1>
         </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createInsuranceCompanyHandler}>
-            <FaPlus /> Create InsuranceCompany
+            <FaPlus /> Create Insurance Company
           </Button>
         </Col>
       </Row>
@@ -71,9 +71,9 @@ const InsuranceCompanyListScreen = () => {
           <Table striped bordered hover responsive className='table-sm'>
             <thead>
               <tr>
-              
+                <th>ID</th>
                 <th>NAME</th>
-                <th>ADRESS</th>
+                <th>ADDRESS</th>
                 <th>EMAIL</th>
                 <th>PASSWORD</th>
                 <th>CONTACT</th>
@@ -81,15 +81,16 @@ const InsuranceCompanyListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {data.InsuranceCompanys.map((InsuranceCompany) => (
-                <tr key={InsuranceCompany._id}>
-                  <td>{InsuranceCompany._id}</td>
-                  <td>{InsuranceCompany.name}</td>
-                  <td>${InsuranceCompany.price}</td>
-                  <td>{InsuranceCompany.category}</td>
-                  <td>{InsuranceCompany.brand}</td>
+              {data.InsuranceCompany.map((insuranceCompany) => (
+                <tr key={insuranceCompany._id}>
+                  <td>{insuranceCompany._id}</td>
+                  <td>{insuranceCompany.name}</td>
+                  <td>{insuranceCompany.address}</td>
+                  <td>{insuranceCompany.email}</td>
+                  <td>{insuranceCompany.password}</td>
+                  <td>{insuranceCompany.contact}</td>
                   <td>
-                    <LinkContainer to={`/admin/InsuranceCompany/${InsuranceCompany._id}/edit`}>
+                    <LinkContainer to={`/admin/InsuranceCompany/${insuranceCompany._id}/edit`}>
                       <Button variant='light' className='btn-sm mx-2'>
                         <FaEdit />
                       </Button>
@@ -97,7 +98,7 @@ const InsuranceCompanyListScreen = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(InsuranceCompany._id)}
+                      onClick={() => deleteHandler(insuranceCompany._id)}
                     >
                       <FaTrash style={{ color: 'white' }} />
                     </Button>

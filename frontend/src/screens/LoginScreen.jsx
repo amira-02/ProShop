@@ -25,21 +25,25 @@ const LoginScreen = () => {
   const redirect = sp.get('redirect') || '/';
 
   useEffect(() => {
+    console.log('UserInfo:', userInfo); // Log the userInfo object
     if (userInfo) {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-
+  
+  
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
+      console.log('Login Mutation Response:', res); // Log the response
       dispatch(setCredentials({ ...res }));
       navigate(redirect);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
   };
+  
 
   return (
     <FormContainer>
@@ -81,6 +85,14 @@ const LoginScreen = () => {
           </Link>
         </Col>
       </Row>
+
+      {/* Display the token */}
+      {userInfo && userInfo.token && (
+        <div>
+          <h2>Your Token:</h2>
+          <p>{userInfo.token}</p>
+        </div>
+      )}
     </FormContainer>
   );
 };
