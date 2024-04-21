@@ -2,6 +2,7 @@ import { INSURANCE_COMPANY_URL } from '../constants';
 import { apiSlice } from './apiSlice';
 
 export const InsuranceCompanyApiSlice = apiSlice.injectEndpoints({
+
   endpoints: (builder) => ({
     getInsuranceCompany: builder.query({
       query: ({ keyword, pageNumber }) => ({
@@ -17,6 +18,7 @@ export const InsuranceCompanyApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    
     createInsuranceCompany: builder.mutation({
       query: () => ({
         url: `${INSURANCE_COMPANY_URL}`,
@@ -52,6 +54,7 @@ export const InsuranceCompanyApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 });
+
 
 export const {
   useGetInsuranceCompanyQuery,

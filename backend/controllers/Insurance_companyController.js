@@ -4,6 +4,7 @@ import InsuranceCompany from '../models/Insurance_companyModel.js';
 // @desc    Fetch all InsuranceCompany
 // @route   GET /api/InsuranceCompany
 // @access  Public
+
 const getInsuranceCompany = asyncHandler(async (req, res) => {
   const pageSize = process.env.PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
@@ -17,21 +18,26 @@ const getInsuranceCompany = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const count = await InsuranceCompany.countDocuments({ ...keyword });
-  const InsuranceCompany = await InsuranceCompany.find({ ...keyword })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+  try {
+    const count = await InsuranceCompany.countDocuments({ ...keyword });
+    const foundInsuranceCompanies = await InsuranceCompany.find({ ...keyword })
+      .limit(pageSize)
+      .skip(pageSize * (page - 1));
 
-  res.json({ InsuranceCompany, page, pages: Math.ceil(count / pageSize) });
+    res.json({ InsuranceCompany: foundInsuranceCompanies, page, pages: Math.ceil(count / pageSize) });
+  } catch (error) {
+    res.status(500).json({ message: 'Server Error' });
+  }
 });
+
 
 // @desc    Fetch single InsuranceCompany
 // @route   GET /api/InsuranceCompany/:id
 // @access  Public
 const getInsuranceCompanyById = asyncHandler(async (req, res) => {
-  const InsuranceCompany = await InsuranceCompany.findById(req.params.id);
-  if (InsuranceCompany) {
-    return res.json(InsuranceCompany);
+  const insuranceCompany = await InsuranceCompany.findById(req.params.id);
+  if (insuranceCompany) {
+    return res.json(insuranceCompany);
   } else {
     res.status(404);
     throw new Error('Insurance Company not found');
@@ -45,11 +51,12 @@ const createInsuranceCompany = asyncHandler(async (req, res) => {
   const { name, adress, email, password, contact } = req.body;
 
   const newInsuranceCompany = new InsuranceCompany({
-    name,
-    adress,
-    email,
-    password,
-    contact
+    name:" aamaly edit ",
+    // user:req.user._id,
+    adress:"aouina",
+    email:"aaa@gmail.com",
+    password:"aaa",
+    contact:"123456"
   });
 
   const createdInsuranceCompany = await newInsuranceCompany.save();
@@ -62,16 +69,16 @@ const createInsuranceCompany = asyncHandler(async (req, res) => {
 const updateInsuranceCompany = asyncHandler(async (req, res) => {
   const { name, adress, email, password, contact } = req.body;
 
-  const InsuranceCompany = await InsuranceCompany.findById(req.params.id);
+  const insuranceCompany = await InsuranceCompany.findById(req.params.id);
 
-  if (InsuranceCompany) {
-    InsuranceCompany.name = name;
-    InsuranceCompany.adress = adress;
-    InsuranceCompany.email = email;
-    InsuranceCompany.password = password;
-    InsuranceCompany.contact = contact;
+  if (insuranceCompany) {
+    insuranceCompany.name = name;
+    insuranceCompany.adress = adress;
+    insuranceCompany.email = email;
+    insuranceCompany.password = password;
+    insuranceCompany.contact = contact;
 
-    const updatedInsuranceCompany = await InsuranceCompany.save();
+    const updatedInsuranceCompany = await insuranceCompany.save();
     res.json(updatedInsuranceCompany);
   } else {
     res.status(404);
@@ -83,16 +90,17 @@ const updateInsuranceCompany = asyncHandler(async (req, res) => {
 // @route   DELETE /api/InsuranceCompany/:id
 // @access  Private/Admin
 const deleteInsuranceCompany = asyncHandler(async (req, res) => {
-  const InsuranceCompany = await InsuranceCompany.findById(req.params.id);
+  const insuranceCompany = await InsuranceCompany.findById(req.params.id);
 
-  if (InsuranceCompany) {
-    await InsuranceCompany.deleteOne({ _id: InsuranceCompany._id });
+  if (insuranceCompany) {
+    await insuranceCompany.deleteOne({ _id: insuranceCompany._id });
     res.json({ message: 'Insurance Company removed' });
   } else {
     res.status(404);
     throw new Error('Insurance Company not found');
   }
 });
+
 
 // @desc    Get top rated InsuranceCompany
 // @route   GET /api/InsuranceCompany/top

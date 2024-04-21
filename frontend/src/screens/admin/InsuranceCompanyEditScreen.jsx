@@ -8,38 +8,20 @@ import { toast } from 'react-toastify';
 import {
   useGetInsuranceCompanyDetailsQuery,
   useUpdateInsuranceCompanyMutation,
-  useUploadInsuranceCompanyImageMutation,
-} from '../../slices/InsuranceCompanyApiSlice'; // Import des hooks pour la gestion des compagnies d'assurance
+} from '../../slices/InsuranceCompanyApiSlice';
 
 const InsuranceCompanyEditScreen = () => {
-  const { id: companyId } = useParams(); // Récupération de l'ID de la compagnie d'assurance
+  const { id: companyId } = useParams();
 
-  // États pour stocker les informations de la compagnie d'assurance
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
   const [contact, setContact] = useState('');
-  const [image, setImage] = useState('');
 
-  // Hook pour récupérer les détails de la compagnie d'assurance
-  const {
-    data: company,
-    isLoading,
-    refetch,
-    error,
-  } = useGetInsuranceCompanyDetailsQuery(companyId);
-
-  // Hook pour mettre à jour la compagnie d'assurance
-  const [updateCompany, { isLoading: loadingUpdate }] =
-    useUpdateInsuranceCompanyMutation();
-
-  // Hook pour télécharger l'image de la compagnie d'assurance
-  const [uploadCompanyImage, { isLoading: loadingUpload }] =
-    useUploadInsuranceCompanyImageMutation();
-
+  const { data: company, isLoading, refetch, error } = useGetInsuranceCompanyDetailsQuery(companyId);
+  const [updateCompany, { isLoading: loadingUpdate }] = useUpdateInsuranceCompanyMutation();
   const navigate = useNavigate();
 
-  // Fonction pour soumettre le formulaire de mise à jour de la compagnie d'assurance
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -49,8 +31,7 @@ const InsuranceCompanyEditScreen = () => {
         email,
         address,
         contact,
-        // image,
-      }).unwrap(); // NOTE: ici nous devons déballer la Promise pour capturer toute erreur dans notre bloc catch
+      }).unwrap();
       toast.success('Company updated');
       refetch();
       navigate('/admin/companylist');
@@ -59,29 +40,14 @@ const InsuranceCompanyEditScreen = () => {
     }
   };
 
-  // Effet pour mettre à jour les états lorsque les données de la compagnie d'assurance changent
   useEffect(() => {
     if (company) {
       setName(company.name);
       setEmail(company.email);
       setAddress(company.address);
       setContact(company.contact);
-      // setImage(company.image);
     }
   }, [company]);
-
-  // Fonction pour gérer le téléchargement de l'image de la compagnie d'assurance
-  // const uploadFileHandler = async (e) => {
-  //   const formData = new FormData();
-  //   formData.append('image', e.target.files[0]);
-  //   try {
-  //     const res = await uploadCompanyImage(formData).unwrap();
-  //     toast.success(res.message);
-  //     setImage(res.image);
-  //   } catch (err) {
-  //     toast.error(err?.data?.message || err.error);
-  //   }
-  // };
 
   return (
     <>
@@ -97,7 +63,6 @@ const InsuranceCompanyEditScreen = () => {
           <Message variant='danger'>{error.data.message}</Message>
         ) : (
           <Form onSubmit={submitHandler}>
-            {/* Formulaires pour les détails de la compagnie d'assurance */}
             <Form.Group controlId='name'>
               <Form.Label>Name</Form.Label>
               <Form.Control
@@ -105,7 +70,7 @@ const InsuranceCompanyEditScreen = () => {
                 placeholder='Enter name'
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
             <Form.Group controlId='email'>
@@ -115,7 +80,7 @@ const InsuranceCompanyEditScreen = () => {
                 placeholder='Enter email'
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
             <Form.Group controlId='address'>
@@ -125,7 +90,7 @@ const InsuranceCompanyEditScreen = () => {
                 placeholder='Enter address'
                 value={address}
                 onChange={(e) => setAddress(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
             <Form.Group controlId='contact'>
@@ -135,30 +100,10 @@ const InsuranceCompanyEditScreen = () => {
                 placeholder='Enter contact'
                 value={contact}
                 onChange={(e) => setContact(e.target.value)}
-              ></Form.Control>
+              />
             </Form.Group>
 
-            {/* <Form.Group controlId='image'>
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter image url'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
-              <Form.Control
-                label='Choose File'
-                onChange={uploadFileHandler}
-                type='file'
-              ></Form.Control>
-              {loadingUpload && <Loader />}
-            </Form.Group> */}
-
-            <Button
-              type='submit'
-              variant='primary'
-              style={{ marginTop: '1rem' }}
-            >
+            <Button type='submit' variant='primary' style={{ marginTop: '1rem' }}>
               Update
             </Button>
           </Form>
