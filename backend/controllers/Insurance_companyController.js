@@ -48,12 +48,11 @@ const getInsuranceCompanyById = asyncHandler(async (req, res) => {
 // @route   POST /api/InsuranceCompany
 // @access  Private/Admin
 const createInsuranceCompany = asyncHandler(async (req, res) => {
-  const { name, adress, email, password, contact } = req.body;
+  const { name, address, email, password, contact } = req.body;
 
   const newInsuranceCompany = new InsuranceCompany({
     name:" aamaly edit ",
-    // user:req.user._id,
-    adress:"aouina",
+    address:"aouina",
     email:"aaa@gmail.com",
     password:"aaa",
     contact:"123456"
@@ -67,13 +66,13 @@ const createInsuranceCompany = asyncHandler(async (req, res) => {
 // @route   PUT /api/InsuranceCompany/:id
 // @access  Private/Admin
 const updateInsuranceCompany = asyncHandler(async (req, res) => {
-  const { name, adress, email, password, contact } = req.body;
+  const { name, address, email, password, contact } = req.body;
 
   const insuranceCompany = await InsuranceCompany.findById(req.params.id);
 
   if (insuranceCompany) {
     insuranceCompany.name = name;
-    insuranceCompany.adress = adress;
+    insuranceCompany.address = address;
     insuranceCompany.email = email;
     insuranceCompany.password = password;
     insuranceCompany.contact = contact;

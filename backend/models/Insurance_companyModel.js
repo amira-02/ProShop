@@ -27,7 +27,7 @@ import mongoose from 'mongoose';
         type: String,
         required: true,
       },
-      adress: {
+       address: {
           type: String,
           required: true,
         }, 
@@ -39,6 +39,7 @@ import mongoose from 'mongoose';
           type: String,
           required: true,
         },
+       
         contact: {
           type: String,
           required: true,

@@ -33,7 +33,7 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
           <Navbar.Brand>
@@ -86,6 +86,9 @@ const Header = () => {
                   </LinkContainer>
                   <LinkContainer to='/admin/userlist'>
                     <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/InsuranceCompanylist'>
+                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}

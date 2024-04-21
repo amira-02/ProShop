@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import Message from '../../components/Message';
@@ -15,8 +15,9 @@ const InsuranceCompanyEditScreen = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+  const [address, setaddress] = useState('');
   const [contact, setContact] = useState('');
+  const [password, setPassword] = useState('');
 
   const { data: company, isLoading, refetch, error } = useGetInsuranceCompanyDetailsQuery(companyId);
   const [updateCompany, { isLoading: loadingUpdate }] = useUpdateInsuranceCompanyMutation();
@@ -25,16 +26,25 @@ const InsuranceCompanyEditScreen = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      await updateCompany({
+      const updatedData = {
         companyId,
         name,
         email,
         address,
         contact,
-      }).unwrap();
+      };
+
+      // Vérifier si un nouveau mot de passe a été fourni
+      if (password !== '') {
+        // Mettre à jour le mot de passe dans les données à envoyer
+        updatedData.password = password;
+      }
+
+      // Mettre à jour la compagnie d'assurance
+      await updateCompany(updatedData).unwrap();
       toast.success('Company updated');
       refetch();
-      navigate('/admin/companylist');
+      // navigate('/admin/companylist');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -44,7 +54,7 @@ const InsuranceCompanyEditScreen = () => {
     if (company) {
       setName(company.name);
       setEmail(company.email);
-      setAddress(company.address);
+      setaddress(company.address);
       setContact(company.contact);
     }
   }, [company]);
@@ -84,12 +94,12 @@ const InsuranceCompanyEditScreen = () => {
             </Form.Group>
 
             <Form.Group controlId='address'>
-              <Form.Label>Address</Form.Label>
+              <Form.Label>address</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Enter address'
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) => setaddress(e.target.value)}
               />
             </Form.Group>
 
@@ -103,11 +113,21 @@ const InsuranceCompanyEditScreen = () => {
               />
             </Form.Group>
 
+            <Form.Group controlId='password'>
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type='password'
+                placeholder='Enter password'
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+
             <Button type='submit' variant='primary' style={{ marginTop: '1rem' }}>
               Update
             </Button>
           </Form>
-        )}
+        )}  
       </FormContainer>
     </>
   );
