@@ -33,13 +33,14 @@ const Header = () => {
 
   return (
     <header>
-      <Navbar bg='primary' variant='dark' expand='lg' collapseOnSelect>
+      <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
         <Container>
           <LinkContainer to='/'>
-            <Navbar.Brand>
-              <img src={logo} alt='ProShop' />
-              ProShop
+          <Navbar.Brand>
+  <img src={logo} alt='ProShop' style={{ width: '50px', marginRight: '10px' }} />
+  <span style={{ color: 'black', fontFamily: 'Playfair Display, serif', fontSize: '1.5rem' }}>ProShop</span>
             </Navbar.Brand>
+
           </LinkContainer>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
           <Navbar.Collapse id='basic-navbar-nav'>
@@ -85,9 +86,6 @@ const Header = () => {
                   </LinkContainer>
                   <LinkContainer to='/admin/userlist'>
                     <NavDropdown.Item>Users</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/InsuranceCompanylist'>
-                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
                   </LinkContainer>
                 </NavDropdown>
               )}
