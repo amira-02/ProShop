@@ -34,6 +34,7 @@ const Header = () => {
   };
 
   return (
+<<<<<<< HEAD
     <>
       {showPromotion && (
         <div className="promotion-bar">
@@ -78,6 +79,35 @@ const Header = () => {
                 </LinkContainer>
                 {userInfo ? (
                   <NavDropdown title={<span className="text-black">{userInfo.name}</span>} id='username'>
+=======
+    <header>
+      <Navbar bg='dark' variant='dark' expand='lg' collapseOnSelect>
+        <Container>
+          <LinkContainer to='/'>
+          <Navbar.Brand>
+  <img src={logo} alt='ProShop' style={{ width: '50px', marginRight: '10px' }} />
+  <span style={{ color: 'black', fontFamily: 'Playfair Display, serif', fontSize: '1.5rem' }}>ProShop</span>
+            </Navbar.Brand>
+
+          </LinkContainer>
+          <Navbar.Toggle aria-controls='basic-navbar-nav' />
+          <Navbar.Collapse id='basic-navbar-nav'>
+            <Nav className='ms-auto'>
+              <SearchBox />
+              <LinkContainer to='/cart'>
+                <Nav.Link>
+                  <FaShoppingCart /> Cart
+                  {cartItems.length > 0 && (
+                    <Badge pill bg='success' style={{ marginLeft: '5px' }}>
+                      {cartItems.reduce((a, c) => a + c.qty, 0)}
+                    </Badge>
+                  )}
+                </Nav.Link>
+              </LinkContainer>
+              {userInfo ? (
+                <>
+                  <NavDropdown title={userInfo.name} id='username'>
+>>>>>>> e4ddf7731e6e8b98d4fedd5bc4b948a45cf6996c
                     <LinkContainer to='/profile'>
                       <NavDropdown.Item><span className="text-black">Profile</span></NavDropdown.Item>
                     </LinkContainer>
@@ -92,6 +122,7 @@ const Header = () => {
                       <FaUser className="text-black" /><span className="text-black">Sign In</span>
                     </Nav.Link>
                   </LinkContainer>
+<<<<<<< HEAD
                 )}
                 {userInfo && userInfo.isAdmin && (
                   <NavDropdown title='Admin' id='adminmenu'>
@@ -113,6 +144,24 @@ const Header = () => {
         <div style={{ borderBottom: '1px solid black' }}></div>
       </header>
     </>
+=======
+                  <LinkContainer to='/admin/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/InsuranceCompanylist'>
+                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </header>
+>>>>>>> e4ddf7731e6e8b98d4fedd5bc4b948a45cf6996c
   );
 };
 

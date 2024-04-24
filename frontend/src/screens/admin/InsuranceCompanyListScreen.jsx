@@ -75,8 +75,8 @@ const InsuranceCompanyListScreen = () => {
                 <th>NAME</th>
                 <th>ADDRESS</th>
                 <th>EMAIL</th>
-                <th>PASSWORD</th>
                 <th>CONTACT</th>
+                <th>PASSWORD</th>
                 <th></th>
               </tr>
             </thead>
