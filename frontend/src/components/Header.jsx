@@ -92,6 +92,29 @@ const Header = () => {
                       <FaUser className="text-black" /><span className="text-black">Sign In</span>
                     </Nav.Link>
                   </LinkContainer>
+<<<<<<< HEAD
+                  <LinkContainer to='/admin/orderlist'>
+                    <NavDropdown.Item>Orders</NavDropdown.Item>
+                  </LinkContainer>
+                  <LinkContainer to='/admin/userlist'>
+                    <NavDropdown.Item>Users</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/InsuranceCompanylist'>
+                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
+                  </LinkContainer>
+
+                  <LinkContainer to='/admin/Shoplist'>
+                    <NavDropdown.Item>Shop</NavDropdown.Item>
+                  </LinkContainer>
+                </NavDropdown>
+              )}
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </header>
+=======
                 )}
                 {userInfo && userInfo.isAdmin && (
                   <NavDropdown title='Admin' id='adminmenu'>
@@ -116,6 +139,7 @@ const Header = () => {
         <div style={{ borderBottom: '1px solid black' }}></div>
       </header>
     </>
+>>>>>>> 24df995d68430288d50ca59f0fdb79564687e70b
   );
 };
 

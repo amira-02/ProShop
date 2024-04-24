@@ -2,14 +2,16 @@ import path from 'path';
 import express from 'express';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser';
-dotenv.config();
 import connectDB from './config/db.js';
 import productRoutes from './routes/productRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import orderRoutes from './routes/orderRoutes.js';
 import uploadRoutes from './routes/uploadRoutes.js';
 import insurance_companyRoutes from './routes/insurance_companyRoutes.js';
+import ShopRoutes from './routes/ShopRoutes.js'; 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
+
+dotenv.config();
 
 const port = process.env.PORT || 5000;
 
@@ -25,6 +27,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/InsuranceCompany', insurance_companyRoutes);
+app.use('/api/Shop', ShopRoutes); // Assurez-vous d'utiliser le nom correct de la route
 app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
