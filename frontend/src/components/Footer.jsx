@@ -7,30 +7,42 @@ const Footer = () => {
     <footer className="bg-dark text-white py-4">
       <Container>
         <Row className="align-items-center">
-          {/* First Column - Logo */}
-          <Col md={6} className="text-center text-md-start mb-3 mb-md-0">
-          <img src={logo} alt='ProShop' style={{ width: '50px', marginRight: '10px' }} />
+          {/* Left Column - Contact Information */}
+          <Col md={4} className="text-center text-md-start mb-3 mb-md-0">
+            <p>
+              {/* Replace with your contact address */}
+              123 Main Street<br />
+              Anytown, CA 12345<br />
+              (555) 555-5555<br />
+              <a href="mailto:youremail@email.com" className="text-white">
+                youremail@email.com
+              </a>
+            </p>
           </Col>
 
-          {/* Second Column - Follow Us */}
-          <Col md={6} className="text-center text-md-end">
-            <p>Follow us on:</p>
-            <div>
-              <a href="https://twitter.com/your_twitter" className="text-white mx-2" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-twitter"></i>
-              </a>
-              <a href="https://facebook.com/your_facebook" className="text-white mx-2" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-facebook"></i>
-              </a>
-              <a href="https://instagram.com/your_instagram" className="text-white mx-2" target="_blank" rel="noopener noreferrer">
-                <i className="fab fa-instagram"></i>
-              </a>
-            </div>
-            <p className="mt-2">Designed with <i className="fas fa-heart text-danger"></i> by Your Company</p>
-            <p>ProShop &copy; {currentYear}</p>
+          {/* Center Column - Legal Information (replace with your content) */}
+          <Col md={4} className="text-center">
+            <a href="www.instagram.com">Privacy Policy</a>
+            <br />
+            <a href="www.instagram.com">Terms of Service</a>
+          </Col>
+
+          {/* Right Column - Navigation Links */}
+          <Col md={4} className="text-center text-md-end">
+            <a href="www.instagram.com">Home</a>
+            <br />
+            <a href="www.instagram.com">Shop</a>
+            <br />
+            <a href="www.instagram.com">About Us</a>
+            <br />
+            <a href="www.instagram.com">Contact</a>
           </Col>
         </Row>
       </Container>
+      <div className="text-center mt-4">
+        <p>Designed with <i className="fas fa-heart text-danger"></i> by Your Company</p>
+        <p>ProShop &copy; {currentYear}</p>
+      </div>
     </footer>
   );
 };

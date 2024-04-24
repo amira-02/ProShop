@@ -23,6 +23,7 @@ import ShippingScreen from './screens/ShippingScreen';
 import PaymentScreen from './screens/PaymentScreen';
 import PlaceOrderScreen from './screens/PlaceOrderScreen';
 import OrderScreen from './screens/OrderScreen';
+import AboutUsScreen from './screens/AboutUsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
 import ProductListScreen from './screens/admin/ProductListScreen';
@@ -51,6 +52,7 @@ const router = createBrowserRouter(
       <Route path='/product/:id' element={<ProductScreen />} />
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
+      <Route path='/about' element={<AboutUsScreen />} />
       <Route path='/register' element={<RegisterScreen />} />
       {/* Registered users */}
       <Route path='' element={<PrivateRoute />}>

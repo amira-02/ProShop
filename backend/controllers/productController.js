@@ -22,22 +22,17 @@ const getProducts = asyncHandler(async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  res.json({ products, page, pages: Math.ceil(count / pageSize) });
+  res.json({ products, page, pages: Math.ceil(count / pageSize), count });
 });
 
 // @desc    Fetch single product
 // @route   GET /api/products/:id
 // @access  Public
 const getProductById = asyncHandler(async (req, res) => {
-  // NOTE: checking for valid ObjectId to prevent CastError moved to separate
-  // middleware. See README for more info.
-
   const product = await Product.findById(req.params.id);
   if (product) {
     return res.json(product);
   } else {
-    // NOTE: this will run if a valid ObjectId but no product was found
-    // i.e. product may be null
     res.status(404);
     throw new Error('Product not found');
   }
@@ -121,9 +116,6 @@ const createProductReview = asyncHandler(async (req, res) => {
       res.status(400);
       throw new Error('Product already reviewed');
     }
-    //test de push
-
-    //test de pull
 
     const review = {
       name: req.user.name,
@@ -157,6 +149,14 @@ const getTopProducts = asyncHandler(async (req, res) => {
   res.json(products);
 });
 
+// @desc    Count all products
+// @route   GET /api/products/count
+// @access  Public
+const getProductsCount = asyncHandler(async (req, res) => {
+  const count = await Product.countDocuments();
+  res.json({ count });
+});
+
 export {
   getProducts,
   getProductById,
@@ -165,7 +165,5 @@ export {
   deleteProduct,
   createProductReview,
   getTopProducts,
+  getProductsCount,
 };
-
-
-//test de push
