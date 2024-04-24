@@ -9,15 +9,16 @@ import {
   useGetProductsQuery,
   useDeleteProductMutation,
   useCreateProductMutation,
+  useGetProductCountQuery
 } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 
 const ProductListScreen = () => {
   const { pageNumber } = useParams();
-
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     pageNumber,
   });
+  const { data: productCount, isLoading: isLoadingCount, error: errorCount } = useGetProductCountQuery();
 
   const [deleteProduct, { isLoading: loadingDelete }] =
     useDeleteProductMutation();
@@ -45,7 +46,6 @@ const ProductListScreen = () => {
         toast.error(err?.data?.message || err.error);
       }
     }
-    console.log(data)
   };
 
   return (
@@ -53,6 +53,13 @@ const ProductListScreen = () => {
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>
+          {isLoadingCount ? (
+            <p>Loading product count...</p>
+          ) : errorCount ? (
+            <Message variant='danger'>{errorCount.data.message}</Message>
+          ) : (
+            <p>Total Products: {productCount || 0}</p>
+          )}
         </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createProductHandler}>
