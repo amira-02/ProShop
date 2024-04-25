@@ -1,28 +1,3 @@
-// const express = require('express');
-// const router = express.Router();
-// const {
-//   getInsuranceCompany,
-//   getInsuranceCompanyById,
-//   createInsuranceCompany,
-//   updateInsuranceCompany,
-//   deleteInsuranceCompany,
-//   createInsuranceCompanyReview,
-//   getTopInsuranceCompany,
-// } = require('../controllers/InsuranceCompanyController.js');
-// const { protect, admin } = require('../middleware/authMiddleware.js');
-// const checkObjectId = require('../middleware/checkObjectId.js');
-
-// router.route('/').get(getInsuranceCompany).post(protect, admin, createInsuranceCompany);
-
-// router.route('/:id/reviews').post(protect, checkObjectId, createInsuranceCompanyReview);
-// router.get('/top', getTopInsuranceCompany);
-// router
-//   .route('/:id')
-//   .get(checkObjectId, getInsuranceCompanyById)
-//   .put(protect, admin, checkObjectId, updateInsuranceCompany)
-//   .delete(protect, admin, checkObjectId, deleteInsuranceCompany);
-
-// module.exports = router;
 
 
 import express from 'express';
@@ -65,7 +40,7 @@ router.route('/:id').put(protect, admin, updateInsuranceCompany);
 router.route('/:id').delete(protect, admin,deleteInsuranceCompany);
 
 // @desc    Get top rated insurance companies
-// @route   GET /api/insuranceCompany/top
+// :@route   GET /api/insuranceCompany/top
 // @access  Public
 router.route('/top').get(getTopInsuranceCompany);
 

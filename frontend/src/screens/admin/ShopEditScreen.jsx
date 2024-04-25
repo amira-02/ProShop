@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom'; // Supprimez useNavigate
 import { Form, Button } from 'react-bootstrap';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
 import { toast } from 'react-toastify';
-import {
-  useGetShopDetailsQuery,
-  useUpdateShopMutation,
-} from '../../slices/ShopApiSlice';
+import { useGetShopDetailsQuery, useUpdateShopMutation } from '../../slices/ShopApiSlice';
+import mongoose from 'mongoose';
+
+
+
 
 const ShopEditScreen = () => {
   const { id: shopId } = useParams();
-
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [address, setAddress] = useState('');
@@ -21,27 +21,36 @@ const ShopEditScreen = () => {
 
   const { data: shop, isLoading, refetch, error } = useGetShopDetailsQuery(shopId);
   const [updateShop, { isLoading: loadingUpdate }] = useUpdateShopMutation();
-  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
+      if (!shopId) {
+        throw new Error('Shop ID is missing');
+      }
+  
       const updatedData = {
-        shopId,
         name,
         email,
         address,
         contact,
-        password: password !== '' ? password : undefined,
+        password: password !== '' ? password : null,
       };
-
-      await updateShop(updatedData).unwrap();
+  
+      // Vérifiez si shopId est une chaîne non vide et un ObjectId valide
+      if (!shopId.trim() || !mongoose.Types.ObjectId.isValid(shopId)) {
+        throw new Error('Invalid Shop ID');
+      }
+  
+      // Utilisez shopId seulement si les vérifications sont réussies
+      await updateShop({ id: shopId, ...updatedData }).unwrap();
       toast.success('Shop updated');
       refetch();
     } catch (err) {
-      toast.error(err?.data?.message || err.error);
+      toast.error(err?.data?.message || err.message || err.error);
     }
   };
+  
 
   useEffect(() => {
     if (shop) {

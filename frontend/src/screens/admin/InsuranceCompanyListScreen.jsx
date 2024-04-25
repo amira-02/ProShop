@@ -39,7 +39,7 @@ const InsuranceCompanyListScreen = () => {
   const createInsuranceCompanyHandler = async () => {
     if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
       try {
-        await createInsuranceCompany();
+        await createInsuranceCompany()
         refetch();
       } catch (err) {
         toast.error(err?.data?.message || err.error);

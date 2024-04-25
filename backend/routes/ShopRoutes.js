@@ -7,39 +7,33 @@ import {
   createShop,
   updateShop,
   deleteShop,
-  getTopShops
+  getTopShops,
 } from '../controllers/ShopController.js';
 import { protect, admin } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
 
-// @desc    Fetch all insurance companies
-// @route   GET /api/Shop
-// @access  Public
-router.get('/', getShops);
+// Route pour obtenir le comptage de tous les magasins
+router.get('/count', asyncHandler(async (req, res) => {
+  try {
+    const count = await Shop.countDocuments();
+    res.json({ count });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to get Shop count' });
+  }
+}));
 
-// @desc    Fetch single insurance company
-// @route   GET /api/Shop/:id
-// @access  Public
-router.get('/:id', getShopById);
+// Routes pour les opérations CRUD sur les magasins
+router.route('/')
+  .get(getShops)
+  .post(protect, admin, createShop);
 
-// @desc    Create a insurance company
-// @route   POST /api/Shop
-// @access  Private/Admin
-router.post('/', protect, admin, createShop);
-
-// @desc    Update a insurance company
-// @route   PUT /api/Shop/:id
-// @access  Private/Admin
-router.put('/:id', protect, admin, updateShop);
-
-// @desc    Delete a insurance company
-// @route   DELETE /api/Shop/:id
-// @access  Private/Admin
-router.delete('/:id', protect, admin, deleteShop);
-
-// @desc    Get top rated insurance companies
-// @route   GET /api/Shop/top
-// @access  Public
+// Route pour obtenir les magasins les mieux notés
 router.get('/top', getTopShops);
+
+// Route pour obtenir un magasin par son ID, mettre à jour ou supprimer un magasin
+router.route('/:id')
+  .get(checkObjectId, getShopById) // Utilisation de checkObjectId pour vérifier l'ID
+  .put(protect, admin, updateShop)
+  .delete(protect, admin, deleteShop);
 
 export default router;
