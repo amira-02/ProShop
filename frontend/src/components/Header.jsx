@@ -101,8 +101,14 @@ const Header = () => {
                     <LinkContainer to='/admin/orderlist'>
                       <NavDropdown.Item className="text-black">Orders</NavDropdown.Item>
                     </LinkContainer>
+<<<<<<< HEAD
                     
 
+=======
+                    <LinkContainer to='/admin/InsuranceCompanylist'>
+                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
+                  </LinkContainer>
+>>>>>>> 4a4ecbc0a6ef8da3b20a5d0dc8f056e93bf4d503
                     <LinkContainer to='/admin/userlist'>
                       <NavDropdown.Item className="text-black">Users</NavDropdown.Item>
                     </LinkContainer>
