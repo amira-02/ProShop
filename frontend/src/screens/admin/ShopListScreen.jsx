@@ -4,7 +4,7 @@ import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
-import Paginate from '../../components/Paginate';
+import Paginate from '../../components/Paginate'; // Ajout de l'importation du composant Paginate
 import {
   useGetShopQuery,
   useDeleteShopMutation,
@@ -36,16 +36,23 @@ const ShopListScreen = () => {
   const [createShop, { isLoading: loadingCreate }] =
     useCreateShopMutation();
 
-  const createShopHandler = async () => {
-    if (window.confirm('Are you sure you want to create a new Shop?')) {
-      try {
-        await createShop();
-        refetch();
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
+    const createShopHandler = async () => {
+      console.log('createShopHandler triggered'); // Vérifier si la fonction est déclenchée
+      if (window.confirm('Are you sure you want to create a new Shop?')) {
+        try {
+          // Ajoutez ici les données nécessaires pour créer un nouveau shop
+          // console.log('Creating a new shop...'); // Vérifier si la création est déclenchée
+          await createShop();
+          // console.log(data);
+          // console.log('Shop created successfully'); // Vérifier si la création est réussie
+          refetch();
+        } catch (err) {
+          console.error('Error creating shop:', err);
+          toast.error(err?.data?.message || err.error);
+        }
       }
-    }
-  };
+    };
+    
 
   return (
     <>
@@ -54,9 +61,9 @@ const ShopListScreen = () => {
           <h1>Shop</h1>
         </Col>
         <Col className='text-end'>
-          <Button className='my-3' onClick={createShopHandler}>
-            <FaPlus /> Create Shop
-          </Button>
+        <Button className='my-3' onClick={createShopHandler}>
+  <FaPlus /> Create Shop
+</Button>
         </Col>
       </Row>
 
@@ -91,7 +98,7 @@ const ShopListScreen = () => {
       <td>{shop.password}</td>
       <td>{shop.contact}</td>
       <td>
-        <LinkContainer to={`/admin/shop/${shop._id}/edit`}>
+        <LinkContainer to={`/admin/Shop/${shop._id}/edit`}>
           <Button variant='light' className='btn-sm mx-2'>
             <FaEdit />
           </Button>
