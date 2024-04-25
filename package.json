@@ -17,6 +17,7 @@
   "author": "Brad Traversy",
   "license": "MIT",
   "dependencies": {
+    "@progress/kendo-theme-material": "^7.2.1",
     "aos": "^2.3.4",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
