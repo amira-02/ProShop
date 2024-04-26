@@ -118,28 +118,29 @@ const Header = () => {
                         Orders
                       </NavDropdown.Item>
                     </LinkContainer>
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-                    
-
-=======
-                    <LinkContainer to='/admin/InsuranceCompanylist'>
-                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
-                  </LinkContainer>
->>>>>>> 4a4ecbc0a6ef8da3b20a5d0dc8f056e93bf4d503
->>>>>>> 79cc89887814dd36a43dc6d4c1fb16c8181d35bb
                     <LinkContainer to='/admin/userlist'>
                       <NavDropdown.Item className='text-black'>
                         Users
                       </NavDropdown.Item>
                     </LinkContainer>
-                    <LinkContainer to='/admin/InsuranceCompanylist'>
-                    <NavDropdown.Item>InsuranceCompany</NavDropdown.Item>
-                  </LinkContainer>
-                  <LinkContainer to='/admin/Shoplist'>
-                    <NavDropdown.Item>Shop</NavDropdown.Item>
-                  </LinkContainer>
+                    <LinkContainer to='/admin/Insurancecompanylist'>
+                      <NavDropdown.Item className='text-black'>
+                        Insurance Company 
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to='/admin/Shoplist'>
+                      <NavDropdown.Item className='text-black'>
+                       Shops
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/admin/RepairerCompanylist'>
+                      <NavDropdown.Item className='text-black'>
+                      Repairer Company
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+
                   </NavDropdown>
                 )}
               </Nav>

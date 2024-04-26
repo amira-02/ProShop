@@ -61,7 +61,7 @@ const InsuranceCompanyEditScreen = () => {
 
   return (
     <>
-      <Link to='/admin/companylist' className='btn btn-light my-3'>
+      <Link to='/admin/InsuranceCompanylist' className='btn btn-light my-3'>
         Go Back
       </Link>
       <FormContainer>

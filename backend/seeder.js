@@ -7,6 +7,7 @@ import User from './models/userModel.js';
 import Product from './models/productModel.js';
 import Order from './models/orderModel.js';
 import InsuranceCompany from './models/Insurance_companyModel.js';
+import RepairerCompany from './models/RepairerCompanyModel.js';
 import Shop from './models/ShopModel.js';
 
 import connectDB from './config/db.js';
@@ -21,6 +22,7 @@ const importData = async () => {
     await Product.deleteMany();
     await User.deleteMany();
     await InsuranceCompany.deleteMany();
+    await RepairerCompany.deleteMany();
     await Shop.deleteMany();
     const createdUsers = await User.insertMany(users);
 
@@ -46,6 +48,7 @@ const destroyData = async () => {
     await Product.deleteMany();
     await User.deleteMany();
     await InsuranceCompany.deleteMany();
+    await RepairerCompany.deleteMany();
     await Shop.deleteMany();
     console.log('Data Destroyed!'.red.inverse);
     process.exit();

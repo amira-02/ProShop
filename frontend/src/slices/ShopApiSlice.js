@@ -13,8 +13,8 @@ export const ShopApiSlice = apiSlice.injectEndpoints({
       providesTags: ['Shop'],
     }),
     getShopDetails: builder.query({
-      query: (companyId) => ({
-        url: `${SHOP_URL}/${companyId}`,
+      query: (ShopId) => ({
+        url: `${SHOP_URL}/${ShopId}`,
       }),
       keepUnusedDataFor: 5,
     }),
@@ -28,7 +28,7 @@ export const ShopApiSlice = apiSlice.injectEndpoints({
     }),
     updateShop: builder.mutation({
       query: (data) => ({
-        url: `${SHOP_URL}/${data.companyId}`,
+        url: `${SHOP_URL}/${data}`,
         method: 'PUT',
         body: data,
       }),
@@ -42,8 +42,8 @@ export const ShopApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteShop: builder.mutation({
-      query: (companyId) => ({
-        url: `${SHOP_URL}/${companyId}`,
+      query: (ShopId) => ({
+        url: `${SHOP_URL}/${ShopId}`,
         method: 'DELETE',
       }),
       providesTags: ['Shop'],

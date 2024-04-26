@@ -1,74 +1,71 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom'; // Supprimez useNavigate
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
 import { toast } from 'react-toastify';
-import { useGetShopDetailsQuery, useUpdateShopMutation } from '../../slices/ShopApiSlice';
-import mongoose from 'mongoose';
+import {
+  useGetRepairerCompanyDetailsQuery,
+  useUpdateRepairerCompanyMutation,
+} from '../../slices/RepairerCompanyApiSlice';
 
+const RepairerCompanyEditScreen = () => {
+  const { id: companyId } = useParams();
 
-
-
-const ShopEditScreen = () => {
-  const { id: shopId } = useParams();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [address, setAddress] = useState('');
+  const [address, setaddress] = useState('');
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
 
-  const { data: shop, isLoading, refetch, error } = useGetShopDetailsQuery(shopId);
-  const [updateShop, { isLoading: loadingUpdate }] = useUpdateShopMutation();
+  const { data: company, isLoading, refetch, error } = useGetRepairerCompanyDetailsQuery(companyId);
+  const [updateCompany, { isLoading: loadingUpdate }] = useUpdateRepairerCompanyMutation();
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
-      if (!shopId) {
-      
-        throw new Error('Shop ID is missing');
-      }
-  
       const updatedData = {
+        companyId,
         name,
         email,
         address,
         contact,
-        password: password !== '' ? password : null,
       };
-  
-      // Vérifiez si shopId est une chaîne non vide et un ObjectId valide
-      if (!shopId.trim() || !mongoose.Types.ObjectId.isValid(shopId)) {
-        throw new Error('Invalid Shop ID');
+
+      // Vérifier si un nouveau mot de passe a été fourni
+      if (password !== '') {
+        // Mettre à jour le mot de passe dans les données à envoyer
+        updatedData.password = password;
       }
-  
-      // Utilisez shopId seulement si les vérifications sont réussies
-      await updateShop({ id: shopId, ...updatedData }).unwrap();
-      toast.success('Shop updated');
+
+      // Mettre à jour la compagnie d'assurance
+      await updateCompany(updatedData).unwrap();
+      toast.success('Company updated');
       refetch();
+      // navigate('/admin/companylist');
     } catch (err) {
-      toast.error(err?.data?.message || err.message || err.error);
+      toast.error(err?.data?.message || err.error);
     }
   };
-  
 
   useEffect(() => {
-    if (shop) {
-      setName(shop.name);
-      setEmail(shop.email);
-      setAddress(shop.address);
-      setContact(shop.contact);
+    if (company) {
+      setName(company.name);
+      setEmail(company.email);
+      setaddress(company.address);
+      setContact(company.contact);
     }
-  }, [shop]);
+  }, [company]);
 
   return (
     <>
-      <Link to='/admin/shoplist' className='btn btn-light my-3'>
+      <Link to='/admin/RepairerCompanylist' className='btn btn-light my-3'>
         Go Back
       </Link>
       <FormContainer>
-        <h1>Edit Shop</h1>
+        <h1>Edit Company</h1>
         {loadingUpdate && <Loader />}
         {isLoading ? (
           <Loader />
@@ -97,12 +94,12 @@ const ShopEditScreen = () => {
             </Form.Group>
 
             <Form.Group controlId='address'>
-              <Form.Label>Address</Form.Label>
+              <Form.Label>address</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Enter address'
                 value={address}
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) => setaddress(e.target.value)}
               />
             </Form.Group>
 
@@ -130,10 +127,10 @@ const ShopEditScreen = () => {
               Update
             </Button>
           </Form>
-        )}
+        )}  
       </FormContainer>
     </>
   );
 };
 
-export default ShopEditScreen;
+export default RepairerCompanyEditScreen;
