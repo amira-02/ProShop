@@ -123,6 +123,7 @@ const Header = () => {
                         Users
                       </NavDropdown.Item>
                     </LinkContainer>
+<<<<<<< HEAD
                     <LinkContainer to='/admin/InsuranceCompanylist'>
                       <NavDropdown.Item className='text-black'>
                        Insurance Company 
@@ -133,6 +134,26 @@ const Header = () => {
                        Shop
                       </NavDropdown.Item>
                     </LinkContainer>
+=======
+                    <LinkContainer to='/admin/Insurancecompanylist'>
+                      <NavDropdown.Item className='text-black'>
+                        Insurance Company 
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+                    <LinkContainer to='/admin/Shoplist'>
+                      <NavDropdown.Item className='text-black'>
+                       Shops
+                      </NavDropdown.Item>
+                    </LinkContainer>
+                    <LinkContainer to='/admin/RepairerCompanylist'>
+                      <NavDropdown.Item className='text-black'>
+                      Repairer Company
+                      </NavDropdown.Item>
+                    </LinkContainer>
+
+
+>>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
                   </NavDropdown>
                 )}
               </Nav>

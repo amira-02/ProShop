@@ -6,11 +6,11 @@ import Loader from '../../components/Loader';
 import FormContainer from '../../components/FormContainer';
 import { toast } from 'react-toastify';
 import {
-  useGetInsuranceCompanyDetailsQuery,
-  useUpdateInsuranceCompanyMutation,
-} from '../../slices/InsuranceCompanyApiSlice';
+  useGetRepairerCompanyDetailsQuery,
+  useUpdateRepairerCompanyMutation,
+} from '../../slices/RepairerCompanyApiSlice';
 
-const InsuranceCompanyEditScreen = () => {
+const RepairerCompanyEditScreen = () => {
   const { id: companyId } = useParams();
 
   const [name, setName] = useState('');
@@ -19,8 +19,8 @@ const InsuranceCompanyEditScreen = () => {
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
 
-  const { data: company, isLoading, refetch, error } = useGetInsuranceCompanyDetailsQuery(companyId);
-  const [updateCompany, { isLoading: loadingUpdate }] = useUpdateInsuranceCompanyMutation();
+  const { data: company, isLoading, refetch, error } = useGetRepairerCompanyDetailsQuery(companyId);
+  const [updateCompany, { isLoading: loadingUpdate }] = useUpdateRepairerCompanyMutation();
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
@@ -61,11 +61,7 @@ const InsuranceCompanyEditScreen = () => {
 
   return (
     <>
-<<<<<<< HEAD
-      <Link to='/admin/InsuanceCompanylist' className='btn btn-light my-3'>
-=======
-      <Link to='/admin/InsuranceCompanylist' className='btn btn-light my-3'>
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
+      <Link to='/admin/RepairerCompanylist' className='btn btn-light my-3'>
         Go Back
       </Link>
       <FormContainer>
@@ -137,4 +133,4 @@ const InsuranceCompanyEditScreen = () => {
   );
 };
 
-export default InsuranceCompanyEditScreen;
+export default RepairerCompanyEditScreen;

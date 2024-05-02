@@ -26,6 +26,7 @@ const ShopEditScreen = () => {
     e.preventDefault();
     try {
       if (!shopId) {
+      
         throw new Error('Shop ID is missing');
       }
   

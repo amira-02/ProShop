@@ -76,40 +76,9 @@ const createShop = asyncHandler(async (req, res) => {
 // @route   PUT /api/Shop/:id
 // @access  Private/Admin
 
-// const updateShop = asyncHandler(async (req, res) => {
-//   // Récupérer l'ID du shop à mettre à jour depuis les paramètres de la requête
-//   const shopId = req.params.id;
-
-//   try {
-//     // Rechercher le shop par son ID
-//     let shopInstance = await Shop.findById(shopId);
-
-//     // Vérifier si le shop existe
-//     if (!shopInstance) {
-//       res.status(404).json({ message: 'Shop not found' });
-//       return;
-//     }
-
-//     // Mettre à jour les champs du shop avec les nouvelles données envoyées dans le corps de la requête
-//     shopInstance = await Shop.findByIdAndUpdate(shopId, req.body, {
-//       new: true, // Pour retourner le document mis à jour
-//       runValidators: true, // Pour exécuter les validateurs de Mongoose lors de la mise à jour
-//     });
-
-//     // Envoyer une réponse JSON contenant le shop mis à jour
-//     res.json({ message: 'Shop updated successfully', shop: shopInstance });
-//   } catch (error) {
-//     // Gérer les erreurs
-//     console.error('Error updating shop:', error);
-//     res.status(500).json({ message: 'Failed to update shop' });
-//   }
-// });
 const updateShop = asyncHandler(async (req, res) => {
   // Récupérer l'ID du shop à mettre à jour depuis les paramètres de la requête
   const shopId = req.params.id;
-
-  // Ajouter l'instruction de journalisation ici
-  console.log('Shop ID :', shopId);
 
   try {
     // Rechercher le shop par son ID
@@ -135,6 +104,7 @@ const updateShop = asyncHandler(async (req, res) => {
     res.status(500).json({ message: 'Failed to update shop' });
   }
 });
+
 
 
 
