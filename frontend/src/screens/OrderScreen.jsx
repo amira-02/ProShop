@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import Modal from 'react-bootstrap/Modal'; // Import Modal
-import { useSelector } from 'react-redux';
+import Modal from 'react-bootstrap/Modal'; // Imimport { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
+import { useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import {
   useDeliverOrderMutation,
@@ -38,13 +38,11 @@ const OrderScreen = () => {
     isLoading: loadingPayPal,
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
-
   // State for the modal
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
-
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal.clientId) {
       const loadPaypalScript = async () => {
@@ -216,6 +214,44 @@ const OrderScreen = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  {/* Display the modal when the order is paid */}
+                  {order.isPaid && (
+                    <div>
+                      <button
+                        type='button'
+                        className='btn btn-outline-dark custom-btn'
+                        data-mdb-ripple-init
+                        data-mdb-ripple-color='dark'
+                        onClick={handleShow}
+                      >
+                        Get Invoice
+                      </button>
+                      <Modal
+                        show={show}
+                        onHide={handleClose}
+                        backdrop='static'
+                        keyboard={false}
+                      >
+                        <Modal.Header closeButton>
+                          <Modal.Title>Invoice</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body>
+                          {/* Add your invoice content here */}
+                          <p>This is the invoice content.</p>
+                        </Modal.Body>
+                        <Modal.Footer>
+                          <Button variant='secondary' onClick={handleClose}>
+                            Close
+                          </Button>
+                          <Button variant='primary'>Download</Button>
+                        </Modal.Footer>
+                      </Modal>
+                    </div>
+                  )}
+                </Row>
+              </ListGroup.Item>
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
@@ -250,7 +286,7 @@ const OrderScreen = () => {
               {loadingDeliver && <Loader />}
 
               {/* Display "Mark As Delivered" button if the user is admin */}
-              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
+              {userInfo.isAdmin && !order.isPaid && !order.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type='button'
@@ -265,34 +301,6 @@ const OrderScreen = () => {
           </Card>
         </Col>
       </Row>
-      {/* Display the modal when the order is paid */}
-      {order.isPaid && (
-        <div>
-          <Button variant="primary" onClick={handleShow}>
-            Launch static backdrop modal
-          </Button>
-          <Modal
-            show={show}
-            onHide={handleClose}
-            backdrop="static"
-            keyboard={false}
-          >
-            <Modal.Header closeButton>
-              <Modal.Title>Invoice</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-              {/* Add your invoice content here */}
-              <p>This is the invoice content.</p>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary">Download</Button>
-            </Modal.Footer>
-          </Modal>
-        </div>
-      )}
     </>
   );
 };

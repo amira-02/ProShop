@@ -34,6 +34,7 @@ import InsuranceCompanyListScreen from './screens/admin/InsuranceCompanyListScre
 import InsuranceCompanyEditScreen from './screens/admin/InsuranceCompanyEditScreen';
 import ShopListScreen from './screens/admin/ShopListScreen';
 import ShopEditScreen from './screens/admin/ShopEditScreen';
+import Contract from './screens/ChooseContractScreen';
 
 import store from './store';
 import { Provider } from 'react-redux';
@@ -53,6 +54,7 @@ const router = createBrowserRouter(
       <Route path='/cart' element={<CartScreen />} />
       <Route path='/login' element={<LoginScreen />} />
       <Route path='/about' element={<AboutUsScreen />} />
+      <Route path='/contract' element={<Contract />} />
       <Route path='/register' element={<RegisterScreen />} />
       {/* Registered users */}
       <Route path='' element={<PrivateRoute />}>
@@ -70,8 +72,8 @@ const router = createBrowserRouter(
           path='/admin/productlist/:pageNumber'
           element={<ProductListScreen />}
         />
-          <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
-          <Route path='/admin/ShopList' element={<ShopListScreen />} />
+        <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
+        <Route path='/admin/ShopList' element={<ShopListScreen />} />
         <Route path='/admin/userlist' element={<UserListScreen />} />
         <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />

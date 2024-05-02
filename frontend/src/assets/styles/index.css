@@ -163,3 +163,18 @@ a::before {
 a:hover::before {
   transform: scaleX(1);
 }
+
+.custom-btn {
+  color: black;
+  border-color: black;
+}
+
+.custom-btn:hover {
+  color: white;
+  background-color: black;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.custom-btn:active {
+  box-shadow: none;
+}

@@ -8,5 +8,5 @@ const InsuranceCompany = [
     "contact": "Numéro de contact"
   }
 ];
-
+ 
 export default InsuranceCompany;

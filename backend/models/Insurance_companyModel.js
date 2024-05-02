@@ -13,45 +13,45 @@ import mongoose from 'mongoose';
 //   },
 //   {
 //     timestamps: true,
-//   }
+//   } 
 // );
 
-  const InsuranceCompanySchema = mongoose.Schema(
-    {
-      // user: {
-      //   type: mongoose.Schema.Types.ObjectId,
-      //   required: true,
-      //   ref: 'User',
-      // },
-      name: {
-        type: String,
-        required: true,
-      },
-       address: {
-          type: String,
-          required: true,
-        }, 
-        email: {
-          type: String,
-          required: true,
-        },
-        password: {
-          type: String,
-          required: true,
-        },
-       
-        contact: {
-          type: String,
-          required: true,
-        },
-
-    
+const InsuranceCompanySchema = mongoose.Schema(
+  {
+    // user: {
+    //   type: mongoose.Schema.Types.ObjectId,
+    //   required: true,
+    //   ref: 'User',
+    // },
+    name: {
+      type: String,
+      required: true,
     },
-    {
-      timestamps: true,
-    }
-  );
+    address: {
+      type: String,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
 
-  const InsuranceCompany = mongoose.model('InsuranceCompany', InsuranceCompanySchema);
+    contact: {
+      type: String,
+      required: true,
+    },
 
-  export default InsuranceCompany;
+
+  },
+  {
+    timestamps: true,
+  }
+);
+
+const InsuranceCompany = mongoose.model('InsuranceCompany', InsuranceCompanySchema);
+
+export default InsuranceCompany;
