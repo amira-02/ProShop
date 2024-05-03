@@ -1,7 +1,8 @@
 import mongoose from 'mongoose';
+// import bcrypt from 'bcrypt';
+
 const ShopSchema = mongoose.Schema(
   {
-     
     name: {
       type: String,
       required: true,
@@ -28,7 +29,21 @@ const ShopSchema = mongoose.Schema(
   }
 );
 
+// // Match user entered password to hashed password in database
+// ShopSchema.methods.matchPassword = async function (enteredPassword) {
+//   return await bcrypt.compare(enteredPassword, this.password);
+// };
 
-  const Shop = mongoose.model('Shop', ShopSchema);
+// // Encrypt password using bcrypt
+// ShopSchema.pre('save', async function (next) {
+//   if (!this.isModified('password')) {
+//     next();
+//   }
 
-  export default Shop;
+//   const salt = await bcrypt.genSalt(10);
+//   this.password = await bcrypt.hash(this.password, salt);
+// });
+
+const Shop = mongoose.model('Shop', ShopSchema);
+
+export default Shop;
