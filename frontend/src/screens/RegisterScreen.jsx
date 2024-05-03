@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Alert } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -14,6 +14,8 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('regular'); // Default to 'Regular User'
+  const [showAlert, setShowAlert] = useState(false); // For showing the alert
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -38,13 +40,17 @@ const RegisterScreen = () => {
     if (password !== confirmPassword) {
       toast.error('Passwords do not match');
     } else {
-      try {
-        const res = await register({ name, email, password }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate(redirect);
-      } catch (err) {
-        toast.error(err?.data?.message || err.error);
-      }
+      setShowAlert(true); // Show the alert before registration
+    }
+  };
+
+  const handleRegistration = async () => {
+    try {
+      const res = await register({ name, email, password, Type: userType }).unwrap(); // Ensure 'Type' is sent
+      dispatch(setCredentials({ ...res }));
+      navigate(redirect);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
     }
   };
 
@@ -91,6 +97,51 @@ const RegisterScreen = () => {
           ></Form.Control>
         </Form.Group>
 
+        <Form.Group className='my-2'>
+          <Form.Label>User Type</Form.Label>
+          <div>
+            <Form.Check
+              inline
+              style={{ marginRight: '10px' }}
+              type='radio'
+              label='Regular User'
+              name='userType'
+              value='regular'
+              checked={userType === 'regular'}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            <Form.Check
+              inline
+              style={{ marginRight: '10px' }}
+              type='radio'
+              label='Shop'
+              name='userType'
+              value='shop'
+              checked={userType === 'shop'}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            <Form.Check
+              inline
+              style={{ marginRight: '10px' }}
+              type='radio'
+              label='Insurance Company'
+              name='userType'
+              value='insurance'
+              checked={userType === 'insurance'}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+            <Form.Check
+              inline
+              type='radio'
+              label='Repairer'
+              name='userType'
+              value='repairer'
+              checked={userType === 'repairer'}
+              onChange={(e) => setUserType(e.target.value)}
+            />
+          </div>
+        </Form.Group>
+
         <Button disabled={isLoading} type='submit' variant='primary'>
           Register
         </Button>
@@ -106,6 +157,23 @@ const RegisterScreen = () => {
           </Link>
         </Col>
       </Row>
+
+      {/* Alert for showing user info before registration */}
+      <Alert show={showAlert} variant="info">
+        <Alert.Heading>Confirm User Info</Alert.Heading>
+        <p>Name: {name}</p>
+        <p>Email: {email}</p>
+        <p>User Type: {userType}</p>
+        <hr />
+        <div className="d-flex justify-content-end">
+          <Button onClick={handleRegistration} variant="success">
+            Register
+          </Button>
+          <Button onClick={() => setShowAlert(false)} variant="outline-danger" style={{ marginLeft: '10px' }}>
+            Cancel
+          </Button>
+        </div>
+      </Alert>
     </FormContainer>
   );
 };

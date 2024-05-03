@@ -15,7 +15,7 @@ const InsuranceCompanyEditScreen = () => {
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [address, setaddress] = useState('');
+  const [address, setAddress] = useState('');
   const [contact, setContact] = useState('');
   const [password, setPassword] = useState('');
 
@@ -34,17 +34,16 @@ const InsuranceCompanyEditScreen = () => {
         contact,
       };
 
-      // Vérifier si un nouveau mot de passe a été fourni
+      // Check if a new password has been provided
       if (password !== '') {
-        // Mettre à jour le mot de passe dans les données à envoyer
+        // Update the password in the data to be sent
         updatedData.password = password;
       }
 
-      // Mettre à jour la compagnie d'assurance
+      // Update the insurance company
       await updateCompany(updatedData).unwrap();
       toast.success('Company updated');
       refetch();
-      // navigate('/admin/companylist');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -54,18 +53,14 @@ const InsuranceCompanyEditScreen = () => {
     if (company) {
       setName(company.name);
       setEmail(company.email);
-      setaddress(company.address);
+      setAddress(company.address);
       setContact(company.contact);
     }
   }, [company]);
 
   return (
     <>
-<<<<<<< HEAD
-      <Link to='/admin/InsuanceCompanylist' className='btn btn-light my-3'>
-=======
       <Link to='/admin/InsuranceCompanylist' className='btn btn-light my-3'>
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
         Go Back
       </Link>
       <FormContainer>
@@ -98,12 +93,12 @@ const InsuranceCompanyEditScreen = () => {
             </Form.Group>
 
             <Form.Group controlId='address'>
-              <Form.Label>address</Form.Label>
+              <Form.Label>Address</Form.Label>
               <Form.Control
                 type='text'
                 placeholder='Enter address'
                 value={address}
-                onChange={(e) => setaddress(e.target.value)}
+                onChange={(e) => setAddress(e.target.value)}
               />
             </Form.Group>
 
@@ -127,7 +122,7 @@ const InsuranceCompanyEditScreen = () => {
               />
             </Form.Group>
 
-            <Button type='submit' variant='primary' style={{ marginTop: '1rem' }}>
+            <Button type='submit' variant='primary' block>
               Update
             </Button>
           </Form>

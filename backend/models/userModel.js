@@ -8,7 +8,7 @@ const userSchema = mongoose.Schema(
       required: true,
     },
     email: {
-      type: String,
+      type: String, 
       required: true,
       unique: true,
     },
@@ -16,11 +16,10 @@ const userSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    isAdmin: {
-      type: Boolean,
+    Type: {
+      type: String,
       required: true,
-      default: false,
-    },
+    }
   },
   {
     timestamps: true,
