@@ -31,85 +31,11 @@ import ShopEditScreen from './screens/admin/ShopEditScreen';
 import Contract from './screens/ChooseContractScreen';
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
-<<<<<<< HEAD
-=======
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
-
-
-
->>>>>>> c63ecbd2fa1508239a0bfcdd99c89c757217ec0c
-import store from './store';
 import { Provider } from 'react-redux';
+import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
 
-<<<<<<< HEAD
 ReactDOM.render(
-=======
-const router = createBrowserRouter(
-  createRoutesFromElements(
-    <Route path='/' element={<App />}>
-      <Route index={true} path='/' element={<HomeScreen />} />
-      <Route path='/search/:keyword' element={<HomeScreen />} />
-      <Route path='/page/:pageNumber' element={<HomeScreen />} />
-      <Route
-        path='/search/:keyword/page/:pageNumber'
-        element={<HomeScreen />}
-      />
-      <Route path='/product/:id' element={<ProductScreen />} />
-      <Route path='/cart' element={<CartScreen />} />
-      <Route path='/login' element={<LoginScreen />} />
-      <Route path='/about' element={<AboutUsScreen />} />
-      <Route path='/contract' element={<Contract />} />
-      <Route path='/register' element={<RegisterScreen />} />
-      {/* Registered users */}
-      <Route path='' element={<PrivateRoute />}>
-        <Route path='/shipping' element={<ShippingScreen />} />
-        <Route path='/payment' element={<PaymentScreen />} />
-        <Route path='/placeorder' element={<PlaceOrderScreen />} />
-        <Route path='/order/:id' element={<OrderScreen />} />
-        <Route path='/profile' element={<ProfileScreen />} />
-      </Route>
-      {/* Admin users */}
-      <Route path='' element={<AdminRoute />}>
-        <Route path='/admin/orderlist' element={<OrderListScreen />} />
-        <Route path='/admin/productlist' element={<ProductListScreen />} />
-        <Route
-          path='/admin/productlist/:pageNumber'
-          element={<ProductListScreen />}
-        />
-<<<<<<< HEAD
-        <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
-        <Route path='/admin/ShopList' element={<ShopListScreen />} />
-=======
-          <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
-          <Route path='/admin/ShopList' element={<ShopListScreen />} />
-          <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
-<<<<<<< HEAD
-           <Route path='/admin/userlist' element={<UserListScreen />} />
-           <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
-           <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
-           <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
-           <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
-           <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
-       
-      
-=======
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
-        <Route path='/admin/userlist' element={<UserListScreen />} />
-        <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
-        <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
-        <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
-        <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
-        <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
->>>>>>> 91dafd5fe994523b97f0969093cd762c7081997c
-      </Route>
-    </Route>
-  )
-);
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
->>>>>>> c63ecbd2fa1508239a0bfcdd99c89c757217ec0c
   <React.StrictMode>
     <HelmetProvider>
       <Provider store={store}>
