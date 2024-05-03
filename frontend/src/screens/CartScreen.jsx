@@ -31,9 +31,10 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = () => {
-    navigate('/login?redirect=/shipping');
+    navigate('/login?redirect=/contract');
+    //    navigate('/login?redirect=/shipping');
   };
-
+  
   return (
     <Row>
       <Col md={8}>

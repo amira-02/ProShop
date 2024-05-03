@@ -16,7 +16,7 @@ function checkObjectId(req, res, next) {
     throw new Error(`Invalid ObjectId of:  ${req.params.id}`);
   }
   next();
-}
+} 
 
 export default checkObjectId;
 
