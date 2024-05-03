@@ -18,6 +18,7 @@ const authUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      Type: user.Type, // Include Type if needed
     });
   } else {
     res.status(401);
@@ -29,8 +30,7 @@ const authUser = asyncHandler(async (req, res) => {
 // @route   POST /api/users
 // @access  Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { name, email, password } = req.body;
-
+  const { name, email, password, Type } = req.body;
   const userExists = await User.findOne({ email });
 
   if (userExists) {
@@ -42,6 +42,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+    Type, // Include Type here
   });
 
   if (user) {
@@ -52,12 +53,14 @@ const registerUser = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      Type: user.Type, // Include Type here
     });
   } else {
     res.status(400);
     throw new Error('Invalid user data');
   }
 });
+
 
 // @desc    Logout user / clear cookie
 // @route   POST /api/users/logout
@@ -79,6 +82,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
       name: user.name,
       email: user.email,
       isAdmin: user.isAdmin,
+      Type: user.Type,
     });
   } else {
     res.status(404);
@@ -107,6 +111,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      Type: updatedUser.Type,
     });
   } else {
     res.status(404);
@@ -172,6 +177,7 @@ const updateUser = asyncHandler(async (req, res) => {
       name: updatedUser.name,
       email: updatedUser.email,
       isAdmin: updatedUser.isAdmin,
+      Type: updatedUser.Type,
     });
   } else {
     res.status(404);

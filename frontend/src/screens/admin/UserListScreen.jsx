@@ -25,6 +25,7 @@ const UserListScreen = () => {
       }
     }
   };
+ 
 
   return (
     <>
@@ -43,7 +44,7 @@ const UserListScreen = () => {
               <th>NAME</th>
               <th>EMAIL</th>
               <th>ADMIN</th>
-              <th></th>
+              <th>Managment</th>
             </tr>
           </thead>
           <tbody>

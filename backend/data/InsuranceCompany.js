@@ -1,11 +1,13 @@
+import bcrypt from 'bcryptjs';
+
 const InsuranceCompany = [
     
 {
-    "name": "Nom de la compagnie",
-    "adress": "Adresse de la compagnie",
-    "email": "email@compagnie.com",
-    "password": "Mot de passe",
-    "contact": "Numéro de contact"
+  name: "insuranceCompany1",
+  adress: "adress",
+  email: "company@gmail.com",
+  password:bcrypt.hashSync("Mot de passe", 10),
+  contact: "Numéro de contact"
   }
 ];
 

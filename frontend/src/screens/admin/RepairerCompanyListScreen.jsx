@@ -1,3 +1,4 @@
+import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
@@ -10,14 +11,17 @@ import {
   useDeleteRepairerCompanyMutation,
   useCreateRepairerCompanyMutation,
 } from '../../slices/RepairerCompanyApiSlice';
+import { useGetUsersQuery } from '../../slices/usersApiSlice'; // Importez le hook pour récupérer les utilisateurs
 import { toast } from 'react-toastify';
 
 const RepairerCompanyListScreen = () => {
   const { pageNumber } = useParams();
 
-  const { data, isLoading, error, refetch } = useGetRepairerCompanyQuery({
+  const { data: repairerCompaniesData, isLoading, error, refetch } = useGetRepairerCompanyQuery({
     pageNumber,
   });
+
+  const { data: usersData } = useGetUsersQuery(); // Utilisez le hook pour récupérer les utilisateurs
 
   const [deleteRepairerCompany, { isLoading: loadingDelete }] =
     useDeleteRepairerCompanyMutation();
@@ -39,13 +43,25 @@ const RepairerCompanyListScreen = () => {
   const createRepairerCompanyHandler = async () => {
     if (window.confirm('Are you sure you want to create a new Repairer Company?')) {
       try {
-        await createRepairerCompany()
+        await createRepairerCompany();
         refetch();
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
     }
   };
+
+  // Filtrer les utilisateurs de type "Repairer"
+  const repairers = [];
+  if (usersData) {
+    for (let i = 0; i < usersData.length; i++) {
+      const user = usersData[i];
+      if (user.type === 'repairer') {
+        repairers.push(user);
+      }
+    }
+  }
+  
 
   return (
     <>
@@ -81,16 +97,16 @@ const RepairerCompanyListScreen = () => {
               </tr>
             </thead>
             <tbody>
-              {data.RepairerCompany.map((RepairerCompany) => (
-                <tr key={RepairerCompany._id}>
-                  <td>{RepairerCompany._id}</td>
-                  <td>{RepairerCompany.name}</td>
-                  <td>{RepairerCompany.address}</td>
-                  <td>{RepairerCompany.email}</td>
-                  <td>{RepairerCompany.password}</td>
-                  <td>{RepairerCompany.contact}</td>
+              {repairers.map((repairer) => (
+                <tr key={repairer._id}>
+                  <td>{repairer._id}</td>
+                  <td>{repairer.name}</td>
+                  <td>{repairer.address}</td>
+                  <td>{repairer.email}</td>
+                  <td>{repairer.password}</td>
+                  <td>{repairer.contact}</td>
                   <td>
-                    <LinkContainer to={`/admin/RepairerCompany/${RepairerCompany._id}/edit`}>
+                    <LinkContainer to={`/admin/RepairerCompany/${repairer._id}/edit`}>
                       <Button variant='light' className='btn-sm mx-2'>
                         <FaEdit />
                       </Button>
@@ -98,7 +114,7 @@ const RepairerCompanyListScreen = () => {
                     <Button
                       variant='danger'
                       className='btn-sm'
-                      onClick={() => deleteHandler(RepairerCompany._id)}
+                      onClick={() => deleteHandler(repairer._id)}
                     >
                       <FaTrash style={{ color: 'white' }} />
                     </Button>
@@ -107,7 +123,7 @@ const RepairerCompanyListScreen = () => {
               ))}
             </tbody>
           </Table>
-          <Paginate pages={data.pages} page={data.page} isAdmin={true} />
+          <Paginate pages={repairerCompaniesData.pages} page={repairerCompaniesData.page} isAdmin={true} />
         </>
       )}
     </>

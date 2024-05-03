@@ -1,6 +1,9 @@
+
+
+import React from 'react';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
-import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
+import { FaEdit, FaPlus, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -76,38 +79,59 @@ const InsuranceCompanyListScreen = () => {
                 <th>ADDRESS</th>
                 <th>EMAIL</th>
                 <th>CONTACT</th>
-                <th>PASSWORD</th>
-                <th></th>
+                {/* <th>PASSWORD</th> */}
+                <th>isInsuranceCompany</th>
+                <th>Managment</th>
               </tr>
             </thead>
             <tbody>
-              {data.InsuranceCompany.map((insuranceCompany) => (
-                <tr key={insuranceCompany._id}>
-                  <td>{insuranceCompany._id}</td>
-                  <td>{insuranceCompany.name}</td>
-                  <td>{insuranceCompany.address}</td>
-                  <td>{insuranceCompany.email}</td>
-                  <td>{insuranceCompany.password}</td>
-                  <td>{insuranceCompany.contact}</td>
-                  <td>
-                    <LinkContainer to={`/admin/InsuranceCompany/${insuranceCompany._id}/edit`}>
-                      <Button variant='light' className='btn-sm mx-2'>
-                        <FaEdit />
-                      </Button>
-                    </LinkContainer>
-                    <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(insuranceCompany._id)}
-                    >
-                      <FaTrash style={{ color: 'white' }} />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
+  {data && data.InsuranceCompany ? (
+    data.InsuranceCompany.map((insuranceCompany) => (
+      <tr key={insuranceCompany._id}>
+        <td>{insuranceCompany._id}</td>
+        <td>{insuranceCompany.name}</td>
+        <td>{insuranceCompany.address}</td>
+        <td>
+                  <a href={`mailto:${insuranceCompany.email}`}>{insuranceCompany.email}</a>
+                </td>
+        {/* <td>{insuranceCompany.password}</td> */}
+        <td>{insuranceCompany.contact}</td>
+        <td>
+          {insuranceCompany.isInsuranceCompany ? (
+            <FaCheck style={{ color: 'green' }} />
+          ) : (
+            <FaTimes style={{ color: 'red' }} />
+          )}
+        </td>
+        <td>
+          <LinkContainer to={`/admin/InsuranceCompany/${insuranceCompany._id}/edit`}>
+            <Button variant='light' className='btn-sm mx-2'>
+              <FaEdit />
+            </Button>
+          </LinkContainer>
+          <Button
+            variant='danger'
+            className='btn-sm'
+            onClick={() => deleteHandler(insuranceCompany._id)}
+          >
+            <FaTrash style={{ color: 'white' }} />
+          </Button>
+        </td>
+      </tr>
+    ))
+  ) : (
+    <tr>
+      <td colSpan="7">No insurance companies found</td>
+    </tr>
+  )}
+</tbody>
+
+
+
+
           </Table>
-          <Paginate pages={data.pages} page={data.page} isAdmin={true} />
+          <Paginate pages={data?.pages} page={data?.page} isInsuranceCompany={true} />
+
         </>
       )}
     </>

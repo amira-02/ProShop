@@ -1,9 +1,36 @@
-import { INSURANCE_COMPANY_URL } from '../constants';
 import { apiSlice } from './apiSlice';
+import { INSURANCE_COMPANY_URL } from '../constants';
 
 export const InsuranceCompanyApiSlice = apiSlice.injectEndpoints({
 
   endpoints: (builder) => ({
+      login: builder.mutation({
+        query: (data) => ({
+          url: `${INSURANCE_COMPANY_URL}/auth`,
+          method: 'POST',
+          body: data,
+        }),
+      }),
+      register: builder.mutation({
+        query: (data) => ({
+          url: `${INSURANCE_COMPANY_URL}`,
+          method: 'POST',
+          body: data,
+        }),
+      }),
+      logout: builder.mutation({
+        query: () => ({
+          url: `${INSURANCE_COMPANY_URL}/logout`,
+          method: 'POST',
+        }),
+      }),
+      profile: builder.mutation({
+        query: (data) => ({
+          url: `${INSURANCE_COMPANY_URL}/profile`,
+          method: 'PUT',
+          body: data,
+        }),
+      }),
     getInsuranceCompany: builder.query({
       query: ({ keyword, pageNumber }) => ({
         url: INSURANCE_COMPANY_URL,
@@ -57,6 +84,10 @@ export const InsuranceCompanyApiSlice = apiSlice.injectEndpoints({
 
 
 export const {
+  useLoginMutation,
+  useLogoutMutation,
+  useRegisterMutation,
+  useProfileMutation,
   useGetInsuranceCompanyQuery,
   useGetInsuranceCompanyDetailsQuery,
   useCreateInsuranceCompanyMutation,

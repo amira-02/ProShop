@@ -19,6 +19,7 @@
   "dependencies": {
     "@progress/kendo-theme-material": "^7.2.1",
     "aos": "^2.3.4",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
     "cookie-parser": "^1.4.6",
@@ -28,6 +29,7 @@
     "mongoose": "^7.0.1",
     "multer": "^1.4.5-lts.1",
     "react-animate-on-scroll": "^2.1.7",
+    "react-icons": "^5.2.0",
     "react-typed": "^2.0.12"
   },
   "devDependencies": {

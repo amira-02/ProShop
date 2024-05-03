@@ -37,6 +37,8 @@ import ShopEditScreen from './screens/admin/ShopEditScreen';
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
 
+
+
 import store from './store';
 import { Provider } from 'react-redux';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -75,12 +77,14 @@ const router = createBrowserRouter(
           <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
           <Route path='/admin/ShopList' element={<ShopListScreen />} />
           <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
-        <Route path='/admin/userlist' element={<UserListScreen />} />
-        <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
-        <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
-        <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
-        <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
-        <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
+           <Route path='/admin/userlist' element={<UserListScreen />} />
+           <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+           <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
+           <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
+           <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
+           <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
+       
+      
       </Route>
     </Route>
   )
