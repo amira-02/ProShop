@@ -61,13 +61,12 @@ const InsuranceCompanyEditScreen = () => {
 
   return (
     <>
-<<<<<<< HEAD
-      <Link to='/admin/InsuanceCompanylist' className='btn btn-light my-3'>
+
 =======
-      <Link to='/admin/InsuranceCompanylist' className='btn btn-light my-3'>
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
-        Go Back
-      </Link>
+<Link to='/admin/InsuranceCompanylist' className='btn btn-light my-3'>
+  Go Back
+</Link>
+
       <FormContainer>
         <h1>Edit Company</h1>
         {loadingUpdate && <Loader />}

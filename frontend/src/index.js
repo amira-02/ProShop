@@ -34,12 +34,12 @@ import InsuranceCompanyListScreen from './screens/admin/InsuranceCompanyListScre
 import InsuranceCompanyEditScreen from './screens/admin/InsuranceCompanyEditScreen';
 import ShopListScreen from './screens/admin/ShopListScreen';
 import ShopEditScreen from './screens/admin/ShopEditScreen';
-<<<<<<< HEAD
+
 import Contract from './screens/ChooseContractScreen';
-=======
+
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
+
 
 
 
@@ -79,14 +79,14 @@ const router = createBrowserRouter(
           path='/admin/productlist/:pageNumber'
           element={<ProductListScreen />}
         />
-<<<<<<< HEAD
+
         <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
         <Route path='/admin/ShopList' element={<ShopListScreen />} />
-=======
+
           <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
           <Route path='/admin/ShopList' element={<ShopListScreen />} />
           <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
-<<<<<<< HEAD
+
            <Route path='/admin/userlist' element={<UserListScreen />} />
            <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
            <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
@@ -95,15 +95,15 @@ const router = createBrowserRouter(
            <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
        
       
-=======
->>>>>>> 886f278648a64ff22a3420e81e93a8a2ab9b94b7
+      
+
         <Route path='/admin/userlist' element={<UserListScreen />} />
         <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
         <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
         <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
         <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
         <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
->>>>>>> 91dafd5fe994523b97f0969093cd762c7081997c
+
       </Route>
     </Route>
   )
