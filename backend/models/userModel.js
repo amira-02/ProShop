@@ -19,6 +19,14 @@ const userSchema = mongoose.Schema(
     Type: {
       type: String,
       required: true,
+<<<<<<< HEAD
+=======
+      default: false,
+    },
+    Type:{
+      type: String,
+      required: true,
+>>>>>>> c63ecbd2fa1508239a0bfcdd99c89c757217ec0c
     }
   },
   {

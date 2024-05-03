@@ -10,6 +10,7 @@ import uploadRoutes from './routes/uploadRoutes.js';
 import insurance_companyRoutes from './routes/insurance_companyRoutes.js';
 import RepairerCompanyRoutes from './routes/RepairerCompanyRoutes.js';
 import ShopRoutes from './routes/ShopRoutes.js'; 
+import OfferRoutes from './routes/OfferRoutes.js'; 
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
 
 dotenv.config();
@@ -29,7 +30,8 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/InsuranceCompany', insurance_companyRoutes);
 app.use('/api/RepairerCompany',RepairerCompanyRoutes);
-app.use('/api/Shop', ShopRoutes); // Assurez-vous d'utiliser le nom correct de la route
+app.use('/api/Shop', ShopRoutes);
+app.use('/api/Offer', OfferRoutes);
 app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res) =>
