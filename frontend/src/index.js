@@ -8,6 +8,7 @@ import reportWebVitals from './reportWebVitals';
 import { HelmetProvider } from 'react-helmet-async';
 import PrivateRoute from './components/PrivateRoute';
 import AdminRoute from './components/AdminRoute';
+// import InsuranceCompanyRoute from './routes/InsuranceCompanyRoute'; // Importez InsuranceCompanyRoute depuis le bon chemin
 import HomeScreen from './screens/HomeScreen';
 import ProductScreen from './screens/ProductScreen';
 import CartScreen from './screens/CartScreen';
@@ -31,6 +32,8 @@ import ShopEditScreen from './screens/admin/ShopEditScreen';
 import Contract from './screens/ChooseContractScreen';
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
+import InsuranceHome  from './screens/InsuranceCompany/InsuranceHome';
+import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -46,10 +49,7 @@ ReactDOM.render(
                 <Route index={true} element={<HomeScreen />} />
                 <Route path='/search/:keyword' element={<HomeScreen />} />
                 <Route path='/page/:pageNumber' element={<HomeScreen />} />
-                <Route
-                  path='/search/:keyword/page/:pageNumber'
-                  element={<HomeScreen />}
-                />
+                <Route path='/search/:keyword/page/:pageNumber' element={<HomeScreen />} />
                 <Route path='/product/:id' element={<ProductScreen />} />
                 <Route path='/cart' element={<CartScreen />} />
                 <Route path='/login' element={<LoginScreen />} />
@@ -68,10 +68,7 @@ ReactDOM.render(
                 <Route path='' element={<AdminRoute />}>
                   <Route path='/admin/orderlist' element={<OrderListScreen />} />
                   <Route path='/admin/productlist' element={<ProductListScreen />} />
-                  <Route
-                    path='/admin/productlist/:pageNumber'
-                    element={<ProductListScreen />}
-                  />
+                  <Route path='/admin/productlist/:pageNumber' element={<ProductListScreen />}  />
                   <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
                   <Route path='/admin/ShopList' element={<ShopListScreen />} />
                   <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
@@ -82,6 +79,13 @@ ReactDOM.render(
                   <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
                   <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
                 </Route>
+
+                <Route>
+                  <Route path='/InsuranceCompany/InsuranceHome' element={<InsuranceHome />} />
+                  <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable  />} />
+
+                </Route>
+                
               </Route>
             </Routes>
           </Router>

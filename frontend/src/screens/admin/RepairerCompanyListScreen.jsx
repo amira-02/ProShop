@@ -11,7 +11,7 @@ import {
   useDeleteRepairerCompanyMutation,
   useCreateRepairerCompanyMutation,
 } from '../../slices/RepairerCompanyApiSlice';
-import { useGetUsersQuery } from '../../slices/usersApiSlice'; // Importez le hook pour récupérer les utilisateurs
+import { useGetUsersQuery } from '../../slices/usersApiSlice';
 import { toast } from 'react-toastify';
 
 const RepairerCompanyListScreen = () => {
@@ -21,10 +21,9 @@ const RepairerCompanyListScreen = () => {
     pageNumber,
   });
 
-  const { data: usersData } = useGetUsersQuery(); // Utilisez le hook pour récupérer les utilisateurs
+  const { data: usersData } = useGetUsersQuery();
 
-  const [deleteRepairerCompany, { isLoading: loadingDelete }] =
-    useDeleteRepairerCompanyMutation();
+  const [deleteRepairerCompany, { isLoading: loadingDelete }] = useDeleteRepairerCompanyMutation();
 
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure')) {
@@ -37,8 +36,7 @@ const RepairerCompanyListScreen = () => {
     }
   };
 
-  const [createRepairerCompany, { isLoading: loadingCreate }] =
-    useCreateRepairerCompanyMutation();
+  const [createRepairerCompany, { isLoading: loadingCreate }] = useCreateRepairerCompanyMutation();
 
   const createRepairerCompanyHandler = async () => {
     if (window.confirm('Are you sure you want to create a new Repairer Company?')) {
@@ -52,16 +50,7 @@ const RepairerCompanyListScreen = () => {
   };
 
   // Filtrer les utilisateurs de type "Repairer"
-  const repairers = [];
-  if (usersData) {
-    for (let i = 0; i < usersData.length; i++) {
-      const user = usersData[i];
-      if (user.type === 'repairer') {
-        repairers.push(user);
-      }
-    }
-  }
-  
+  const repairers = usersData?.filter(user => user.type === 'repairer') || [];
 
   return (
     <>

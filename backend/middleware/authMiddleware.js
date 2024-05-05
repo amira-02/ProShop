@@ -15,7 +15,7 @@ const protect = asyncHandler(async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
       req.user = await User.findById(decoded.userId).select('-password');
-      req.InsuranceCompany = await InsuranceCompany.findById(decoded.InsuranceCompanyId).select('-password');
+      
 
       next();
     } catch (error) {
@@ -39,8 +39,55 @@ const admin = (req, res, next) => {
   }
 };
 
+// const admin = (req, res, next) => {
+//   // Assurez-vous que req.user est défini
+//   if (!req.user) {
+//     res.status(401);
+//     throw new Error('Not authorized');
+//   }
+
+//   // Vérifiez si l'utilisateur est un administrateur
+//   if (req.user.isAdmin) {
+//     next();
+//   } else {
+//     // Vérifiez si l'utilisateur est une société d'assurance
+//     if (req.user.Type === 'InsuranceCompany') {
+//       next();
+//     } else {
+//       // Vérifiez si l'utilisateur est une société de réparation
+//       if (req.user.Type === 'RepairerCompany') {
+//         next();
+//       } else {
+//         // Vérifiez si l'utilisateur est un propriétaire de boutique
+//         if (req.user.Type === 'ShopOwner') {
+//           next();
+//         } else {
+//           res.status(401);
+//           throw new Error('Not authorized');
+//         }
+//       }
+//     }
+//   }
+// };
+
+const insuranceCompany = (req, res, next) => {
+  // Assurez-vous que req.user est défini
+  if (!req.user) {
+    res.status(401);
+    throw new Error('Not authorized');
+  }
+
+  // Vérifiez si l'utilisateur est une compagnie d'assurance
+  if (req.user.Type === 'insurance') {
+    next();
+  } else {
+    res.status(401);
+    throw new Error('Not authorized as an insurance company');
+  }
+};
 
 
 
 
-export { protect, admin };
+
+export { protect, admin ,insuranceCompany};

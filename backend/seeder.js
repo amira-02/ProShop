@@ -10,6 +10,7 @@ import InsuranceCompany from './models/Insurance_companyModel.js';
 import RepairerCompany from './models/RepairerCompanyModel.js';
 import Shop from './models/ShopModel.js';
 import Offer from './models/OfferModel.js';
+import Policy from './models/PolicyModel.js';
 
 import connectDB from './config/db.js';
 
@@ -26,6 +27,7 @@ const importData = async () => {
     await RepairerCompany.deleteMany();
     await Shop.deleteMany();
     await Offer.deleteMany();
+    await Policy.deleteMany();
     const createdUsers = await User.insertMany(users);
 
     const adminUser = createdUsers[0]._id;
@@ -53,6 +55,7 @@ const destroyData = async () => {
     await RepairerCompany.deleteMany();
     await Shop.deleteMany();
     await Offer.deleteMany();
+    await Policy.deleteMany();
     console.log('Data Destroyed!'.red.inverse);
     process.exit();
   } catch (error) {
