@@ -9,19 +9,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import {useGetPolicyQuery,
-
-useCreatePolicyMutation,
-
-useDeletePolicyMutation,
-
-}  from '../../slices/PolicyApiSlice';
-import { toast } from 'react-toastify';
 
 const InsuranceHome = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { data, refetch, isLoading, error } = useGetPolicyQuery();
+  const { data: Policies, refetch, isLoading, error } = useGetUsersQuery();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -46,33 +38,6 @@ const InsuranceHome = () => {
     { name: 'Policy 2', price: 200, startDate: '2022-06-01', type: 'Auto' },
     // Ajoutez d'autres politiques au besoin
   ];
-  const [Policy, { isLoading: loadingDelete }] =
-  useDeletePolicyMutation();
-
-const deleteHandler = async (id) => {
-  if (window.confirm('Are you sure')) {
-    try {
-      await Policy(id);
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  }
-};
-
-const [createPolicy, { isLoading: loadingCreate }] =
-  useCreatePolicyMutation();
-
-const createPolicyHandler = async () => {
-  if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
-    try {
-      await createPolicy()
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  }
-};
 
   return (
     <div>
