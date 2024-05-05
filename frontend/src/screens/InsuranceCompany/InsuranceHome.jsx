@@ -4,7 +4,7 @@ import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Assuming you're using toast notifications
+import { toast } from 'react-toastify'; // Supposons que vous utilisez des notifications toast
 
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -14,7 +14,6 @@ import {
   useGetPolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
-  useGetPolicyCountQuery,
 } from '../../slices/PolicyApiSlice';
 
 const InsuranceHome = () => {
@@ -60,7 +59,7 @@ const InsuranceHome = () => {
           </Button>
         </Link>
         <Link to="/">
-          <Button variant="success">View Claims</Button>
+          <Button variant="primary">View Claims</Button>
         </Link>
       </div>
 
@@ -89,7 +88,7 @@ const InsuranceHome = () => {
                 <th>ID</th>
                 <th>NAME</th>
                 <th>Price</th>
-                <th>Date Start </th>
+                {/* <th>Date Start </th> */}
                 <th>Type</th>
                 <th>Terms</th>
                 <th>Managment</th>
@@ -97,17 +96,15 @@ const InsuranceHome = () => {
             </thead>
             <tbody>
               {data && data.Policy ? (
-                data.Policy.map((Policy) => (
-                  <tr key={Policy._id}>
-                    <td>{Policy._id}</td>
-                    <td>{Policy.name}</td>
-                    <td>{Policy.price}</td>
-                   
-                    <td>{Policy.Type}</td>
-                    <td>{Policy.terms}</td>
-                   
+                data.Policy.map((policy) => (
+                  <tr key={policy._id}>
+                    <td>{policy._id}</td>
+                    <td>{policy.name}</td>
+                  <td>{policy.price}</td>
+                    <td>{policy.Type}</td>
+                    <td>{policy.terms}</td>
                     <td>
-                      <LinkContainer to={`/admin/Policy/${Policy._id}/edit`}>
+                      <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
                         <Button variant='light' className='btn-sm mx-2'>
                           <FaEdit />
                         </Button>
@@ -115,7 +112,7 @@ const InsuranceHome = () => {
                       <Button
                         variant='danger'
                         className='btn-sm'
-                        onClick={() => deleteHandler(Policy._id)}
+                        onClick={() => deleteHandler(policy._id)}
                       >
                         <FaTrash style={{ color: 'white' }} />
                       </Button>

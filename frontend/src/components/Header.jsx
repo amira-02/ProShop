@@ -47,103 +47,59 @@ const Header = () => {
           </button>
         </div>
       )}
-      <header>
-        <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
-          <Container>
+    <header>
+  <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
+    <Container>
+      <LinkContainer to='/'>
+        <Navbar.Brand>
+          <img
+            src={logo}
+            alt='ProShop'
+            style={{ width: '50px', marginRight: '10px' }}
+          />
+        </Navbar.Brand>
+      </LinkContainer>
+      <Navbar.Toggle aria-controls='basic-navbar-nav' />
+      <Navbar.Collapse id='basic-navbar-nav'>
+        {userInfo ? (
+          <>
+            {userInfo.isAdmin ? (
+              <AdminHeader
+                userInfo={userInfo}
+                logoutHandler={logoutHandler}
+              />
+            ) : userInfo.Type === 'repairer' ? (
+              <RepairerHeader
+                userInfo={userInfo}
+                logoutHandler={logoutHandler}
+              />
+            ) : userInfo.Type === 'insurance' ? (
+              <InsuranceHeader
+                userInfo={userInfo}
+                logoutHandler={logoutHandler}
+              /> 
+            ) : userInfo.Type === 'shop' ? (
+              <ShopHeader
+                userInfo={userInfo}
+                logoutHandler={logoutHandler}
+              />
+            ) : userInfo.Type === 'regular' ? (
+              <RegularHeader
+                userInfo={userInfo}
+                logoutHandler={logoutHandler}
+                cartItems={cartItems}
+              />
+            ) : null}
+          </>
+        ) : (
+          <GuestHeader />
+        )}
+      </Navbar.Collapse>
+    </Container>
+  </Navbar>
+  <div style={{ borderBottom: '1px solid black' }}></div>
+</header>
 
-
-            <LinkContainer to='/'>
-              <Navbar.Brand>
-                <img
-                  src={logo}
-                  alt='ProShop'
-                  style={{ width: '50px', marginRight: '10px' }}
-                />
-              </Navbar.Brand>
-            </LinkContainer>
-
-            <Navbar.Toggle aria-controls='basic-navbar-nav' />
-            <Navbar.Collapse id='basic-navbar-nav'>
-
-              {/* <Nav className='mr-auto'>
-                <SearchBox />
-                <LinkContainer to='/'>
-                  <Nav.Link className='text-black'>Home</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/about'>
-                  <Nav.Link className='text-black'>About Us</Nav.Link>
-                </LinkContainer>
-                <LinkContainer to='/repair'>
-                  <Nav.Link className='text-black'>
-                    Atelier de réparation
-                  </Nav.Link>
-                </LinkContainer>
-              </Nav> */}
-
-
-
-              <Nav className='ms-auto'>
-
-                {/* <LinkContainer to='/cart'>
-                  <Nav.Link>
-                    <FaShoppingCart className='text-black' />{' '}
-                    <span className='text-black'>Cart</span>
-                    {cartItems.length > 0 && (
-                      <Badge pill bg='success' style={{ marginLeft: '5px' }}>
-                        {cartItems.reduce((a, c) => a + c.qty, 0)}
-                      </Badge>
-                    )}
-                  </Nav.Link>
-                </LinkContainer> */}
-                {userInfo ? (
-                  <>
-                    {userInfo.isAdmin ? (
-                      <AdminHeader
-                        userInfo={userInfo}
-                        logoutHandler={logoutHandler}
-                      />
-                    ) : userInfo.Type === 'repairer' ? (
-                      <RepairerHeader
-                        userInfo={userInfo}
-                        logoutHandler={logoutHandler}
-                      />
-                    ) : userInfo.Type === 'insurance' ? (
-                      <InsuranceHeader
-                        userInfo={userInfo}
-                        logoutHandler={logoutHandler}
-                      /> 
-                      ) : userInfo.Type === 'shop' ? (
-                        <ShopHeader
-                          userInfo={userInfo}
-                          logoutHandler={logoutHandler}
-                        />
-                      ) : userInfo.Type === 'regular' ? (
-                        <RegularHeader
-                          userInfo={userInfo}
-                          logoutHandler={logoutHandler}
-                          cartItems={cartItems}
-                        />
-                    ) : null}
-                  </>
-                ) : (
-                  <LinkContainer to='/login'>
-                    <Nav.Link>
-                      <FaUser className='text-black' />
-                      <span className='text-black'>Sign In</span>
-                    </Nav.Link>
-                  </LinkContainer>
-                )}
-
-
-
-
-
-              </Nav>
-            </Navbar.Collapse>
-          </Container>
-        </Navbar>
-        <div style={{ borderBottom: '1px solid black' }}></div>
-      </header>
     </>
   );
 };
@@ -180,7 +136,7 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
         )}
         
           <NavDropdown title='Admin' id='adminmenu'>
-            <LinkContainer to='/admin/productlist'>
+            {/* <LinkContainer to='/admin/productlist'>
               <NavDropdown.Item className='text-black'>
                 Products
               </NavDropdown.Item>
@@ -189,13 +145,13 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
               <NavDropdown.Item className='text-black'>
                 Orders
               </NavDropdown.Item>
-            </LinkContainer>
+            </LinkContainer> */}
             <LinkContainer to='/admin/userlist'>
               <NavDropdown.Item className='text-black'>
                 Users
               </NavDropdown.Item>
             </LinkContainer>
-            <LinkContainer to='/admin/Insurancecompanylist'>
+            {/* <LinkContainer to='/admin/Insurancecompanylist'>
               <NavDropdown.Item className='text-black'>
                 Insurance Company 
               </NavDropdown.Item>
@@ -210,14 +166,37 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
               <NavDropdown.Item className='text-black'>
               Repairer Company
               </NavDropdown.Item>
-            </LinkContainer>
+            </LinkContainer> */}
           </NavDropdown>
       
       </Nav>
     </Navbar.Collapse>
   </>
 );
-
+const GuestHeader = () => (
+  <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
+    <Navbar.Toggle aria-controls='basic-navbar-nav' />
+    <Navbar.Collapse id='basic-navbar-nav'>
+      <Nav className='mr-auto'>
+        <SearchBox />
+        <LinkContainer to='/'>
+          <Nav.Link className='text-black'>Home</Nav.Link>
+        </LinkContainer>
+        <LinkContainer to='/about'>
+          <Nav.Link className='text-black'>About Us</Nav.Link>
+        </LinkContainer>
+      </Nav>
+      <Nav className='ms-auto'>
+        <LinkContainer to='/login'>
+          <Nav.Link>
+            <FaUser className='text-black' />
+            <span className='text-black'>Sign In</span>
+          </Nav.Link>
+        </LinkContainer>
+      </Nav>
+    </Navbar.Collapse>
+  </Navbar>
+);
 
 const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
   <>

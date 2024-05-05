@@ -37,7 +37,6 @@ import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
-
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>

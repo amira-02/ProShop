@@ -9,7 +9,7 @@ import {
   createPolicyReview,
   getTopPolicy,
 } from '../controllers/PolicyController.js';
-import { protect, admin ,insuranceCompany } from '../middleware/authMiddleware.js'; // Assurez-vous d'importer "admin" d'authMiddleware.js
+import { protect ,insuranceCompany } from '../middleware/authMiddleware.js'; // Assurez-vous d'importer "admin" d'authMiddleware.js
 import checkObjectId from '../middleware/checkObjectId.js';
 import Policy from '../models/PolicyModel.js';
 
