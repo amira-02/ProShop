@@ -13,7 +13,7 @@ import TableRow from '@mui/material/TableRow';
 const InsuranceHome = () => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { data: Policies, refetch, isLoading, error } = useGetUsersQuery();
+  // const { data: Policies, refetch, isLoading, error } = useGetUsersQuery();
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);

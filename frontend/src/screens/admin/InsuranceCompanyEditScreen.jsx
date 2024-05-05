@@ -21,7 +21,7 @@ const InsuranceCompanyEditScreen = () => {
 
   const { data: company, isLoading, refetch, error } = useGetInsuranceCompanyDetailsQuery(companyId);
   const [updateCompany, { isLoading: loadingUpdate }] = useUpdateInsuranceCompanyMutation();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();

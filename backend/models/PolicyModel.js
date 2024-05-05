@@ -1,6 +1,11 @@
 import mongoose from 'mongoose';
 
 const policySchema = new mongoose.Schema({
+  CompanyId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'InsuranceCompany',
+    required: true,
+  },
   name: {
     type: String,
     required: true,
@@ -9,26 +14,19 @@ const policySchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  startDate: {
+  EndDate: {
     type: Date,
-    required: true,
+    required: true
   },
   type: {
     type: String,
     required: true,
-    // enum: ['life', 'health', 'auto', 'home', 'travel'], // Exemple de types de police, vous pouvez ajouter d'autres types selon vos besoins
   },
   terms: {
     type: String,
     required: true,
   },
-  countInStock: {
-    type: Number,
-    required: true,
-    default: 0,
-  },
 });
 
 const Policy = mongoose.model('Policy', policySchema);
 export default Policy;
-
