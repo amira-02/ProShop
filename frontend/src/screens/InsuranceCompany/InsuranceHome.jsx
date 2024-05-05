@@ -100,7 +100,8 @@ const InsuranceHome = () => {
                   <tr key={policy._id}>
                     <td>{policy._id}</td>
                     <td>{policy.name}</td>
-                  <td>{policy.price}</td>
+                    
+                    <td>{policy.price}</td>
                     <td>{policy.Type}</td>
                     <td>{policy.terms}</td>
                     <td>

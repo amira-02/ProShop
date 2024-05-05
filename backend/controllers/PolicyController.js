@@ -1,6 +1,5 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Policy from '../models/PolicyModel.js';
-
 // @desc    Fetch all Policy
 // @route   GET /api/Policy
 // @access  Public
@@ -10,19 +9,19 @@ const getPolicy = asyncHandler(async (req, res) => {
 
   const keyword = req.query.keyword
     ? {
-        name: {
-          $regex: req.query.keyword,
-          $options: 'i',
-        },
-      }
+      name: {
+        $regex: req.query.keyword,
+        $options: 'i',
+      },
+    }
     : {};
 
   const count = await Policy.countDocuments({ ...keyword });
-  const Policy = await Policy.find({ ...keyword })
+  const policies = await Policy.find({ ...keyword })
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  res.json({ Policy, page, pages: Math.ceil(count / pageSize), count });
+  res.json({ policies, page, pages: Math.ceil(count / pageSize), count });
 });
 
 // @desc    Fetch single Policy
@@ -31,35 +30,41 @@ const getPolicy = asyncHandler(async (req, res) => {
 const getPolicyById = asyncHandler(async (req, res) => {
   const policy = await Policy.findById(req.params.id);
 
-  if (policy) {
-    res.json(policy);
-  } else {
-    res.status(404);
-    throw new Error('Policy not found');
+  if (!policy) {
+    res.status(404).json({ message: 'Policy not found with the provided ID' });
+    return;
   }
+
+  res.json(policy);
 });
 
 // @desc    Create a Policy
 // @route   POST /api/Policy
 // @access  Private/Admin
 const createPolicy = asyncHandler(async (req, res) => {
-  // Extrayez les champs requis de la demande
-  const { name, price, startDate, type, terms, countInStock } = req.body;
+  const { CompanyId, name, price, EndDate, type, terms } = req.body;
 
-  // Créez une nouvelle instance de Policy avec les données reçues
+  // Validate request body
+  if (!name || !price || !EndDate || !type || !terms) {
+    res.status(400).json({ message: 'All fields are required' });
+    return;
+  }
+
+  // Create a new policy
   const policy = new Policy({
+    CompanyId,
     name,
     price,
-    startDate,
+    EndDate,
     type,
     terms,
-    countInStock,
+    // countInStock,
   });
 
-  // Enregistrez la nouvelle police dans la base de données
+  // Save the new policy to the database
   const createdPolicy = await policy.save();
 
-  // Réponse avec la nouvelle police créée
+  // Respond with the newly created policy
   res.status(201).json(createdPolicy);
 });
 
@@ -69,43 +74,44 @@ const createPolicy = asyncHandler(async (req, res) => {
 const updatePolicy = asyncHandler(async (req, res) => {
   const { name, price, startDate, type, terms, countInStock } = req.body;
 
-  // Trouvez la police à mettre à jour par son ID
+  // Find the policy to update by its ID
   const policy = await Policy.findById(req.params.id);
 
-  if (policy) {
-    // Mettez à jour les champs de la police
-    policy.name = name;
-    policy.price = price;
-    policy.startDate = startDate;
-    policy.type = type;
-    policy.terms = terms;
-    policy.countInStock = countInStock;
-
-    // Enregistrez les modifications dans la base de données
-    await policy.save();
-
-    res.json({ message: 'Policy updated', policy });
-  } else {
-    res.status(404);
-    throw new Error('Policy not found');
+  if (!policy) {
+    res.status(404).json({ message: 'Policy not found with the provided ID' });
+    return;
   }
+
+  // Update the fields of the policy
+  policy.name = name;
+  policy.price = price;
+  policy.startDate = startDate;
+  policy.type = type;
+  policy.terms = terms;
+  policy.countInStock = countInStock;
+
+  // Save the changes to the database
+  await policy.save();
+
+  res.json({ message: 'Policy updated', policy });
 });
 
 // @desc    Delete a Policy
 // @route   DELETE /api/Policy/:id
 // @access  Private/Admin
 const deletePolicy = asyncHandler(async (req, res) => {
-  // Trouvez la police à supprimer par son ID
+  // Find the policy to delete by its ID
   const policy = await Policy.findById(req.params.id);
 
-  if (policy) {
-    // Supprimez la police de la base de données
-    await Policy.deleteOne({ _id: req.params.id });
-    res.json({ message: 'Policy removed' });
-  } else {
-    res.status(404);
-    throw new Error('Policy not found');
+  if (!policy) {
+    res.status(404).json({ message: 'Policy not found with the provided ID' });
+    return;
   }
+
+  // Delete the policy from the database
+  await Policy.deleteOne({ _id: req.params.id });
+
+  res.json({ message: 'Policy removed' });
 });
 
 // @desc    Create new review
@@ -114,48 +120,48 @@ const deletePolicy = asyncHandler(async (req, res) => {
 const createPolicyReview = asyncHandler(async (req, res) => {
   const { rating, comment } = req.body;
 
-  const Policy = await Policy.findById(req.params.id);
+  const policy = await Policy.findById(req.params.id);
 
-  if (Policy) {
-    const alreadyReviewed = Policy.reviews.find(
-      (r) => r.user.toString() === req.user._id.toString()
-    );
-
-    if (alreadyReviewed) {
-      res.status(400);
-      throw new Error('Policy already reviewed');
-    }
-
-    const review = {
-      name: req.user.name,
-      rating: Number(rating),
-      comment,
-      user: req.user._id,
-    };
-
-    Policy.reviews.push(review);
-
-    Policy.numReviews = Policy.reviews.length;
-
-    Policy.rating =
-      Policy.reviews.reduce((acc, item) => item.rating + acc, 0) /
-      Policy.reviews.length;
-
-    await Policy.save();
-    res.status(201).json({ message: 'Review added' });
-  } else {
-    res.status(404);
-    throw new Error('Policy not found');
+  if (!policy) {
+    res.status(404).json({ message: 'Policy not found with the provided ID' });
+    return;
   }
+
+  // Check if the user has already reviewed this policy
+  const alreadyReviewed = policy.reviews.find(
+    (r) => r.user.toString() === req.user._id.toString()
+  );
+
+  if (alreadyReviewed) {
+    res.status(400).json({ message: 'You have already reviewed this policy' });
+    return;
+  }
+
+  const review = {
+    name: req.user.name,
+    rating: Number(rating),
+    comment,
+    user: req.user._id,
+  };
+
+  // Add the new review to the policy
+  policy.reviews.push(review);
+  policy.numReviews = policy.reviews.length;
+  policy.rating =
+    policy.reviews.reduce((acc, item) => item.rating + acc, 0) /
+    policy.reviews.length;
+
+  await policy.save();
+  res.status(201).json({ message: 'Review added' });
 });
 
 // @desc    Get top rated Policy
 // @route   GET /api/Policy/top
 // @access  Public
 const getTopPolicy = asyncHandler(async (req, res) => {
-  const Policy = await Policy.find({}).sort({ rating: -1 }).limit(3);
+  const policies = await Policy.find({}).sort({ rating: -1 }).limit(3);
 
-  res.json(Policy);
+  res.json(policies);
 });
 
 // @desc    Count all Policy
