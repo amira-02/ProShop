@@ -1,25 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-<<<<<<< HEAD
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-
-const InsuranceHome = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  // const { data: Policies, refetch, isLoading, error } = useGetUsersQuery();
-=======
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Assuming you're using toast notifications
+import { toast } from 'react-toastify'; // Supposons que vous utilisez des notifications toast
 
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
@@ -29,12 +14,10 @@ import {
   useGetPolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
-  useGetPolicyCountQuery,
 } from '../../slices/PolicyApiSlice';
 
 const InsuranceHome = () => {
   const { pageNumber } = useParams();
->>>>>>> 8d1750540048787cb6b12011c493c9b2a04fd81f
 
   const { data, isLoading, error, refetch } = useGetPolicyQuery({
     pageNumber,
@@ -66,24 +49,6 @@ const InsuranceHome = () => {
     }
   };
 
-<<<<<<< HEAD
-  // Exemple de données pour les colonnes et les lignes
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'price', label: 'Price', minWidth: 100 },
-    { id: 'startDate', label: 'Start Date', minWidth: 100 },
-    { id: 'type', label: 'Type', minWidth: 100 },
-  ];
-
-  // Exemple de données de politique
-  const policies = [
-    { name: 'Policy 1', price: 100, startDate: '2022-05-01', type: 'Health' },
-    { name: 'Policy 2', price: 200, startDate: '2022-06-01', type: 'Auto' },
-    // Ajoutez d'autres politiques au besoin
-  ];
-
-=======
->>>>>>> 8d1750540048787cb6b12011c493c9b2a04fd81f
   return (
     <div>
       <h1>Welcome to Insurance Company Screen</h1>
@@ -94,7 +59,7 @@ const InsuranceHome = () => {
           </Button>
         </Link>
         <Link to="/">
-          <Button variant="success">View Claims</Button>
+          <Button variant="primary">View Claims</Button>
         </Link>
       </div>
 
@@ -123,7 +88,7 @@ const InsuranceHome = () => {
                 <th>ID</th>
                 <th>NAME</th>
                 <th>Price</th>
-                <th>Date Start </th>
+                {/* <th>Date Start </th> */}
                 <th>Type</th>
                 <th>Terms</th>
                 <th>Managment</th>
@@ -131,17 +96,15 @@ const InsuranceHome = () => {
             </thead>
             <tbody>
               {data && data.Policy ? (
-                data.Policy.map((Policy) => (
-                  <tr key={Policy._id}>
-                    <td>{Policy._id}</td>
-                    <td>{Policy.name}</td>
-                    <td>{Policy.price}</td>
-                   
-                    <td>{Policy.Type}</td>
-                    <td>{Policy.terms}</td>
-                   
+                data.Policy.map((policy) => (
+                  <tr key={policy._id}>
+                    <td>{policy._id}</td>
+                    <td>{policy.name}</td>
+                  <td>{policy.price}</td>
+                    <td>{policy.Type}</td>
+                    <td>{policy.terms}</td>
                     <td>
-                      <LinkContainer to={`/admin/Policy/${Policy._id}/edit`}>
+                      <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
                         <Button variant='light' className='btn-sm mx-2'>
                           <FaEdit />
                         </Button>
@@ -149,7 +112,7 @@ const InsuranceHome = () => {
                       <Button
                         variant='danger'
                         className='btn-sm'
-                        onClick={() => deleteHandler(Policy._id)}
+                        onClick={() => deleteHandler(policy._id)}
                       >
                         <FaTrash style={{ color: 'white' }} />
                       </Button>
