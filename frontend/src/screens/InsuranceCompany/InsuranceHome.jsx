@@ -1,137 +1,137 @@
 import React from 'react';
-import { Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import Paper from '@mui/material/Paper';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import {useGetPolicyQuery,
+import { LinkContainer } from 'react-router-bootstrap';
+import { Table, Button, Row, Col } from 'react-bootstrap';
+import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
+import { useParams } from 'react-router-dom';
+import { toast } from 'react-toastify'; // Assuming you're using toast notifications
 
-useCreatePolicyMutation,
+import Message from '../../components/Message';
+import Loader from '../../components/Loader';
+import Paginate from '../../components/Paginate';
 
-useDeletePolicyMutation,
-
-}  from '../../slices/PolicyApiSlice';
-import { toast } from 'react-toastify';
+import {
+  useGetPolicyQuery,
+  useCreatePolicyMutation,
+  useDeletePolicyMutation,
+  useGetPolicyCountQuery,
+} from '../../slices/PolicyApiSlice';
 
 const InsuranceHome = () => {
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
-  const { data, refetch, isLoading, error } = useGetPolicyQuery();
+  const { pageNumber } = useParams();
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
+  const { data, isLoading, error, refetch } = useGetPolicyQuery({
+    pageNumber,
+  });
+
+  const [deletePolicy, { isLoading: loadingDelete }] = useDeletePolicyMutation();
+
+  const deleteHandler = async (id) => {
+    if (window.confirm('Are you sure')) {
+      try {
+        await deletePolicy(id);
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
+  const [createPolicy, { isLoading: loadingCreate }] = useCreatePolicyMutation();
+
+  const createPolicyHandler = async () => {
+    if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
+      try {
+        await createPolicy();
+        refetch();
+      } catch (err) {
+        toast.error(err?.data?.message || err.error);
+      }
+    }
   };
-
-  // Exemple de données pour les colonnes et les lignes
-  const columns = [
-    { id: 'name', label: 'Name', minWidth: 100 },
-    { id: 'price', label: 'Price', minWidth: 100 },
-    { id: 'startDate', label: 'Start Date', minWidth: 100 },
-    { id: 'type', label: 'Type', minWidth: 100 },
-  ];
-
-  // Exemple de données de politique
-  const policies = [
-    { name: 'Policy 1', price: 100, startDate: '2022-05-01', type: 'Health' },
-    { name: 'Policy 2', price: 200, startDate: '2022-06-01', type: 'Auto' },
-    // Ajoutez d'autres politiques au besoin
-  ];
-  const [Policy, { isLoading: loadingDelete }] =
-  useDeletePolicyMutation();
-
-const deleteHandler = async (id) => {
-  if (window.confirm('Are you sure')) {
-    try {
-      await Policy(id);
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  }
-};
-
-const [createPolicy, { isLoading: loadingCreate }] =
-  useCreatePolicyMutation();
-
-const createPolicyHandler = async () => {
-  if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
-    try {
-      await createPolicy()
-      refetch();
-    } catch (err) {
-      toast.error(err?.data?.message || err.error);
-    }
-  }
-};
 
   return (
     <div>
       <h1>Welcome to Insurance Company Screen</h1>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Link to="/PolicyListScreen">
-          <Button variant="primary" style={{ marginRight: '10px' }}>View Offers</Button>
+          <Button variant="primary" style={{ marginRight: '10px' }}>
+            View Offers
+          </Button>
         </Link>
         <Link to="/">
           <Button variant="success">View Claims</Button>
         </Link>
       </div>
-      
-      <Paper sx={{ width: '100%', overflow: 'hidden', marginTop: '20px' }}>
-        <TableContainer sx={{ maxHeight: 440 }}>
-          <Table stickyHeader aria-label="sticky table">
-            <TableHead>
-              <TableRow>
-                {columns.map((column) => (
-                  <TableCell
-                    key={column.id}
-                    align={column.align}
-                    style={{ minWidth: column.minWidth, fontWeight: 'bold' }}
-                  >
-                    {column.label}
-                  </TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {policies
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                .map((policy, index) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={index}>
-                      {columns.map((column) => {
-                        const value = policy[column.id];
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {value}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-            </TableBody>
+
+      <Row className='align-items-center'>
+        <Col>
+          <h1>Our Policies</h1>
+        </Col>
+        <Col className='text-end'>
+          <Button className='my-3' onClick={createPolicyHandler}>
+            <FaPlus /> Create Policies
+          </Button>
+        </Col>
+      </Row>
+
+      {loadingCreate && <Loader />}
+      {loadingDelete && <Loader />}
+      {isLoading ? (
+        <Loader />
+      ) : error ? (
+        <Message variant='danger'>{error.data.message}</Message>
+      ) : (
+        <>
+          <Table striped bordered hover responsive className='table-sm'>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>NAME</th>
+                <th>Price</th>
+                <th>Date Start </th>
+                <th>Type</th>
+                <th>Terms</th>
+                <th>Managment</th>
+              </tr>
+            </thead>
+            <tbody>
+              {data && data.Policy ? (
+                data.Policy.map((Policy) => (
+                  <tr key={Policy._id}>
+                    <td>{Policy._id}</td>
+                    <td>{Policy.name}</td>
+                    <td>{Policy.price}</td>
+                   
+                    <td>{Policy.Type}</td>
+                    <td>{Policy.terms}</td>
+                   
+                    <td>
+                      <LinkContainer to={`/admin/Policy/${Policy._id}/edit`}>
+                        <Button variant='light' className='btn-sm mx-2'>
+                          <FaEdit />
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='danger'
+                        className='btn-sm'
+                        onClick={() => deleteHandler(Policy._id)}
+                      >
+                        <FaTrash style={{ color: 'white' }} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7">No insurance companies found</td>
+                </tr>
+              )}
+            </tbody>
           </Table>
-        </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[10, 25, 100]}
-          component="div"
-          count={policies.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-        />
-      </Paper>
+          <Paginate pages={data?.pages} page={data?.page} isPolicy={true} />
+        </>
+      )}
     </div>
   );
 };
