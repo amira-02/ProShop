@@ -5,7 +5,6 @@ import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { useParams } from 'react-router-dom';
 import { toast } from 'react-toastify'; // Supposons que vous utilisez des notifications toast
-
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
@@ -22,7 +21,7 @@ const InsuranceHome = () => {
   const { data, isLoading, error, refetch } = useGetPolicyQuery({
     pageNumber,
   });
-
+   console.log(data);
   const [deletePolicy, { isLoading: loadingDelete }] = useDeletePolicyMutation();
 
   const deleteHandler = async (id) => {
@@ -39,7 +38,7 @@ const InsuranceHome = () => {
   const [createPolicy, { isLoading: loadingCreate }] = useCreatePolicyMutation();
 
   const createPolicyHandler = async () => {
-    if (window.confirm('Are you sure you want to create a new Insurance Company?')) {
+    if (window.confirm('Are you sure you want to create a new Policy?')) {
       try {
         await createPolicy();
         refetch();
@@ -51,7 +50,7 @@ const InsuranceHome = () => {
 
   return (
     <div>
-      <h1>Welcome to Insurance Company Screen</h1>
+      <h1>Welcome to Policy Screen</h1>
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
         <Link to="/PolicyListScreen">
           <Button variant="primary" style={{ marginRight: '10px' }}>
@@ -86,52 +85,50 @@ const InsuranceHome = () => {
             <thead>
               <tr>
                 <th>ID</th>
+                <th>Company ID</th>
                 <th>NAME</th>
                 <th>Price</th>
-                {/* <th>Date Start </th> */}
+                <th>End Date </th>
                 <th>Type</th>
                 <th>Terms</th>
                 <th>Managment</th>
               </tr>
             </thead>
             <tbody>
-              {data && data.Policy ? (
-                data.Policy.map((policy) => (
-                  <tr key={policy._id}>
-                    <td>{policy._id}</td>
-                    <td>{policy.name}</td>
-
-                    
-                    <td>{policy.price}</td>
-
-                  <td>{policy.price}</td>
-
-                    <td>{policy.Type}</td>
-                    <td>{policy.terms}</td>
-                    <td>
-                      <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
-                        <Button variant='light' className='btn-sm mx-2'>
-                          <FaEdit />
-                        </Button>
-                      </LinkContainer>
-                      <Button
-                        variant='danger'
-                        className='btn-sm'
-                        onClick={() => deleteHandler(policy._id)}
-                      >
-                        <FaTrash style={{ color: 'white' }} />
-                      </Button>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="7">No insurance companies found</td>
-                </tr>
-              )}
-            </tbody>
+            {data && data.Policy ? (
+              data.Policy.map((policy) => (
+                <tr key={policy._id}>
+                <td>{policy.CompanyId}</td>
+                <td>{policy._id}</td>
+                <td>{policy.name}</td>
+                <td>{policy.price}</td>
+                <td>{policy.EndDate}</td>
+                <td>{policy.type}</td>
+                <td>{policy.terms}</td>
+                <td>
+        <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
+          <Button variant='light' className='btn-sm mx-2'>
+            <FaEdit />
+          </Button>
+        </LinkContainer>
+        <Button
+          variant='danger'
+          className='btn-sm'
+          onClick={() => deleteHandler(policy._id)}
+        >
+          <FaTrash style={{ color: 'white' }} />
+        </Button>
+      </td>
+    </tr>
+  ))
+) : (
+  <tr>
+    <td colSpan="7">No Policies found</td>
+  </tr>
+)}
+        </tbody>
           </Table>
-          <Paginate pages={data?.pages} page={data?.page} isPolicy={true} />
+          <Paginate pages={data?.pages} page={data?.page}  />
         </>
       )}
     </div>
