@@ -136,7 +136,7 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
         )}
         
           <NavDropdown title='Admin' id='adminmenu'>
-            {/* <LinkContainer to='/admin/productlist'>
+            <LinkContainer to='/admin/productlist'>
               <NavDropdown.Item className='text-black'>
                 Products
               </NavDropdown.Item>
@@ -145,7 +145,7 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
               <NavDropdown.Item className='text-black'>
                 Orders
               </NavDropdown.Item>
-            </LinkContainer> */}
+            </LinkContainer>
             <LinkContainer to='/admin/userlist'>
               <NavDropdown.Item className='text-black'>
                 Users

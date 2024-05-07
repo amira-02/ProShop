@@ -9,7 +9,7 @@ import {
   useGetProductsQuery,
   useDeleteProductMutation,
   useCreateProductMutation,
-  useGetProductCountQuery
+  useGetProductCountQuery,
 } from '../../slices/productsApiSlice';
 import { toast } from 'react-toastify';
 
@@ -18,7 +18,11 @@ const ProductListScreen = () => {
   const { data, isLoading, error, refetch } = useGetProductsQuery({
     pageNumber,
   });
-  const { data: productCount, isLoading: isLoadingCount, error: errorCount } = useGetProductCountQuery();
+  const {
+    data: productCount,
+    isLoading: isLoadingCount,
+    error: errorCount,
+  } = useGetProductCountQuery();
 
   const [deleteProduct, { isLoading: loadingDelete }] =
     useDeleteProductMutation();

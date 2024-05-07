@@ -32,8 +32,9 @@ import ShopEditScreen from './screens/admin/ShopEditScreen';
 import Contract from './screens/ChooseContractScreen';
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
-import InsuranceHome  from './screens/InsuranceCompany/InsuranceHome';
+import InsuranceHome from './screens/InsuranceCompany/InsuranceHome';
 import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
+import AddPolicy from './screens/InsuranceCompany/PolicyEditScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -67,7 +68,7 @@ ReactDOM.render(
                 <Route path='' element={<AdminRoute />}>
                   <Route path='/admin/orderlist' element={<OrderListScreen />} />
                   <Route path='/admin/productlist' element={<ProductListScreen />} />
-                  <Route path='/admin/productlist/:pageNumber' element={<ProductListScreen />}  />
+                  <Route path='/admin/productlist/:pageNumber' element={<ProductListScreen />} />
                   <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
                   <Route path='/admin/ShopList' element={<ShopListScreen />} />
                   <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
@@ -78,13 +79,13 @@ ReactDOM.render(
                   <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
                   <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
                 </Route>
-
+                {/* InsuranceCompany */}
                 <Route>
                   <Route path='/InsuranceCompany/InsuranceHome' element={<InsuranceHome />} />
-                  <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable  />} />
-
+                  <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable />} />
+                  <Route path='/Insurance/AddPolicy' element={<AddPolicy />} />
                 </Route>
-                
+
               </Route>
             </Routes>
           </Router>
