@@ -11,17 +11,42 @@ export const PolicyApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: 5,
       providesTags: ['Policy'],
     }),
-    getPolicyCount: builder.query({
-      query: () => `${POLICY_URL}/count`, // API URL to fetch the count
-      transformResponse: (response) => response.count, // Extract count from response
+
+    getPolicyByType: builder.query({
+      query: ({ type, pageNumber }) => ({
+        url: POLICY_URL,
+        params: { type, pageNumber },
+      }),
       keepUnusedDataFor: 5,
+      providesTags: ['Policy'],
     }),
+
+    getPolicyByCompanyId: builder.query({
+      query: ({ companyId, pageNumber }) => ({
+        url: `/api/Policy/company/${companyId}`,
+        params: { companyId, pageNumber },
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ['Policy'],
+    }),
+
+    getPolicyCount: builder.query({
+      query: ({ companyId }) => ({
+        url: `/api/Policy/count/${companyId}`,
+        params: { companyId },
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ['Policy'],
+    }),
+
+
     getPolicyDetails: builder.query({
       query: (PolicyId) => ({
         url: `${POLICY_URL}/${PolicyId}`,
       }),
       keepUnusedDataFor: 5,
     }),
+
     createPolicy: builder.mutation({
       query: () => ({
         url: `${POLICY_URL}`,
@@ -29,6 +54,7 @@ export const PolicyApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Policy'],
     }),
+
     updatePolicy: builder.mutation({
       query: (data) => ({
         url: `${POLICY_URL}/${data.PolicyId}`,
@@ -37,13 +63,15 @@ export const PolicyApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Policy'],
     }),
+
     uploadPolicyImage: builder.mutation({
       query: (data) => ({
-        url: `/api/upload`,
+        url: '/api/upload',
         method: 'POST',
         body: data,
       }),
     }),
+
     deletePolicy: builder.mutation({
       query: (PolicyId) => ({
         url: `${POLICY_URL}/${PolicyId}`,
@@ -51,6 +79,7 @@ export const PolicyApiSlice = apiSlice.injectEndpoints({
       }),
       providesTags: ['Policy'],
     }),
+
     createReview: builder.mutation({
       query: (data) => ({
         url: `${POLICY_URL}/${data.PolicyId}/reviews`,
@@ -59,15 +88,30 @@ export const PolicyApiSlice = apiSlice.injectEndpoints({
       }),
       invalidatesTags: ['Policy'],
     }),
+
     getTopPolicy: builder.query({
-      query: () => `${POLICY_URL}/top`,
+      query: ({ companyId }) => ({
+        url: `${POLICY_URL}/top`,
+        params: { companyId },
+      }),
       keepUnusedDataFor: 5,
     }),
+
+    getPolicyById: builder.query({
+      query: (PolicyId) => ({
+        url: `${POLICY_URL}/${PolicyId}`,
+      }),
+      keepUnusedDataFor: 5,
+    }),
+
   }),
-}); 
+});
 
 export const {
   useGetPolicyQuery,
+  useGetPolicyByTypeQuery,
+  useGetPolicyByCompanyIdQuery,
+  useGetPolicyCountQuery,
   useGetPolicyDetailsQuery,
   useCreatePolicyMutation,
   useUpdatePolicyMutation,
@@ -75,5 +119,5 @@ export const {
   useDeletePolicyMutation,
   useCreateReviewMutation,
   useGetTopPolicyQuery,
-  useGetPolicyCountQuery, // Include the Policy count query
+  useGetPolicyByIdQuery,
 } = PolicyApiSlice;

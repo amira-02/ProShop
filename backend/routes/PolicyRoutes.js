@@ -3,29 +3,29 @@ const router = express.Router();
 import {
   getPolicy,
   getPolicyById,
+  getPolicyByCompanyId,
+  getPolicyByType,
   createPolicy,
   updatePolicy,
   deletePolicy,
   createPolicyReview,
   getTopPolicy,
+  getPolicyCount,
 } from '../controllers/PolicyController.js';
-import { protect ,insuranceCompany } from '../middleware/authMiddleware.js'; // Assurez-vous d'importer "admin" d'authMiddleware.js
+import { protect, insuranceCompany } from '../middleware/authMiddleware.js';
 import checkObjectId from '../middleware/checkObjectId.js';
-import Policy from '../models/PolicyModel.js';
 
 // Route pour obtenir le nombre total de politiques
-router.get('/count', async (req, res) => {
-  try {
-    const count = await Policy.countDocuments();
-    res.json({ count });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to get Policy count' });
-  }
-});
+router.get('/count/:companyId', getPolicyCount);
 
-router.route('/').get(getPolicy).post(protect, insuranceCompany, createPolicy); // Utilisation de la fonction "admin" ici
+router.route('/').get(getPolicy).post(protect, insuranceCompany, createPolicy);
 router.route('/:id/reviews').post(protect, checkObjectId, createPolicyReview);
 router.get('/top', getTopPolicy);
+
+// Nouvelles routes
+router.get('/company/:companyId', getPolicyByCompanyId);
+router.get('/type/:type', getPolicyByType);
+
 router
   .route('/:id')
   .get(checkObjectId, getPolicyById)

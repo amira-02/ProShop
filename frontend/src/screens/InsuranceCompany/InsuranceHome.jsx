@@ -110,7 +110,7 @@ const InsuranceHome = () => {
                 <th>Terms</th>
                 <th>Management</th>
               </tr>
-            </thead> 
+            </thead>
             <tbody>
               {data && data.policies.length > 0 ? (
                 data.policies.map((policy) => (
@@ -121,7 +121,7 @@ const InsuranceHome = () => {
                     <td>{policy.type}</td>
                     <td>{policy.terms}</td>
                     <td>
-                      <LinkContainer to={`/InsuranceCompany/Policy/${policy._id}/edit`}>
+                      <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
                         <Button variant='light' className='btn-sm mx-2'>
                           <FaEdit />
                         </Button>

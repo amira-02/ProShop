@@ -34,7 +34,7 @@ import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
 import InsuranceHome from './screens/InsuranceCompany/InsuranceHome';
 import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
-import AddPolicy from './screens/InsuranceCompany/PolicyEditScreen';
+import EditPolicy from './screens/InsuranceCompany/PolicyEditScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -83,7 +83,7 @@ ReactDOM.render(
                 <Route>
                   <Route path='/InsuranceCompany/InsuranceHome' element={<InsuranceHome />} />
                   <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable />} />
-                  <Route path='/Insurance/AddPolicy' element={<AddPolicy />} />
+                  <Route path='/InsuranceCompany/Policy/:id/edit' element={<EditPolicy />} />
                 </Route>
 
               </Route>
