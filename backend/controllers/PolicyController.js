@@ -1,12 +1,12 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Policy from '../models/PolicyModel.js';
+
 // @desc    Fetch all Policy
 // @route   GET /api/Policy
 // @access  Public
 const getPolicy = asyncHandler(async (req, res) => {
   const pageSize = process.env.PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
-
   const keyword = req.query.keyword
     ? {
       name: {
@@ -15,7 +15,6 @@ const getPolicy = asyncHandler(async (req, res) => {
       },
     }
     : {};
-
   const count = await Policy.countDocuments({ ...keyword });
   const policies = await Policy.find({ ...keyword })
     .limit(pageSize)
@@ -42,40 +41,35 @@ const getPolicyById = asyncHandler(async (req, res) => {
 // @route   POST /api/Policy
 // @access  Private/Admin
 const createPolicy = asyncHandler(async (req, res) => {
-  const { CompanyId, name, price, EndDate, type, terms } = req.body;
+  try {
+    const policy = new Policy({
+      CompanyId: req.user._id,
+      name: "Sample Policy",
+      price: 100,
+      EndDate: "2024-12-31",
+      type: "Health",
+      terms: "Sample terms and conditions"
+    });
 
-  // Validate request body
-  if (!name || !price || !EndDate || !type || !terms) {
-    res.status(400).json({ message: 'All fields are required' });
-    return;
+    // Save the new policy to the database
+    const createdPolicy = await policy.save();
+    
+    // Respond with the newly created policy
+    res.status(201).json({ message: 'Policy created successfully', policy: createdPolicy });
+  } catch (error) {
+    res.status(500).json({ message: 'Policy creation failed', error: error.message });
   }
-
-  // Create a new policy
-  const policy = new Policy({
-    CompanyId,
-    name,
-    price,
-    EndDate,
-    type,
-    terms,
-    // countInStock,
-  });
-
-  // Save the new policy to the database
-  const createdPolicy = await policy.save();
-
-  // Respond with the newly created policy
-  res.status(201).json(createdPolicy);
 });
+
 
 // @desc    Update a Policy
 // @route   PUT /api/Policy/:id
 // @access  Private/Admin
 const updatePolicy = asyncHandler(async (req, res) => {
-  const { name, price, startDate, type, terms, countInStock } = req.body;
+  const { CompanyId, name, price, EndDate, type, terms } = req.body;
 
   // Find the policy to update by its ID
-  const policy = await Policy.findById(req.params.id);
+  let policy = await Policy.findById(req.params.id);
 
   if (!policy) {
     res.status(404).json({ message: 'Policy not found with the provided ID' });
@@ -83,15 +77,18 @@ const updatePolicy = asyncHandler(async (req, res) => {
   }
 
   // Update the fields of the policy
-  policy.name = name;
-  policy.price = price;
-  policy.startDate = startDate;
-  policy.type = type;
-  policy.terms = terms;
-  policy.countInStock = countInStock;
-
-  // Save the changes to the database
-  await policy.save();
+  policy = await Policy.findByIdAndUpdate(
+    req.params.id,
+    {
+      CompanyId,
+      name,
+      price,
+      EndDate,
+      type,
+      terms,
+    },
+    { new: true, runValidators: true }
+  );
 
   res.json({ message: 'Policy updated', policy });
 });

@@ -52,7 +52,7 @@ const ProductEditScreen = () => {
       }).unwrap(); // NOTE: here we need to unwrap the Promise to catch any rejection in our catch block
       toast.success('Product updated');
       refetch();
-      navigate('/admin/productlist');
+      navigate('/ShopOwners/productlist');
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -84,7 +84,7 @@ const ProductEditScreen = () => {
 
   return (
     <>
-      <Link to='/admin/productlist' className='btn btn-light my-3'>
+      <Link to='/ShopOwners/productlist' className='btn btn-light my-3'>
         Go Back
       </Link>
       <FormContainer>

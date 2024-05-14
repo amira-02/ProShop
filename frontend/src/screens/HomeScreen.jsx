@@ -8,10 +8,11 @@ import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
-import ProductCarousel from '../components/ProductCarousel';
+// import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import InsuranceHome from '../screens/InsuranceCompany/InsuranceHome';
-
+import ProductListScreen from '../screens/ShopOwners/ProductListScreen.jsx';
+// import ProductEditScreen from '../screens/ShopOwners/ProductEditScreen.jsx';
 const HomeScreen = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const { pageNumber, keyword } = useParams();
@@ -23,20 +24,22 @@ const HomeScreen = () => {
 
   switch (userInfo?.Type) {
     case 'admin':
-    case 'repairer':
+    case 'repairer':  
     case 'insurance':
-    case 'shop':
       return <InsuranceHome />;
+    case 'shop':
+      return <ProductListScreen/>  
+      // return <ProductEditScreen/>
     default:
       return (
         <>
-          {!keyword ? (
+          {/* {!keyword ? (
             <ProductCarousel />
-          ) : (
+          ) : ( */}
             <Link to='/' className='btn btn-light mb-4'>
               Go Back
             </Link>
-          )}
+          {/* )} */}
           {isLoading ? (
             <Loader />
           ) : error ? (

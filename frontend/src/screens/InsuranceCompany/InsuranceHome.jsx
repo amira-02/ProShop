@@ -1,10 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { LinkContainer } from 'react-router-bootstrap';
-import { Table, Button, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col, Table } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
+import { LinkContainer } from 'react-router-bootstrap';
+import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import { toast } from 'react-toastify'; // Supposons que vous utilisez des notifications toast
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
@@ -13,16 +13,23 @@ import {
   useGetPolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
+  useGetPolicyCountQuery,
 } from '../../slices/PolicyApiSlice';
 
 const InsuranceHome = () => {
   const { pageNumber } = useParams();
-
   const { data, isLoading, error, refetch } = useGetPolicyQuery({
     pageNumber,
   });
-   console.log(data);
-  const [deletePolicy, { isLoading: loadingDelete }] = useDeletePolicyMutation();
+
+  const {
+    data: policyCount,
+    isLoading: isLoadingCount,
+    error: errorCount,
+  } = useGetPolicyCountQuery();
+
+  const [deletePolicy, { isLoading: loadingDelete }] =
+    useDeletePolicyMutation();
 
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure')) {
@@ -35,10 +42,13 @@ const InsuranceHome = () => {
     }
   };
 
-  const [createPolicy, { isLoading: loadingCreate }] = useCreatePolicyMutation();
+  const [createPolicy, { isLoading: loadingCreate }] =
+    useCreatePolicyMutation();
 
   const createPolicyHandler = async () => {
-    if (window.confirm('Are you sure you want to create a new Policy?')) {
+    if (
+      window.confirm('Are you sure you want to create a new Insurance Policy?')
+    ) {
       try {
         await createPolicy();
         refetch();
@@ -50,21 +60,30 @@ const InsuranceHome = () => {
 
   return (
     <div>
-      <h1>Welcome to Policy Screen</h1>
-      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}>
-        <Link to="/PolicyListScreen">
-          <Button variant="primary" style={{ marginRight: '10px' }}>
+      <h1>Welcome to Insurance Company Screen</h1>
+      <div
+        style={{ display: 'flex', justifyContent: 'center', marginTop: '20px' }}
+      >
+        <Link to='/PolicyListScreen'>
+          <Button variant='primary' style={{ marginRight: '10px' }}>
             View Offers
           </Button>
         </Link>
-        <Link to="/">
-          <Button variant="primary">View Claims</Button>
+        <Link to='/'>
+          <Button variant='primary'>View Claims</Button>
         </Link>
       </div>
 
       <Row className='align-items-center'>
         <Col>
           <h1>Our Policies</h1>
+          {isLoadingCount ? (
+            <p>Loading policy count...</p>
+          ) : errorCount ? (
+            <Message variant='danger'>{errorCount.data.message}</Message>
+          ) : (
+            <p>Total Policies: {policyCount || 0}</p>
+          )}
         </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createPolicyHandler}>
@@ -85,50 +104,46 @@ const InsuranceHome = () => {
             <thead>
               <tr>
                 <th>ID</th>
-                <th>Company ID</th>
-                <th>NAME</th>
+                <th>Name</th>
                 <th>Price</th>
-                <th>End Date </th>
                 <th>Type</th>
                 <th>Terms</th>
-                <th>Managment</th>
+                <th>Management</th>
               </tr>
-            </thead>
+            </thead> 
             <tbody>
-            {data && data.Policy ? (
-              data.Policy.map((policy) => (
-                <tr key={policy._id}>
-                <td>{policy.CompanyId}</td>
-                <td>{policy._id}</td>
-                <td>{policy.name}</td>
-                <td>{policy.price}</td>
-                <td>{policy.EndDate}</td>
-                <td>{policy.type}</td>
-                <td>{policy.terms}</td>
-                <td>
-        <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
-          <Button variant='light' className='btn-sm mx-2'>
-            <FaEdit />
-          </Button>
-        </LinkContainer>
-        <Button
-          variant='danger'
-          className='btn-sm'
-          onClick={() => deleteHandler(policy._id)}
-        >
-          <FaTrash style={{ color: 'white' }} />
-        </Button>
-      </td>
-    </tr>
-  ))
-) : (
-  <tr>
-    <td colSpan="7">No Policies found</td>
-  </tr>
-)}
-        </tbody>
+              {data && data.policies.length > 0 ? (
+                data.policies.map((policy) => (
+                  <tr key={policy._id}>
+                    <td>{policy._id}</td>
+                    <td>{policy.name}</td>
+                    <td>${policy.price}</td>
+                    <td>{policy.type}</td>
+                    <td>{policy.terms}</td>
+                    <td>
+                      <LinkContainer to={`/InsuranceCompany/Policy/${policy._id}/edit`}>
+                        <Button variant='light' className='btn-sm mx-2'>
+                          <FaEdit />
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='danger'
+                        className='btn-sm'
+                        onClick={() => deleteHandler(policy._id)}
+                      >
+                        <FaTrash style={{ color: 'white' }} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan='6'>No insurance policies found</td>
+                </tr>
+              )}
+            </tbody>
           </Table>
-          <Paginate pages={data?.pages} page={data?.page}  />
+          <Paginate pages={data.pages} page={data.page} isPolicy={true} />
         </>
       )}
     </div>

@@ -12,7 +12,7 @@ import { resetCart } from '../slices/cartSlice';
 // import AdminHeader from './AdminHeader'; // Import AdminHeader if not already imported
 import RepairerHeader from './Header'; // Import RepairerHeader if not already imported
 // import InsuranceHeader from './Header'; 
-import ShopHeader from './Header'; // Import InsuranceHeader if not already imported
+// import ShopHeader from './Header'; // Import InsuranceHeader if not already imported
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
@@ -140,8 +140,8 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
               <NavDropdown.Item className='text-black'>
                 Products
               </NavDropdown.Item>
-            </LinkContainer>
-            <LinkContainer to='/admin/orderlist'>
+            </LinkContainer> */}
+            {/* <LinkContainer to='/admin/orderlist'>
               <NavDropdown.Item className='text-black'>
                 Orders
               </NavDropdown.Item>
@@ -173,6 +173,9 @@ const AdminHeader = ({ userInfo, logoutHandler }) => (
     </Navbar.Collapse>
   </>
 );
+
+
+
 const GuestHeader = () => (
   <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
     <Navbar.Toggle aria-controls='basic-navbar-nav' />
@@ -197,6 +200,84 @@ const GuestHeader = () => (
     </Navbar.Collapse>
   </Navbar>
 );
+
+
+
+const ShopHeader = ({ userInfo, logoutHandler }) => (
+  
+  <>
+    <Navbar.Toggle aria-controls='basic-navbar-nav' />
+    <Navbar.Collapse id='basic-navbar-nav'>
+     
+      <Nav className='ms-auto'>
+       
+        {userInfo ? (
+          <NavDropdown
+            title={<span className='text-black'>{userInfo.name}</span>}
+            id='username'
+          >
+            <LinkContainer to='/profile'>
+              <NavDropdown.Item>
+                <span className='text-black'>Profile</span>
+              </NavDropdown.Item>
+            </LinkContainer>
+            <NavDropdown.Item onClick={logoutHandler}>
+              Logout
+              <span className='text-black'></span>
+            </NavDropdown.Item>
+          </NavDropdown>
+        ) : (
+          <LinkContainer to='/login'>
+            <Nav.Link>
+              <FaUser className='text-black' />
+              <span className='text-black'>Sign In</span>
+            </Nav.Link>
+          </LinkContainer>
+        )}
+        
+          <NavDropdown title='Shop' id='ShopMenu'>
+            <LinkContainer to='/ShopOwners/productlist'>
+              <NavDropdown.Item className='text-black'>
+                Products
+              </NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to='../screens/admin/orderlist'>
+              <NavDropdown.Item className='text-black'>
+                Orders
+              </NavDropdown.Item>
+            </LinkContainer>
+            {/* <LinkContainer to='/admin/userlist'>
+              <NavDropdown.Item className='text-black'>
+                Users
+              </NavDropdown.Item>
+            </LinkContainer> */}
+            {/* <LinkContainer to='/admin/Insurancecompanylist'>
+              <NavDropdown.Item className='text-black'>
+                Insurance Company 
+              </NavDropdown.Item>
+            </LinkContainer>
+
+            <LinkContainer to='/admin/Shoplist'>
+              <NavDropdown.Item className='text-black'>
+               Shops
+              </NavDropdown.Item>
+            </LinkContainer>
+            <LinkContainer to='/admin/RepairerCompanylist'>
+              <NavDropdown.Item className='text-black'>
+              Repairer Company
+              </NavDropdown.Item>
+            </LinkContainer> */}
+          </NavDropdown>
+      
+      </Nav>
+    </Navbar.Collapse>
+  </>   
+  
+);
+
+
+
+
 
 const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
   <>
@@ -258,6 +339,11 @@ const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
             </Nav.Link>
           </LinkContainer>
         )}
+
+
+
+
+
 
 
 

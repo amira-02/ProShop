@@ -21,8 +21,8 @@ import OrderScreen from './screens/OrderScreen';
 import AboutUsScreen from './screens/AboutUsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
-import ProductListScreen from './screens/admin/ProductListScreen';
-import ProductEditScreen from './screens/admin/ProductEditScreen';
+import ProductListScreen from './screens/ShopOwners/ProductListScreen';
+import ProductEditScreen from './screens/ShopOwners/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
 import InsuranceCompanyListScreen from './screens/admin/InsuranceCompanyListScreen';
@@ -32,8 +32,9 @@ import ShopEditScreen from './screens/admin/ShopEditScreen';
 import Contract from './screens/ChooseContractScreen';
 import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen';
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
-import InsuranceHome  from './screens/InsuranceCompany/InsuranceHome';
+import InsuranceHome from './screens/InsuranceCompany/InsuranceHome';
 import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
+import AddPolicy from './screens/InsuranceCompany/PolicyEditScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
@@ -66,25 +67,25 @@ ReactDOM.render(
                 {/* Admin users */}
                 <Route path='' element={<AdminRoute />}>
                   <Route path='/admin/orderlist' element={<OrderListScreen />} />
-                  <Route path='/admin/productlist' element={<ProductListScreen />} />
-                  <Route path='/admin/productlist/:pageNumber' element={<ProductListScreen />}  />
+                  <Route path='/ShopOwners/productlist' element={<ProductListScreen />} />
+                  <Route path='/ShopOwners/productlist/:pageNumber' element={<ProductListScreen />} />
                   <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
                   <Route path='/admin/ShopList' element={<ShopListScreen />} />
                   <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
                   <Route path='/admin/userlist' element={<UserListScreen />} />
-                  <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+                  <Route path='/ShopOwners/product/:id/edit' element={<ProductEditScreen />} />
                   <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
                   <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
                   <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
                   <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
                 </Route>
-
+                {/* InsuranceCompany */}
                 <Route>
                   <Route path='/InsuranceCompany/InsuranceHome' element={<InsuranceHome />} />
-                  <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable  />} />
-
+                  <Route path='/InsuranceCompany/InsuranceListScreen' element={<StickyHeadTable />} />
+                  <Route path='/Insurance/AddPolicy' element={<AddPolicy />} />
                 </Route>
-                
+
               </Route>
             </Routes>
           </Router>
