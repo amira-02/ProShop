@@ -28,7 +28,14 @@ const PlaceOrderScreen = () => {
   const placeOrderHandler = async () => {
     try {
       const res = await createOrder({
-        orderItems: cart.cartItems,
+        orderItems: cart.cartItems.map((item) => ({
+          ...item,
+          policyID: item.policy, // Assuming policyID is stored in each item
+          startDate : item.startDate ,
+          endDate : item.endDate,
+          policyPrice: item.policyprice, // Assuming policyPrice is stored in each item
+          theftProtection: item.theftProtection,
+        })),
         shippingAddress: cart.shippingAddress,
         paymentMethod: cart.paymentMethod,
         itemsPrice: cart.itemsPrice,
@@ -86,10 +93,22 @@ const PlaceOrderScreen = () => {
                           <Link to={`/product/${item.product}`}>
                             {item.name}
                           </Link>
+                          <p>Policy ID: {item.policy}</p>{' '}
+                          {/* Display policy ID */}
+                          <p>Policy Price: ${item.policyprice}</p>{' '}
+                          {/* Display policy price */}
+                          <p>
+                            Theft Protection:{' '}
+                            {item.theftProtection ? 'Yes' : 'No'}
+                          </p>{' '}
+                          {/* Display theft protection status */}
+                          <p>End Date: {item.endDate}</p>{' '}
+                          {/* Display end date */}
+                          <p>Policy ID: {item.policy}</p>
                         </Col>
                         <Col md={4}>
                           {item.qty} x ${item.price} = $
-                          {(item.qty * (item.price * 100)) / 100}
+                          {(item.qty * item.price).toFixed(2)}
                         </Col>
                       </Row>
                     </ListGroup.Item>
@@ -138,7 +157,7 @@ const PlaceOrderScreen = () => {
                 <Button
                   type='button'
                   className='btn-block'
-                  disabled={cart.cartItems === 0}
+                  disabled={cart.cartItems.length === 0}
                   onClick={placeOrderHandler}
                 >
                   Place Order

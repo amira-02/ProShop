@@ -20,12 +20,12 @@ import Rating from '../components/Rating';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Meta from '../components/Meta';
-import { addToCart } from '../slices/cartSlice';
+// import { addToCart } from '../slices/cartSlice';
 
 const ProductScreen = () => {
   const { id: productId } = useParams();
 
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const [qty, setQty] = useState(1);
@@ -33,8 +33,10 @@ const ProductScreen = () => {
   const [comment, setComment] = useState('');
 
   const addToCartHandler = () => {
-    dispatch(addToCart({ ...product, qty }));
-    navigate('/cart');
+    // dispatch(addToCart({ ...product, qty }));
+    // navigate('/cart');
+    navigate(`/contract/${productId}`);
+    
   };
 
   const {
