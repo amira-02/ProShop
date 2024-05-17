@@ -1,17 +1,11 @@
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  Row,
-  Col,
-  ListGroup,
-  Image,
-  Form,
-  Button,
-  Card,
-} from 'react-bootstrap';
+import { Row, Col, ListGroup, Image, Form, Button, Card } from 'react-bootstrap';
 import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
+
 
 const CartScreen = () => {
   const navigate = useNavigate();
@@ -20,8 +14,6 @@ const CartScreen = () => {
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
-  // NOTE: no need for an async function here as we are not awaiting the
-  // resolution of a Promise
   const addToCartHandler = (product, qty) => {
     dispatch(addToCart({ ...product, qty }));
   };
@@ -30,11 +22,10 @@ const CartScreen = () => {
     dispatch(removeFromCart(id));
   };
 
-  const checkoutHandler = () => {
-    navigate('/login?redirect=/contract');
-    //    navigate('/login?redirect=/shipping');
+  const checkoutHandler = (item) => {
+    navigate(`/contract/${item._id}`);
   };
-  
+
   return (
     <Row>
       <Col md={8}>
@@ -79,6 +70,15 @@ const CartScreen = () => {
                       <FaTrash />
                     </Button>
                   </Col>
+                  <Col md={1}>
+                    <Button
+                      type='button'
+                      variant='primary'
+                      onClick={() => checkoutHandler(item)}
+                    >
+                      Choose Policy
+                    </Button>
+                  </Col>
                 </Row>
               </ListGroup.Item>
             ))}
@@ -103,7 +103,7 @@ const CartScreen = () => {
                 type='button'
                 className='btn-block'
                 disabled={cartItems.length === 0}
-                onClick={checkoutHandler}
+                onClick={() => checkoutHandler(null)}
               >
                 Proceed To Checkout
               </Button>

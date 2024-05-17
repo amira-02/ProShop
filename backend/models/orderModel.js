@@ -72,6 +72,24 @@ const orderSchema = mongoose.Schema(
     deliveredAt: {
       type: Date,
     },
+    policy: {
+      type: mongoose.Schema.Types.ObjectId, // Only store the policy ID
+      required: true,
+      ref: 'Policy',
+    },
+    startDate: {
+      type: Date,
+      required: true,
+    },
+    endDate: {
+      type: Date,
+      required: true,
+    },
+    theftProtection: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
   },
   {
     timestamps: true,

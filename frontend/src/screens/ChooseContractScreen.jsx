@@ -2,14 +2,13 @@
 // import { Button, Form, Row, Col } from 'react-bootstrap';
 // import { useNavigate } from 'react-router-dom';
 // import axios from 'axios';
-
 // function Contract() {
 //   const navigate = useNavigate();
 //   const [startDate, setStartDate] = useState('');
 //   const [name, setName] = useState('');
 //   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-//   const [confirmPassword, setConfirmPassword] = useState('');
+//   // const [password, setPassword] = useState('');
+//   // const [confirmPassword, setConfirmPassword] = useState('');
 
 //   useEffect(() => {
 //     const fetchUserInfo = async () => {
@@ -31,7 +30,7 @@
 //   };
 
 //   const navigateToShipping = () => {
-//     navigate('/shipping');
+//     navigate('/login?redirect=/shipping');
 //   };
 
 //   const handleSubmit = (e) => {
@@ -40,99 +39,221 @@
 //   };
 
 //   return (
-//     <Row>
-//       <Col md={10} className='mx-auto'>
-//         <p
-//           className='italic-text italiana-font'
-//           style={{ fontSize: '65px', color: 'black', textAlign: 'center' }}
+//     <div>
+//       <p
+//         className='italic-text italiana-font'
+//         style={{ fontSize: '65px', color: 'black', textAlign: 'center' }}
+//       >
+//         Check out
+//       </p>
+//       <Form>
+//         <div
+//           style={{
+//             border: '1px solid black',
+//             padding: '30px',
+//             borderRadius: '8px',
+//           }}
 //         >
-//           Check out
-//         </p>
-//         <Form onSubmit={handleSubmit}>
-//           <div style={{ border: '1px solid black', padding: '30px', borderRadius: '8px' }}>
-//             <p className='jura-text' style={{ fontSize: '32px', fontWeight: 'bold', color: 'black', textAlign: 'center' }}>
-//               Personal Information
-//             </p>
-//             <br />
-//             <Row className='mb-3'>
-//               <Form.Group as={Col} controlId='formGridName' className='mb-3'>
-//                 <Form.Label>
-//                   <p className='jura-text' style={{ fontSize: '20px', color: 'black' }}>
-//                     Name
-//                   </p>
-//                 </Form.Label>
-//                 <Form.Control type='text' placeholder='Enter name' value={name} onChange={(e) => setName(e.target.value)} />
-//               </Form.Group>
-
-//               <Form.Group as={Col} controlId='formGridEmail' className='mb-3'>
-//                 <Form.Label>
-//                   <p className='jura-text' style={{ fontSize: '20px', color: 'black' }}>
-//                     Email
-//                   </p>
-//                 </Form.Label>
-//                 <Form.Control type='email' placeholder='Enter email' value={email} onChange={(e) => setEmail(e.target.value)} />
-//               </Form.Group>
-//             </Row>
-
-//             <Row className='mb-3'>
-//               <Form.Group as={Col} controlId='formGridPassword' className='mb-3'>
-//                 <Form.Label>
-//                   <p className='jura-text' style={{ fontSize: '20px', color: 'black' }}>
-//                     Password
-//                   </p>
-//                 </Form.Label>
-//                 <Form.Control type='password' placeholder='Enter password' value={password} onChange={(e) => setPassword(e.target.value)} />
-//               </Form.Group>
-
-//               <Form.Group as={Col} controlId='formGridConfirmPassword' className='mb-3'>
-//                 <Form.Label>
-//                   <p className='jura-text' style={{ fontSize: '20px', color: 'black' }}>
-//                     Confirm Password
-//                   </p>
-//                 </Form.Label>
-//                 <Form.Control type='password' placeholder='Confirm password' value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
-//               </Form.Group>
-//             </Row>
-//           </div>
+//           <p
+//             className='jura-text'
+//             style={{ fontSize: '32px', fontWeight: '580', color: 'black' }}
+//           >
+//             Personal Information
+//           </p>
 //           <br />
-//           <div style={{ border: '1px solid black', padding: '30px', borderRadius: '8px' }}>
-//             <p className='jura-text' style={{ fontSize: '32px', fontWeight: 'bold', color: 'black', textAlign: 'center' }}>
-//               Contract Information
-//             </p>
-//             <br />
-//             {/* Add contract information fields here */}
-//           </div>
-//           <div style={{ height: '50px' }}></div>
-//           <div style={{ display: 'flex', justifyContent: 'center' }}>
-//             <Button variant='primary' onClick={navigateToShipping} style={{ width: '800px' }}>
-//               Submit
-//             </Button>
-//           </div>
-//         </Form>
-//         <br />
-//       </Col>
-//     </Row>
+//           <Row className='mb-3'>
+//             <Form.Group as={Col} controlId='formGridName' className='mb-3'>
+//               <Form.Label>
+//                 <p
+//                   className='jura-text'
+//                   style={{ fontSize: '20px', color: 'black' }}
+//                 >
+//                   Name
+//                 </p>
+//               </Form.Label>
+//               <Form.Control
+//                 type='text'
+//                 placeholder='Enter name'
+//                 value={name}
+//                 readOnly // Set readOnly to prevent user input
+//               />
+//             </Form.Group>
+
+//             <Form.Group as={Col} controlId='formGridEmail' className='mb-3'>
+//               <Form.Label>
+//                 <p
+//                   className='jura-text'
+//                   style={{ fontSize: '20px', color: 'black' }}
+//                 >
+//                   Email
+//                 </p>
+//               </Form.Label>
+//               <Form.Control
+//                 type='email'
+//                 placeholder='Enter email'
+//                 value={email}
+//                 readOnly // Set readOnly to prevent user input
+//               />
+//             </Form.Group>
+//           </Row>
+//         </div>
+//       </Form>
+//       <br />{' '}
+//       <Form onSubmit={handleSubmit}>
+//         <div
+//           style={{
+//             border: '1px solid black',
+//             padding: '30px',
+//             borderRadius: '8px',
+//           }}
+//         >
+//           <p
+//             className='jura-text'
+//             style={{ fontSize: '32px', fontWeight: '580', color: 'black' }}
+//           >
+//             Contract Information
+//           </p>
+//           <br />
+//           <Form.Group className='mb-3'>
+//             <Form.Label>
+//               <p
+//                 className='jura-text'
+//                 style={{ fontSize: '20px', color: 'black' }}
+//               >
+//                 Contract Information
+//               </p>
+//             </Form.Label>
+//             <Form.Select aria-label='Default select example'>
+//               <option>Choose an offer </option>
+//               <option value='1'>One</option>
+//               <option value='2'>Two</option>
+//               <option value='3'>Three</option>
+//             </Form.Select>
+//           </Form.Group>
+//           <br />
+//           <Form.Group className='mb-3' controlId='formGridAddress1'>
+//             <Form.Label>
+//               <p
+//                 className='jura-text'
+//                 style={{ fontSize: '20px', color: 'black' }}
+//               >
+//                 Price / Day
+//               </p>
+//             </Form.Label>
+//             <Form.Control placeholder='1234 Main St' />
+//           </Form.Group>
+//           <br />
+//           <Form.Group
+//             className='mb-3'
+//             controlId='formGridAddress2'
+//             style={{
+//               display: 'flex',
+//               justifyContent: 'space-between',
+//               alignItems: 'center',
+//             }}
+//           >
+//             <Form.Label>
+//               <p
+//                 className='jura-text'
+//                 style={{ fontSize: '20px', color: 'black' }}
+//               >
+//                 Theft Protection
+//               </p>
+//             </Form.Label>
+//             <Form.Check
+//               style={{ transform: 'scale(1.5)', marginLeft: '-200px' }} // Adjust the margin as needed
+//               aria-label='option 1'
+//             />
+//           </Form.Group>
+
+//           <Row className='mb-3'>
+//             <Form.Group
+//               className='mb-3'
+//               controlId='exampleForm.ControlTextarea1'
+//             >
+//               <Form.Label>
+//                 <p
+//                   className='jura-text'
+//                   style={{ fontSize: '20px', color: 'black' }}
+//                 >
+//                   Terms and Conditions
+//                 </p>
+//               </Form.Label>
+//               <Form.Control as='textarea' rows={3} />
+//             </Form.Group>
+
+//             <Form.Group as={Col} controlId='formGridState'>
+//               <Form.Label>
+//                 <p
+//                   className='jura-text'
+//                   style={{ fontSize: '20px', color: 'black' }}
+//                 >
+//                   Start Date
+//                 </p>
+//               </Form.Label>
+//               <Form.Control
+//                 type='date'
+//                 min={new Date().toISOString().split('T')[0]}
+//                 value={startDate}
+//                 onChange={handleStartDateChange}
+//               />
+//             </Form.Group>
+
+//             <Form.Group as={Col} controlId='formGridZip'>
+//               <Form.Label>
+//                 <p
+//                   className='jura-text'
+//                   style={{ fontSize: '20px', color: 'black' }}
+//                 >
+//                   End Date
+//                 </p>
+//               </Form.Label>
+//               <Form.Control type='date' />
+//             </Form.Group>
+//           </Row>
+//         </div>
+//         <div style={{ height: '50px' }}></div>
+//         <div style={{ display: 'flex', justifyContent: 'center' }}>
+//           <Button
+//             variant='primary'
+//             onClick={navigateToShipping}
+//             style={{ width: '100%' }}
+//           >
+//             Submit
+//           </Button>
+//         </div>
+//       </Form>
+//       <br />
+//     </div>
 //   );
 // }
 
 // export default Contract;
-
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect , useDispatch } from 'react';
 import { Button, Form, Row, Col } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import CheckoutSteps from '../components/CheckoutSteps';
+
 function Contract() {
+  // State variables
   const navigate = useNavigate();
+  const { id: productId } = useParams();
   const [startDate, setStartDate] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
-  // const [password, setPassword] = useState('');
-  // const [confirmPassword, setConfirmPassword] = useState('');
+  const [policies, setPolicies] = useState([]);
+  const [selectedPolicy, setSelectedPolicy] = useState('');
+  const [product, setProduct] = useState(null);
+  const [policyData, setPolicyData] = useState({});
+  const [theftProtection, setTheftProtection] = useState(false);
+  const [formError, setFormError] = useState('');
 
+  // Fetching user information
   useEffect(() => {
     const fetchUserInfo = async () => {
       try {
-        const response = await axios.get('/api/users/profile'); // Fetch user info from backend
+        const response = await axios.get('/api/users/profile');
         const { name, email } = response.data;
         setName(name);
         setEmail(email);
@@ -144,27 +265,79 @@ function Contract() {
     fetchUserInfo();
   }, []);
 
+  // Fetching product information
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const response = await axios.get(`/api/products/${productId}`);
+        setProduct(response.data);
+      } catch (error) {
+        console.error('Error fetching product info:', error);
+      }
+    };
+
+    fetchProduct();
+  }, [productId]);
+
+  // Fetch policies based on product category
+  useEffect(() => {
+    if (product) {
+      const fetchPolicies = async () => {
+        try {
+          const response = await axios.get(
+            `/api/Policy/type/${product.category}`
+          );
+          setPolicies(response.data.policies);
+        } catch (error) {
+          console.error('Error fetching policies:', error);
+        }
+      };
+
+      fetchPolicies();
+    }
+  }, [product]);
+
+  // Fetch selected policy data
+  useEffect(() => {
+    if (selectedPolicy) {
+      const fetchPolicyData = async () => {
+        try {
+          const response = await axios.get(`/api/Policy/${selectedPolicy}`);
+          setPolicyData(response.data);
+        } catch (error) {
+          console.error('Error fetching policy data:', error);
+        }
+      };
+
+      fetchPolicyData();
+    }
+  }, [selectedPolicy]);
+
+  // Event handlers
   const handleStartDateChange = (e) => {
     setStartDate(e.target.value);
   };
 
   const navigateToShipping = () => {
-    navigate('/login?redirect=/shipping');
+    if (!selectedPolicy) {
+      setFormError('Please select an offer');
+    
+    } else {
+      navigate('/login?redirect=/shipping');
+    }
   };
-
+  // const dispatch = useDispatch();
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add form submission logic here
+    // dispatch(saveShippingAddress({ address, city, postalCode, country }));
+    // navigate('/payment');
+    
   };
 
   return (
     <div>
-      <p
-        className='italic-text italiana-font'
-        style={{ fontSize: '65px', color: 'black', textAlign: 'center' }}
-      >
-        Check out
-      </p>
+      <CheckoutSteps step1 step2 />
+      {/* Personal Information */}
       <Form>
         <div
           style={{
@@ -194,10 +367,9 @@ function Contract() {
                 type='text'
                 placeholder='Enter name'
                 value={name}
-                readOnly // Set readOnly to prevent user input
+                readOnly
               />
             </Form.Group>
-
             <Form.Group as={Col} controlId='formGridEmail' className='mb-3'>
               <Form.Label>
                 <p
@@ -211,13 +383,15 @@ function Contract() {
                 type='email'
                 placeholder='Enter email'
                 value={email}
-                readOnly // Set readOnly to prevent user input
+                readOnly
               />
             </Form.Group>
           </Row>
         </div>
       </Form>
-      <br />{' '}
+      <br />
+
+      {/* Contract Information */}
       <Form onSubmit={handleSubmit}>
         <div
           style={{
@@ -242,11 +416,17 @@ function Contract() {
                 Contract Information
               </p>
             </Form.Label>
-            <Form.Select aria-label='Default select example'>
-              <option>Choose an offer </option>
-              <option value='1'>One</option>
-              <option value='2'>Two</option>
-              <option value='3'>Three</option>
+            <Form.Select
+              aria-label='Default select example'
+              value={selectedPolicy}
+              onChange={(e) => setSelectedPolicy(e.target.value)}
+            >
+              <option>Choose an offer</option>
+              {policies.map((policy) => (
+                <option key={policy._id} value={policy._id}>
+                  {policy.name}
+                </option>
+              ))}
             </Form.Select>
           </Form.Group>
           <br />
@@ -259,9 +439,29 @@ function Contract() {
                 Price / Day
               </p>
             </Form.Label>
-            <Form.Control placeholder='1234 Main St' />
+            <Form.Control
+              placeholder='100 DT'
+              value={policyData.price}
+              readOnly
+            />
           </Form.Group>
           <br />
+          <Form.Group className='mb-3' controlId='formGridAddress2'>
+            <Form.Label>
+              <p
+                className='jura-text'
+                style={{ fontSize: '20px', color: 'black' }}
+              >
+                Terms and Conditions
+              </p>
+            </Form.Label>
+            <Form.Control
+              as='textarea'
+              rows={3}
+              value={policyData.terms}
+              readOnly
+            />
+          </Form.Group>
           <Form.Group
             className='mb-3'
             controlId='formGridAddress2'
@@ -282,26 +482,13 @@ function Contract() {
             <Form.Check
               style={{ transform: 'scale(1.5)', marginLeft: '-200px' }} // Adjust the margin as needed
               aria-label='option 1'
+              checked={theftProtection}
+              onChange={(e) => setTheftProtection(e.target.checked)}
             />
           </Form.Group>
 
           <Row className='mb-3'>
-            <Form.Group
-              className='mb-3'
-              controlId='exampleForm.ControlTextarea1'
-            >
-              <Form.Label>
-                <p
-                  className='jura-text'
-                  style={{ fontSize: '20px', color: 'black' }}
-                >
-                  Terms and Conditions
-                </p>
-              </Form.Label>
-              <Form.Control as='textarea' rows={3} />
-            </Form.Group>
-
-            <Form.Group as={Col} controlId='formGridState'>
+            <Form.Group className='mb-3' controlId='formGridState'>
               <Form.Label>
                 <p
                   className='jura-text'
@@ -312,12 +499,12 @@ function Contract() {
               </Form.Label>
               <Form.Control
                 type='date'
+                
                 min={new Date().toISOString().split('T')[0]}
                 value={startDate}
                 onChange={handleStartDateChange}
               />
             </Form.Group>
-
             <Form.Group as={Col} controlId='formGridZip'>
               <Form.Label>
                 <p
@@ -327,10 +514,87 @@ function Contract() {
                   End Date
                 </p>
               </Form.Label>
-              <Form.Control type='date' />
+              <Form.Control
+                type='date'
+                
+                min={startDate || new Date().toISOString().split('T')[0]}
+              />
             </Form.Group>
           </Row>
+          {formError && <p style={{ color: 'red' }}>{formError}</p>}
         </div>
+        <br />
+
+        {/* Product Information */}
+        {product && (
+          <div
+            style={{
+              border: '1px solid black',
+              padding: '30px',
+              borderRadius: '8px',
+            }}
+          >
+            <p
+              className='jura-text'
+              style={{ fontSize: '32px', fontWeight: '580', color: 'black' }}
+            >
+              Product Information
+            </p>
+            <br />
+            <Row>
+              <Col>
+                <p
+                  className='jura-text'
+                  style={{ fontSize: '20px', color: 'black' }}
+                >
+                  Product Name
+                </p>
+                <p>{product.name}</p>
+              </Col>
+              <Col>
+                <p
+                  className='jura-text'
+                  style={{ fontSize: '20px', color: 'black' }}
+                >
+                  Price
+                </p>
+                <p>{product.price}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <p
+                  className='jura-text'
+                  style={{ fontSize: '20px', color: 'black' }}
+                >
+                  Category
+                </p>
+                <p>{product.category}</p>
+              </Col>
+              <Col>
+                <p
+                  className='jura-text'
+                  style={{ fontSize: '20px', color: 'black' }}
+                >
+                  Brand
+                </p>
+                <p>{product.brand}</p>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <p
+                  className='jura-text'
+                  style={{ fontSize: '20px', color: 'black' }}
+                >
+                  Description
+                </p>
+                <p>{product.description}</p>
+              </Col>
+            </Row>
+          </div>
+        )}
+        {/* Submit Button */}
         <div style={{ height: '50px' }}></div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <Button

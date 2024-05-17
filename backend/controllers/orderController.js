@@ -148,6 +148,20 @@ const getOrders = asyncHandler(async (req, res) => {
   const orders = await Order.find({}).populate('user', 'id name');
   res.json(orders);
 });
+// @desc    Get orders by company ID
+// @route   GET /api/orders/company/:companyId
+// @access  Public
+const getOrdersByCompanyId = asyncHandler(async (req, res) => {
+  const companyId = req.params.companyId;
+
+  const orders = await Order.find({ 'orderItems.policy': companyId }).populate('user', 'id name');
+
+  if (!orders || orders.length === 0) {
+    return res.status(404).json({ message: 'No orders found for this company' });
+  }
+
+  res.json(orders);
+});
 
 export {
   addOrderItems,
@@ -156,4 +170,5 @@ export {
   updateOrderToPaid,
   updateOrderToDelivered,
   getOrders,
+  getOrdersByCompanyId
 };
