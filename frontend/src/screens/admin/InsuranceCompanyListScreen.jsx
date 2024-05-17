@@ -85,9 +85,9 @@ const InsuranceCompanyListScreen = () => {
               </tr>
             </thead>
             <tbody>
-  {data && data.InsuranceCompany ? (
-    data.InsuranceCompany.map((insuranceCompany) => (
-      <tr key={insuranceCompany._id}>
+           {data && data.InsuranceCompany ? (
+            data.InsuranceCompany.map((insuranceCompany) => (
+       <tr key={insuranceCompany._id}>
         <td>{insuranceCompany._id}</td>
         <td>{insuranceCompany.name}</td>
         <td>{insuranceCompany.address}</td>

@@ -1,34 +1,35 @@
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button, Row, Col, Table } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
 import { LinkContainer } from 'react-router-bootstrap';
 import { toast } from 'react-toastify';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 
 import {
-  useGetPolicyByCompanyIdQuery,
+  useGetPolicyQuery,
   useCreatePolicyMutation,
   useDeletePolicyMutation,
+  useGetPolicyCountQuery,
 } from '../../slices/PolicyApiSlice';
 
 const InsuranceHome = () => {
-  const { userInfo } = useSelector((state) => state.auth);
   const { pageNumber } = useParams();
-  const companyId = userInfo._id;
-
-  const { data, isLoading, error, refetch } = useGetPolicyByCompanyIdQuery({
-    companyId,
+  const { data, isLoading, error, refetch } = useGetPolicyQuery({
     pageNumber,
   });
 
+  const {
+    data: policyCount,
+    isLoading: isLoadingCount,
+    error: errorCount,
+  } = useGetPolicyCountQuery();
+
   const [deletePolicy, { isLoading: loadingDelete }] =
     useDeletePolicyMutation();
-  const [createPolicy, { isLoading: loadingCreate }] =
-    useCreatePolicyMutation();
 
   const deleteHandler = async (id) => {
     if (window.confirm('Are you sure')) {
@@ -40,6 +41,9 @@ const InsuranceHome = () => {
       }
     }
   };
+
+  const [createPolicy, { isLoading: loadingCreate }] =
+    useCreatePolicyMutation();
 
   const createPolicyHandler = async () => {
     if (
@@ -71,6 +75,16 @@ const InsuranceHome = () => {
       </div>
 
       <Row className='align-items-center'>
+        <Col>
+          <h1>Our Policies</h1>
+          {isLoadingCount ? (
+            <p>Loading policy count...</p>
+          ) : errorCount ? (
+            <Message variant='danger'>{errorCount.data.message}</Message>
+          ) : (
+            <p>Total Policies: {policyCount || 0}</p>
+          )}
+        </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createPolicyHandler}>
             <FaPlus /> Create Policies
@@ -92,7 +106,6 @@ const InsuranceHome = () => {
                 <th>ID</th>
                 <th>Name</th>
                 <th>Price</th>
-                <th>End Date</th>
                 <th>Type</th>
                 <th>Terms</th>
                 <th>Management</th>
@@ -105,13 +118,10 @@ const InsuranceHome = () => {
                     <td>{policy._id}</td>
                     <td>{policy.name}</td>
                     <td>${policy.price}</td>
-                    <td>{new Date(policy.EndDate).toLocaleDateString()}</td>
                     <td>{policy.type}</td>
                     <td>{policy.terms}</td>
                     <td>
-                      <LinkContainer
-                        to={`/InsuranceCompany/Policy/${policy._id}/edit`}
-                      >
+                      <LinkContainer to={`/admin/Policy/${policy._id}/edit`}>
                         <Button variant='light' className='btn-sm mx-2'>
                           <FaEdit />
                         </Button>
@@ -128,7 +138,7 @@ const InsuranceHome = () => {
                 ))
               ) : (
                 <tr>
-                  <td colSpan='7'>No insurance policies found</td>
+                  <td colSpan='6'>No insurance policies found</td>
                 </tr>
               )}
             </tbody>

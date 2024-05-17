@@ -21,8 +21,8 @@ import OrderScreen from './screens/OrderScreen';
 import AboutUsScreen from './screens/AboutUsScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import OrderListScreen from './screens/admin/OrderListScreen';
-import ProductListScreen from './screens/admin/ProductListScreen';
-import ProductEditScreen from './screens/admin/ProductEditScreen';
+import ProductListScreen from './screens/ShopOwners/ProductListScreen';
+import ProductEditScreen from './screens/ShopOwners/ProductEditScreen';
 import UserListScreen from './screens/admin/UserListScreen';
 import UserEditScreen from './screens/admin/UserEditScreen';
 import InsuranceCompanyListScreen from './screens/admin/InsuranceCompanyListScreen';
@@ -68,13 +68,13 @@ ReactDOM.render(
                 {/* Admin users */}
                 <Route path='' element={<AdminRoute />}>
                   <Route path='/admin/orderlist' element={<OrderListScreen />} />
-                  <Route path='/admin/productlist' element={<ProductListScreen />} />
-                  <Route path='/admin/productlist/:pageNumber' element={<ProductListScreen />} />
+                  <Route path='/ShopOwners/productlist' element={<ProductListScreen />} />
+                  <Route path='/ShopOwners/productlist/:pageNumber' element={<ProductListScreen />} />
                   <Route path='/admin/InsuranceCompanyList' element={<InsuranceCompanyListScreen />} />
                   <Route path='/admin/ShopList' element={<ShopListScreen />} />
                   <Route path='/admin/RepairerCompanyList' element={<RepairerCompanyListScreen />} />
                   <Route path='/admin/userlist' element={<UserListScreen />} />
-                  <Route path='/admin/product/:id/edit' element={<ProductEditScreen />} />
+                  <Route path='/ShopOwners/product/:id/edit' element={<ProductEditScreen />} />
                   <Route path='/admin/user/:id/edit' element={<UserEditScreen />} />
                   <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
                   <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />

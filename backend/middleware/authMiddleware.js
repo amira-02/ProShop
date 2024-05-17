@@ -39,36 +39,7 @@ const admin = (req, res, next) => {
   }
 };
 
-// const admin = (req, res, next) => {
-//   // Assurez-vous que req.user est défini
-//   if (!req.user) {
-//     res.status(401);
-//     throw new Error('Not authorized');
-//   }
 
-//   // Vérifiez si l'utilisateur est un administrateur
-//   if (req.user.isAdmin) {
-//     next();
-//   } else {
-//     // Vérifiez si l'utilisateur est une société d'assurance
-//     if (req.user.Type === 'InsuranceCompany') {
-//       next();
-//     } else {
-//       // Vérifiez si l'utilisateur est une société de réparation
-//       if (req.user.Type === 'RepairerCompany') {
-//         next();
-//       } else {
-//         // Vérifiez si l'utilisateur est un propriétaire de boutique
-//         if (req.user.Type === 'ShopOwner') {
-//           next();
-//         } else {
-//           res.status(401);
-//           throw new Error('Not authorized');
-//         }
-//       }
-//     }
-//   }
-// };
 
 const insuranceCompany = (req, res, next) => {
   // Assurez-vous que req.user est défini
@@ -90,4 +61,24 @@ const insuranceCompany = (req, res, next) => {
 
 
 
-export { protect, admin ,insuranceCompany};
+const ShopOwner = (req, res, next) => {
+  // Assurez-vous que req.user est défini
+  if (!req.user) {
+    res.status(401);
+    throw new Error('Not authorized');
+  }
+
+  // Vérifiez si l'utilisateur est une compagnie d'assurance
+  if (req.user.Type === 'shop') {
+    next();
+  } else {
+    res.status(401);
+    throw new Error('Not authorized as a shop owner ');
+  }
+};
+
+
+
+
+
+export { protect, admin ,insuranceCompany, ShopOwner};
