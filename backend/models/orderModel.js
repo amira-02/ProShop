@@ -18,6 +18,25 @@ const orderSchema = mongoose.Schema(
           required: true,
           ref: 'Product',
         },
+        policy: {
+          type: mongoose.Schema.Types.ObjectId,
+          required: true,
+          ref: 'Policy',
+        },
+        startDate: {
+          type: Date,
+          required: true,
+        },
+        endDate: {
+          type: Date,
+          required: true,
+        },
+        policyprice: { type: Number, required: true },
+        theftProtection: {
+          type: Boolean,
+          required: true,
+          default: false,
+        },
       },
     ],
     shippingAddress: {
@@ -71,24 +90,6 @@ const orderSchema = mongoose.Schema(
     },
     deliveredAt: {
       type: Date,
-    },
-    policy: {
-      type: mongoose.Schema.Types.ObjectId, // Only store the policy ID
-      required: true,
-      ref: 'Policy',
-    },
-    startDate: {
-      type: Date,
-      required: true,
-    },
-    endDate: {
-      type: Date,
-      required: true,
-    },
-    theftProtection: {
-      type: Boolean,
-      required: true,
-      default: false,
     },
   },
   {

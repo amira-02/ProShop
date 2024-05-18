@@ -11,19 +11,27 @@ const cartSlice = createSlice({
   reducers: {
     addToCart: (state, action) => {
       // NOTE: we don't need user, rating, numReviews or reviews
-      // in the cart
-      const { user, rating, numReviews, reviews, ...item } = action.payload;
-
+      // in the cartz
+      const {
+        user,
+        rating,
+        numReviews,
+        reviews,
+        ...item  // Spread the rest of the properties into item
+      } = action.payload;
+    
       const existItem = state.cartItems.find((x) => x._id === item._id);
-
+    
       if (existItem) {
+        // If the item already exists in the cart, update it
         state.cartItems = state.cartItems.map((x) =>
           x._id === existItem._id ? item : x
         );
       } else {
+        // If the item doesn't exist, add it to the cart
         state.cartItems = [...state.cartItems, item];
       }
-
+    
       return updateCart(state, item);
     },
     removeFromCart: (state, action) => {
@@ -38,8 +46,22 @@ const cartSlice = createSlice({
       state.paymentMethod = action.payload;
       localStorage.setItem('cart', JSON.stringify(state));
     },
-    saveContractDetails: (state, action) => { // Define saveContractDetails
-      state.contractDetails = action.payload;
+    saveContractDetails: (state, action) => {
+      const { policy, startDate, endDate, theftProtection, price } = action.payload;
+
+      // Create a new contract object based on the structure
+      const contract = {
+        policy,
+        startDate,
+        endDate,
+        theftProtection,
+        price, // Include the price in the contract details
+      };
+
+      // Update the contract details in the state
+      state.contractDetails = contract;
+
+      // Update the local storage, stringifying only contract details
       localStorage.setItem('cart', JSON.stringify(state));
     },
     clearCartItems: (state, action) => {

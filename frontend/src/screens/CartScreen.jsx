@@ -6,11 +6,9 @@ import { FaTrash } from 'react-icons/fa';
 import Message from '../components/Message';
 import { addToCart, removeFromCart } from '../slices/cartSlice';
 
-
 const CartScreen = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const cart = useSelector((state) => state.cart);
   const { cartItems } = cart;
 
@@ -23,7 +21,23 @@ const CartScreen = () => {
   };
 
   const checkoutHandler = (item) => {
-    navigate(`/contract/${item._id}`);
+    const contractDetails = localStorage.getItem('contractDetails');
+    if (contractDetails) {
+      alert('Contract details are saved!');
+      navigate('/shipping');
+    } else {
+      alert('Please complete the contract details before proceeding to checkout!');
+      navigate('/shipping');
+    }
+  };
+
+  // Function to calculate the number of days between start and end dates
+  const calculateDaysBetweenDates = (startDate, endDate) => {
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    const differenceInTime = end.getTime() - start.getTime();
+    const differenceInDays = differenceInTime / (1000 * 3600 * 24);
+    return differenceInDays;
   };
 
   return (
@@ -44,6 +58,16 @@ const CartScreen = () => {
                   </Col>
                   <Col md={3}>
                     <Link to={`/product/${item._id}`}>{item.name}</Link>
+                    <p>Start Date: {item.startDate}</p>
+                    <p>End Date: {item.endDate}</p>
+                    <p>Policy ID: {item.policy}</p>
+                    <p>
+                      Theft Protection: {item.theftProtection ? 'Yes' : 'No'}
+                    </p>
+                    <p>Policy Price: ${item.policyprice}</p>
+                    <p>
+                      Number of Days: {calculateDaysBetweenDates(item.startDate, item.endDate)}
+                    </p> {/* Display the number of days */}
                   </Col>
                   <Col md={2}>${item.price}</Col>
                   <Col md={2}>
@@ -68,15 +92,6 @@ const CartScreen = () => {
                       onClick={() => removeFromCartHandler(item._id)}
                     >
                       <FaTrash />
-                    </Button>
-                  </Col>
-                  <Col md={1}>
-                    <Button
-                      type='button'
-                      variant='primary'
-                      onClick={() => checkoutHandler(item)}
-                    >
-                      Choose Policy
                     </Button>
                   </Col>
                 </Row>
