@@ -1,3 +1,5 @@
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 export const addDecimals = (num) => {
   return (Math.round(num * 100) / 100).toFixed(2);
 };
@@ -55,12 +57,20 @@ export const updateCart = (state) => {
   // Save the cart to localStorage
   localStorage.setItem('cart', JSON.stringify(state));
 
-  // Display the total price with policy fee and theft protection fee in an alert
-  alert(`Policy Fee: $${addDecimals(totalPolicyFee)}\n
-         Theft Protection Fee: $${addDecimals(theftProtectionFee)}\n
-         Shipping Price: $${addDecimals(shippingPrice)}\n
-         Tax Price: $${addDecimals(taxPrice)}\n
-         Total Price (including Policy Fee, Theft Protection Fee, Shipping Price, and Tax Price): $${state.totalPrice}`);
+  // toast.info(
+  //   `Policy Fee: $${addDecimals(totalPolicyFee)}\n
+  //    Theft Protection Fee: $${addDecimals(theftProtectionFee)}\n
+  //    Shipping Price: $${addDecimals(shippingPrice)}\n
+  //    Tax Price: $${addDecimals(taxPrice)}\n
+  //    Total Price (including Policy Fee, Theft Protection Fee, Shipping Price, and Tax Price): $${state.totalPrice}`
+  // );
+  toast.info(
+    `Policy Fee: $${addDecimals(totalPolicyFee)}\n
+    Theft Protection Fee: $${addDecimals(theftProtectionFee)}\n`
+  )
 
+  toast.info(
+    `Total Price (including Policy Fee, Theft Protection Fee, Shipping Price, and Tax Price): $${state.totalPrice}`
+  )
   return state;
 };
