@@ -231,7 +231,8 @@
 // export default Contract;
 import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
@@ -349,7 +350,12 @@ const Contract = () => {
       setFormError(''); // Reset form error on successful submission
     }
   };
-  
+   // Display toast message when theft protection checkbox is clicked
+   useEffect(() => {
+    if (theftProtection) {
+      toast.info('Theft Protection add 5% of the product price ');
+    }
+  }, [theftProtection]);
 
   return (
     <div>
@@ -411,8 +417,7 @@ const Contract = () => {
             <Form.Label>
               <p className='jura-text' style={{ fontSize: '20px', color: 'black' }}>Theft Protection</p>
             </Form.Label>
-            <Form.Check style={{ transform: 'scale(1.5)', marginLeft: '-200px' }} aria-label='option 1' checked={theftProtection} onChange={(e) => setTheftProtection(e.target.checked)} />
-          </Form.Group>
+            <Form.Check style={{ transform: 'scale(1.5)', marginLeft: '-200px' }} aria-label='option 1' checked={theftProtection} onChange={(e) => setTheftProtection(e.target.checked)} /></Form.Group>
 
           <Row className='mb-3'>
             <Form.Group className='mb-3' controlId='formGridState'>

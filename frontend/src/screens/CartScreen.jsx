@@ -26,7 +26,7 @@ const CartScreen = () => {
       alert('Contract details are saved!');
       navigate('/shipping');
     } else {
-      alert('Please complete the contract details before proceeding to checkout!');
+      // alert('Please complete the contract details before proceeding to checkout!');
       navigate('/shipping');
     }
   };
