@@ -230,9 +230,16 @@
 
 // export default Contract;
 import React, { useState, useEffect } from 'react';
+<<<<<<< HEAD
+=======
 import { useDispatch } from 'react-redux';
+<<<<<<< HEAD
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
+=======
+
+>>>>>>> 937851a58c8dc4ed65e5f29dc8f462c116de21ff
+>>>>>>> de792203ebdca5e58d8ef0423514e67b809a1ecd
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';

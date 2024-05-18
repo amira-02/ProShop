@@ -1,6 +1,7 @@
 import express from 'express';
 const router = express.Router();
 import {
+  getProductByuserId,
   getProducts,
   getProductById,
   createProduct,
@@ -31,5 +32,5 @@ router
   .get(checkObjectId, getProductById)
   .put(protect, ShopOwner, checkObjectId, updateProduct)
   .delete(protect, ShopOwner, checkObjectId, deleteProduct);
-
+  router.get('/user/:userId', getProductByuserId);
 export default router;

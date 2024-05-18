@@ -79,6 +79,7 @@ ReactDOM.render(
                   <Route path='/admin/InsuranceCompany/:id/edit' element={<InsuranceCompanyEditScreen />} />
                   <Route path='/admin/RepairerCompany/:id/edit' element={<RepairerCompanyEditScreen />} />
                   <Route path='/admin/Shop/:id/edit' element={<ShopEditScreen />} />
+                  
                 </Route>
                 {/* InsuranceCompany */}
                 <Route>
