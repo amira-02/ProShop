@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Form, Button, Row, Col } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
@@ -113,52 +113,31 @@ const ProfileScreen = () => {
             {error?.data?.message || error.error}
           </Message>
         ) : (
-          <Table striped hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>DATE</th>
-                <th>TOTAL</th>
-                <th>PAID</th>
-                <th>DELIVERED</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {orders.map((order) => (
-                <tr key={order._id}>
-                  <td>{order._id}</td>
-                  <td>{order.createdAt.substring(0, 10)}</td>
-                  <td>{order.totalPrice}</td>
-                  <td>
-                    {order.isPaid ? (
-                      order.paidAt.substring(0, 10)
-                    ) : (
-                      <FaTimes style={{ color: 'red' }} />
-                    )}
-                  </td>
-                  <td>
-                    {order.isDelivered ? (
-                      order.deliveredAt.substring(0, 10)
-                    ) : (
-                      <FaTimes style={{ color: 'red' }} />
-                    )}
-                  </td>
-                  <td>
+          <Row>
+            {orders.map((order) => (
+              <Col key={order._id} sm={12} md={6} lg={4} xl={3}>
+                <Card className='my-3 p-3 rounded'>
+                  <Card.Header as='h5'>Order ID: {order._id}</Card.Header>
+                  <Card.Body>
+                    <Card.Text>Date: {order.createdAt.substring(0, 10)}</Card.Text>
+                    <Card.Text>Total: {order.totalPrice}</Card.Text>
+                    <Card.Text>
+                      Paid: {order.isPaid ? order.paidAt.substring(0, 10) : <FaTimes style={{ color: 'red' }} />}
+                    </Card.Text>
+                    <Card.Text>
+                      Delivered: {order.isDelivered ? order.deliveredAt.substring(0, 10) : <FaTimes style={{ color: 'red' }} />}
+                    </Card.Text>
                     <LinkContainer to={`/order/${order._id}`}>
                       <Button className='btn-sm' variant='light'>
                         Details
                       </Button>
                     </LinkContainer>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-            
-          </Table>
-          
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         )}
-        
       </Col>
     </Row>
   );

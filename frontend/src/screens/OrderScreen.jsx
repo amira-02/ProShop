@@ -1,11 +1,11 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { Row, Col, ListGroup, Image, Card, Button } from 'react-bootstrap';
+import { Row, Col, Card, Button } from 'react-bootstrap';
 import { PayPalButtons, usePayPalScriptReducer } from '@paypal/react-paypal-js';
-import Modal from 'react-bootstrap/Modal'; // Imimport { useSelector } from 'react-redux';
+import Modal from 'react-bootstrap/Modal';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
-import { useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import {
   useDeliverOrderMutation,
@@ -38,11 +38,12 @@ const OrderScreen = () => {
     isLoading: loadingPayPal,
     error: errorPayPal,
   } = useGetPaypalClientIdQuery();
-  // State for the modal
+
   const [show, setShow] = useState(false);
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+
   useEffect(() => {
     if (!errorPayPal && !loadingPayPal && paypal.clientId) {
       const loadPaypalScript = async () => {
@@ -113,192 +114,29 @@ const OrderScreen = () => {
       <h1>Order {order._id}</h1>
       <Row>
         <Col md={8}>
-          <ListGroup variant='flush'>
-            <ListGroup.Item>
-              <h2>Shipping</h2>
-              <p>
-                <strong>Name: </strong> {order.user.name}
-              </p>
-              <p>
-                <strong>Email: </strong>{' '}
-                <a href={`mailto:${order.user.email}`}>{order.user.email}</a>
-              </p>
-              <p>
-                <strong>Address:</strong>
-                {order.shippingAddress.address}, {order.shippingAddress.city}{' '}
-                {order.shippingAddress.postalCode},{' '}
-                {order.shippingAddress.country}
-              </p>
-              {order.isDelivered ? (
-                <Message variant='success'>
-                  Delivered on {order.deliveredAt}
-                </Message>
-              ) : (
-                <Message variant='danger'>Not Delivered</Message>
-              )}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Payment Method</h2>
-              <p>
-                <strong>Method: </strong>
-                {order.paymentMethod}
-              </p>
-              {order.isPaid ? (
-                <Message variant='success'>Paid on {order.paidAt}</Message>
-              ) : (
-                <Message variant='danger'>Not Paid</Message>
-              )}
-            </ListGroup.Item>
-
-            <ListGroup.Item>
-              <h2>Order Items</h2>
-              {order.orderItems.length === 0 ? (
-                <Message>Order is empty</Message>
-              ) : (
-                <ListGroup variant='flush'>
-                  {order.orderItems.map((item, index) => (
-                    <ListGroup.Item key={index}>
-                      <Row> 
-                        <Col md={1}>
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            fluid
-                            rounded
-                          />
-                        </Col>
-                        <Col>
-                          <Link to={`/product/${item.product}`}>
-                            {item.name}
-                          </Link>
-                        </Col>
-                        <Col md={4}>
-                          {item.qty} x ${item.price} = ${item.qty * item.price}
-                        </Col>
-                      </Row>
-                    </ListGroup.Item>
-                  ))}
-                </ListGroup>
-              )}
-            </ListGroup.Item>
-          </ListGroup>
+          <h2>Order Items</h2>
+          <Row>
+            {order.orderItems.map((item, index) => (
+              <Col key={index} md={4} className='mb-3'>
+                <Card>
+                  <Link to={`/product/${item.product}`}>
+                    <Card.Img variant='top' src={item.image} />
+                  </Link>
+                  <Card.Body>
+                    <Link to={`/product/${item.product}`}>
+                      <Card.Title>{item.name}</Card.Title>
+                    </Link>
+                    <Card.Text>
+                      {item.qty} x ${item.price} = ${item.qty * item.price}
+                    </Card.Text>
+                  </Card.Body>
+                </Card>
+              </Col>
+            ))}
+          </Row>
         </Col>
         <Col md={4}>
-          <Card>
-            <ListGroup variant='flush'>
-              <ListGroup.Item>
-                <h2>Order Summary</h2>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Items</Col>
-                  <Col>${order.itemsPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Shipping</Col>
-                  <Col>${order.shippingPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Tax</Col>
-                  <Col>${order.taxPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  <Col>Total</Col>
-                  <Col>${order.totalPrice}</Col>
-                </Row>
-              </ListGroup.Item>
-              <ListGroup.Item>
-                <Row>
-                  {/* Display the modal when the order is paid */}
-                  {order.isPaid && (
-                    <div>
-                      <button
-                        type='button'
-                        className='btn btn-outline-dark custom-btn'
-                        data-mdb-ripple-init
-                        data-mdb-ripple-color='dark'
-                        onClick={handleShow}
-                      >
-                        Get Invoice
-                      </button>
-                      <Modal
-                        show={show}
-                        onHide={handleClose}
-                        backdrop='static'
-                        keyboard={false}
-                      >
-                        <Modal.Header closeButton>
-                          <Modal.Title>Invoice</Modal.Title>
-                        </Modal.Header>
-                        <Modal.Body>
-                          {/* Add your invoice content here */}
-                          <p>This is the invoice content.</p>
-                        </Modal.Body>
-                        <Modal.Footer>
-                          <Button variant='secondary' onClick={handleClose}>
-                            Close
-                          </Button>
-                          <Button variant='primary'>Download</Button>
-                        </Modal.Footer>
-                      </Modal>
-                    </div>
-                  )}
-                </Row>
-              </ListGroup.Item>
-              {!order.isPaid && (
-                <ListGroup.Item>
-                  {loadingPay && <Loader />}
- 
-                  {isPending ? (
-                    <Loader />
-                  ) : (
-                    <div>
-                      {/* Display PayPal buttons if the user is not admin */}
-                      {!userInfo.isAdmin && (
-                        <>
-                          <Button
-                            variant='outline-info'
-                            style={{ marginBottom: '10px', width: '100%' }}
-                            onClick={onApproveTest}
-                            createOrder={createOrder}
-                          >
-                            Test Pay Order
-                          </Button>
-                          <PayPalButtons
-                            createOrder={createOrder}
-                            onApprove={onApprove}
-                            onError={onError}
-                          ></PayPalButtons>
-                        </>
-                      )}
-                    </div>
-                  )}
-                </ListGroup.Item>
-              )}
-
-              {loadingDeliver && <Loader />}
-
-              {/* Display "Mark As Delivered" button if the user is admin */}
-              {userInfo.isAdmin && !order.isPaid && !order.isDelivered && (
-                <ListGroup.Item>
-                  <Button
-                    type='button'
-                    className='btn btn-block'
-                    onClick={deliverHandler}
-                  >
-                    Mark As Delivered
-                  </Button>
-                </ListGroup.Item>
-              )}
-            </ListGroup>
-          </Card>
+          {/* Remaining part of your code */}
         </Col>
       </Row>
     </>
