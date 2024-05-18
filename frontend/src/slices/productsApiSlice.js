@@ -22,6 +22,15 @@ export const productsApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
     }),
+    getProductByuserId: builder.query({
+      query: ({ user, pageNumber }) => ({
+        url: `/api/products/user/${user}`, // Ensure correct URL endpoint
+        params: { pageNumber }, // Only pass pageNumber as parameter
+      }),
+      keepUnusedDataFor: 5,
+      providesTags: ['Product'],
+    }),
+    
     createProduct: builder.mutation({
       query: () => ({
         url: `${PRODUCTS_URL}`,
@@ -67,6 +76,7 @@ export const productsApiSlice = apiSlice.injectEndpoints({
 });
 
 export const {
+  useGetProductByuserIdQuery,
   useGetProductsQuery,
   useGetProductDetailsQuery,
   useCreateProductMutation,

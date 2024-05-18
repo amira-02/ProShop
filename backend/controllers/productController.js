@@ -58,6 +58,25 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(createdProduct);
 });
 
+
+
+// @desc Fetch Product by user ID
+// @route GET /api/Product/user/:userId
+// @access Public
+const getProductByuserId = asyncHandler(async (req, res) => {
+  const pageSize = process.env.PAGINATION_LIMIT;
+  const page = Number(req.query.pageNumber) || 1;
+
+  const count = await Product.countDocuments({ user: req.params.userId });
+  const products = await Product.find({ user: req.params.userId })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({ products, page, pages: Math.ceil(count / pageSize), count });
+});
+
+
+
 // @desc    Update a product
 // @route   PUT /api/products/:id
 // @access  Private/Admin
@@ -158,6 +177,7 @@ const getProductsCount = asyncHandler(async (req, res) => {
 });
 
 export {
+  getProductByuserId,
   getProducts,
   getProductById,
   createProduct,
