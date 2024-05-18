@@ -1,24 +1,27 @@
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
-
-const claimSchema = new mongoose.Schema({
-  user: {
+const ClaimSchema = new mongoose.Schema({
+  Repairer: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
     required: true
   },
-  product: {
+  Order: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
+    ref: 'Order',
     required: true
   },
-  description: {
+  indexProduct: {
+    type: Number,
+    required: true
+  },
+  description: {  
     type: String,
     required: true
   },
   status: {
     type: String,
-    enum: ['Pending', 'In Progress', 'Resolved', 'Rejected'],
+    enum: ['Pending', 'In Progress', 'Resolved', 'Rejected', 'Refund'],
     default: 'Pending'
   },
   createdAt: {
@@ -30,7 +33,5 @@ const claimSchema = new mongoose.Schema({
     default: Date.now
   }
 });
-
-const Claim = mongoose.model('Claim', claimSchema);
-
-module.exports = Claim;
+const Claim = mongoose.model('Claim', ClaimSchema);
+export default Claim;

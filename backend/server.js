@@ -13,7 +13,7 @@ import ShopRoutes from './routes/ShopRoutes.js';
 import OfferRoutes from './routes/OfferRoutes.js' 
 import PolicyRoutes from './routes/PolicyRoutes.js'
 import { notFound, errorHandler } from './middleware/errorMiddleware.js';
-
+import ClaimRoutes from'./routes/ClaimRoutes.js' 
 dotenv.config();
 
 const port = process.env.PORT || 5000;
@@ -34,6 +34,7 @@ app.use('/api/RepairerCompany',RepairerCompanyRoutes);
 app.use('/api/Shop', ShopRoutes);
 app.use('/api/Offer', OfferRoutes);
 app.use('/api/Policy', PolicyRoutes);
+app.use('/api/Claim', ClaimRoutes);
 app.use('/api/upload', uploadRoutes);
 
 app.get('/api/config/paypal', (req, res) =>

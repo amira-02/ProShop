@@ -1,4 +1,4 @@
-import asyncHandler from '../middleware/asyncHandler.js';
+  import asyncHandler from '../middleware/asyncHandler.js';
 import Offer from '../models/Insurance_companyModel.js';
 
 // @desc    Fetch all Offer

@@ -159,7 +159,7 @@ const OrderScreen = () => {
                 <ListGroup variant='flush'>
                   {order.orderItems.map((item, index) => (
                     <ListGroup.Item key={index}>
-                      <Row>
+                      <Row> 
                         <Col md={1}>
                           <Image
                             src={item.image}
@@ -255,7 +255,7 @@ const OrderScreen = () => {
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
-
+ 
                   {isPending ? (
                     <Loader />
                   ) : (

@@ -237,7 +237,7 @@ import { useDispatch } from 'react-redux';
 
 
 
-import { useDispatch } from 'react-redux';
+// import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
 
@@ -246,7 +246,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import CheckoutSteps from '../components/CheckoutSteps';
 import { addToCart } from '../slices/cartSlice';
-import { useGetProductDetailsQuery } from '../slices/productsApiSlice';
+// import { useGetProductDetailsQuery } from '../slices/productsApiSlice';
 
 const Contract = () => {
   // State variables
