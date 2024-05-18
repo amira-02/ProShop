@@ -230,11 +230,11 @@
 
 // export default Contract;
 import React, { useState, useEffect } from 'react';
-<<<<<<< HEAD
-=======
+
+
 import { useDispatch } from 'react-redux';
 
->>>>>>> 937851a58c8dc4ed65e5f29dc8f462c116de21ff
+
 import { Button, Form, Row, Col } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
