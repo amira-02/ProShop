@@ -154,8 +154,11 @@ const ProfileScreen = () => {
                 </tr>
               ))}
             </tbody>
+            
           </Table>
+          
         )}
+        
       </Col>
     </Row>
   );
