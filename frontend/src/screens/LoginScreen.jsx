@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { Form, Button, Row, Col } from 'react-bootstrap';
+import { Form, Button, Row, Col, Container } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import Loader from '../components/Loader';
 import FormContainer from '../components/FormContainer';
@@ -30,8 +30,7 @@ const LoginScreen = () => {
       navigate(redirect);
     }
   }, [navigate, redirect, userInfo]);
-  
-  
+
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -43,57 +42,62 @@ const LoginScreen = () => {
       toast.error(err?.data?.message || err.error);
     }
   };
-  
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
+    <Container className="py-5">
+      <FormContainer>
 
-      <Form onSubmit={submitHandler}>
-        <Form.Group className='my-2' controlId='email'>
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type='email'
-            placeholder='Enter email'
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+        <Form onSubmit={submitHandler} className="shadow p-4 bg-white rounded">
+        <h1 
+          className="italic-text italiana-font text-center"
+          style={{ fontSize: '50px', color: 'black' }}>
+          Welcome Back
+        </h1>
+          <Form.Group className='my-3' controlId='email'>
+            <Form.Label>Email </Form.Label>
+            <Form.Control
+              type='email'
+              placeholder='Enter email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Form.Group className='my-2' controlId='password'>
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type='password'
-            placeholder='Enter password'
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
+          <Form.Group className='my-3' controlId='password'>
+            <Form.Label>Password</Form.Label>
+            <Form.Control
+              type='password'
+              placeholder='Enter password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            ></Form.Control>
+          </Form.Group>
 
-        <Button disabled={isLoading} type='submit' variant='primary'>
-          Sign In
-        </Button>
+          <Button disabled={isLoading} type='submit' variant='primary' className="w-100">
+            Sign In
+          </Button>
 
-        {isLoading && <Loader />}
-      </Form>
+          {isLoading && <Loader />}
+        </Form>
 
-      <Row className='py-3'>
-        <Col>
-          New Customer?{' '}
-          <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
-            Register
-          </Link>
-        </Col>
-      </Row>
+        <Row className='py-3'>
+          <Col className="text-center">
+            New Customer?{' '}
+            <Link to={redirect ? `/register?redirect=${redirect}` : '/register'}>
+              Register
+            </Link>
+          </Col>
+        </Row>
 
-      {/* Display the token */}
-      {userInfo && userInfo.token && (
-        <div>
-          <h2>Your Token:</h2>
-          <p>{userInfo.token}</p>
-        </div>
-      )}
-    </FormContainer>
+        {/* Display the token */}
+        {userInfo && userInfo.token && (
+          <div className="mt-4">
+            <h2>Your Token:</h2>
+            <p className="text-break">{userInfo.token}</p>
+          </div>
+        )}
+      </FormContainer>
+    </Container>
   );
 };
 
