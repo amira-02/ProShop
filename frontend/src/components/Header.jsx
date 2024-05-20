@@ -280,11 +280,11 @@ const ShopHeader = ({ userInfo, logoutHandler }) => (
 
 
 const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
-  <>
+  <> 
       <Navbar bg='light' variant='dark' expand='lg' collapseOnSelect>
           <Container>
           <Navbar.Toggle aria-controls='basic-navbar-nav' />
-          <Navbar.Collapse id='basic-navbar-nav'>
+          {/* <Navbar.Collapse id='basic-navbar-nav'> */}
 
           <Nav className='mr-auto'>
                 <SearchBox />
@@ -294,11 +294,11 @@ const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
                 <LinkContainer to='/about'>
                   <Nav.Link className='text-black'>About Us</Nav.Link>
                 </LinkContainer>
-                <LinkContainer to='/repair'>
+                {/* <LinkContainer to='/repair'>
                   <Nav.Link className='text-black'>
                     Atelier de réparation
                   </Nav.Link>
-                </LinkContainer>
+                </LinkContainer> */}
               </Nav> 
 
               <Nav className='ms-auto'>
@@ -344,16 +344,8 @@ const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
             </Nav.Link>
           </LinkContainer>
         )}
-
-
-
-
-
-
-
-
     </Nav>
-    </Navbar.Collapse>
+    {/* </Navbar.Collapse> */}
     </Container>
         </Navbar>
 
