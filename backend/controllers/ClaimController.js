@@ -124,35 +124,55 @@ const getCompanyIdByClaimId = async (claimId) => {
 
 
 
-
-
-
-
 // @desc Create a Claim
 // @route POST /api/claims
-
 const createClaim = asyncHandler(async (req, res) => {
-    const { Repairer, Order, indexProduct, description } = req.body;
+  const { Order, indexProduct, description } = req.body; // Changed variable names to camelCase
+
+  try {
+    const newClaim = new Claim({
+      Order,
+      indexProduct,
+      description,
+      status: 'Pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const createdClaim = await newClaim.save();
+    res.status(201).json({ message: 'Claim created', claim: createdClaim });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create the claim', error: error.message });
+  }
+});
+
+
+
+// // @desc Create a Claim
+// // @route POST /api/claims
+
+// const createClaim = asyncHandler(async (req, res) => {
+//     const { Repairer, Order, indexProduct, description } = req.body;
   
-    try {
-      // Créer une nouvelle réclamation avec les données fournies
-      const newClaim = new Claim({ // Use a different variable name here
-        Repairer,
-        Order,
-        indexProduct,
-        description,
-        status: 'Pending', // Par défaut, le statut est 'Pending'
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      });
+//     try {
+//       // Créer une nouvelle réclamation avec les données fournies
+//       const newClaim = new Claim({ // Use a different variable name here
+//         Repairer,
+//         Order,
+//         indexProduct,
+//         description,
+//         status: 'Pending', // Par défaut, le statut est 'Pending'
+//         createdAt: new Date(),
+//         updatedAt: new Date(),
+//       });
   
-      const createdClaim = await newClaim.save(); // Use a different variable name here
+//       const createdClaim = await newClaim.save(); // Use a different variable name here
   
-      res.status(201).json({ message: 'Claim created', claim: createdClaim });
-    } catch (error) {
-      res.status(500).json({ message: 'Échec de la création de la réclamation', error: error.message });
-    }
-  });
+//       res.status(201).json({ message: 'Claim created', claim: createdClaim });
+//     } catch (error) {
+//       res.status(500).json({ message: 'Échec de la création de la réclamation', error: error.message });
+//     }
+//   });
 
 // @desc    Mettre à jour une réclamation
 // @route   PUT /api/claims/:id

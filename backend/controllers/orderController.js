@@ -1,9 +1,52 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import Order from '../models/orderModel.js';
 import Product from '../models/productModel.js';
+import Policy from '../models/PolicyModel.js';
 
 import { calcPrices } from '../utils/calcPrices.js';
-import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
+// import { verifyPayPalPayment, checkIfNewTransaction } from '../utils/paypal.js';
+
+// import Order from '../models/orderModel.js';
+// import Policy from '../models/PolicyModel.js';
+
+const getOrderPolicy = asyncHandler(async (req, res) => {
+  const orderId = req.params.orderId;
+
+  // Recherchez la commande dans la base de données
+  const order = await Order.findById(orderId);
+
+  // Vérifiez si la commande existe
+  if (!order) {
+    return res.status(404).json({ message: 'Commande non trouvée' });
+  }
+
+  // Tableau pour stocker les détails de toutes les polices associées à la commande
+  const policyDetails = [];
+
+  // Parcours de tous les éléments de la commande
+  for (let i = 0; i < order.orderItems.length; i++) {
+    // Obtenez l'identifiant de la police de l'objet de commande
+    const policyId = order.orderItems[i].policy;
+
+    // Recherchez la police correspondante dans la base de données
+    const policy = await Policy.findById(policyId);
+
+    // Vérifiez si la police existe
+    if (!policy) {
+      return res.status(404).json({ message: `Police non trouvée pour l'élément de commande à l'index ${i}` });
+    }
+
+    // Ajoutez les détails de la police au tableau
+    policyDetails.push(policy);
+  }
+
+  // Renvoyez les détails de toutes les polices associées à la commande dans la réponse
+  res.json(policyDetails);
+});
+
+
+
+
 
 // @desc    Create new order
 // @route   POST /api/orders
@@ -151,7 +194,7 @@ const getOrdersByCompanyId = asyncHandler(async (req, res) => {
   const companyId = req.params.companyId;
 
   const orders = await Order.find({ 'orderItems.policy': companyId }).populate('user', 'id name');
-
+   console.log(orders)
   if (!orders || orders.length === 0) {
     return res.status(404).json({ message: 'No orders found for this company' });
   }
@@ -166,5 +209,7 @@ export {
   updateOrderToPaid,
   updateOrderToDelivered,
   getOrders,
-  getOrdersByCompanyId
+  getOrdersByCompanyId,
+  getOrderPolicy,
+  
 };

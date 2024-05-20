@@ -2,9 +2,9 @@ import mongoose from 'mongoose';
 
 const ClaimSchema = new mongoose.Schema({
   Repairer: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: 'user',
-    required: true
+    // required: true
   },
   Order: {
     type: mongoose.Schema.Types.ObjectId,
