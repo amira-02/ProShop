@@ -30,7 +30,6 @@ const getClaimById = asyncHandler(async (req, res) => {
 // Vos fonctions CRUD
 // @desc Create a Claim
 // @route POST /api/claims
-
 const createClaim = asyncHandler(async (req, res) => {
     const { Repairer, Order, indexProduct, description } = req.body;
   
@@ -80,15 +79,6 @@ const updateClaim = asyncHandler(async (req, res) => {
   
     res.json({ message: 'Réclamation mise à jour', claim: updatedClaim });
   });
-
-
-
-
-
-
-
-
-
   const deleteClaim = asyncHandler(async (req, res) => {
     try {
       const claimToDelete = await Claim.findById(req.params.id);
@@ -107,13 +97,6 @@ const updateClaim = asyncHandler(async (req, res) => {
     }
   });
   
-
-
-
-
-
-
-
 // @desc Get top rated Claim
 // @route GET /api/Claim/top
 // @access Public
