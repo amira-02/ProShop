@@ -14,19 +14,15 @@ import {
   useUpdateClaimMutation,
 } from '../slices/ClaimApiSlice'; // Import the useCreateClaimMutation hook
 
-
 function MyVerticallyCenteredModal(props) {
   const [description, setDescription] = useState('');
-  const [isTheftProtection, setIsTheftProtection] = useState(false);
-  const [createClaim, { isLoading: loadingCreateClaim }] = useCreateClaimMutation();
+  const [isTheftProtection, setIsTheftProtection] = useState(false); // State for theft protection
+  const [createClaim, { isLoading: loadingCreateClaim }] =
+    useCreateClaimMutation();
   const [updateClaim, { isLoading: loadingUpdate }] = useUpdateClaimMutation();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!description) { // Check if description is empty
-      toast.error('Description is required');
-      return;
-    }
     try {
       const createResult = await createClaim();
       const updateResult = await updateClaim({
@@ -34,12 +30,12 @@ function MyVerticallyCenteredModal(props) {
         orderId: props.orderId,
         itemIndex: props.itemIndex,
         description: description,
-        theftProtection: isTheftProtection,
+        theftProtection: isTheftProtection, // Include theft protection in the update
       }).unwrap();
 
       toast.success('Claim submitted successfully');
       setDescription('');
-      setIsTheftProtection(false);
+      setIsTheftProtection(false); // Reset theft protection state
       props.onHide();
     } catch (error) {
       toast.error('Failed to submit claim');
@@ -48,10 +44,17 @@ function MyVerticallyCenteredModal(props) {
   };
 
   return (
-    <Modal {...props} size='lg' aria-labelledby='contained-modal-title-vcenter' centered className='custom-modal'>
+    <Modal
+      {...props}
+      size='lg'
+      aria-labelledby='contained-modal-title-vcenter'
+      centered
+      className='custom-modal'
+    >
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
           Add Claim
+          for Order ID: {props.orderId}, Item Index: {props.itemIndex}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -72,6 +75,7 @@ function MyVerticallyCenteredModal(props) {
             <Form.Check
               type='checkbox'
               label='Theft Incidence'
+              // disabled={!props.item.theftProtection} // Disable the checkbox if theft protection is not available
               onChange={(e) => {
                 if (!props.item.theftProtection) {
                   e.preventDefault();
@@ -95,7 +99,6 @@ function MyVerticallyCenteredModal(props) {
     </Modal>
   );
 }
-
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');

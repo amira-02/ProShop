@@ -1,6 +1,6 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import  Claim  from '../models/ClaimModel.js'; // Use a different variable name here
-
+import Order from '../models/orderModel.js';
 // @desc Fetch all Claims
 // @route GET /api/claims
 // @access Public
@@ -30,16 +30,36 @@ const getClaimById = asyncHandler(async (req, res) => {
 // @route GET /api/claims/user/:userId
 // @access Public
 const getClaimsByUserId = asyncHandler(async (req, res) => {
-  const pageSize = process.env.PAGINATION_LIMIT || 10; // Default to 10 if not set
-  const page = Number(req.query.pageNumber) || 1;
+  try {
+    const userId = req.params.userId;
+    const pageNumber = req.query.pageNumber || 1; // Default to page 1 if not provided
+    const pageSize = 10; // Adjust the page size as needed
 
-  const count = await Claim.countDocuments({ user: req.params.userId });
-  const claims = await Claim.find({ user: req.params.userId })
-    .limit(pageSize)
-    .skip(pageSize * (page - 1));
+    // Find orders associated with the user
+    const orders = await Order.find({ user: userId });
 
-  res.json({ claims, page, totalPages: Math.ceil(count / pageSize), totalCount: count });
+    // Initialize an array to store all claims associated with the user
+    let userClaims = [];
+
+    // Loop through each order to fetch claims associated with it
+    for (const order of orders) {
+      // Fetch claims associated with the current order
+      const claims = await Claim.find({ Order: order._id })
+        .skip((pageNumber - 1) * pageSize)
+        .limit(pageSize);
+      
+      // Add the claims to the userClaims array
+      userClaims = userClaims.concat(claims);
+    }
+
+    res.json({ claims: userClaims });
+  } catch (error) {
+    console.error('Error fetching claims by user ID:', error);
+    res.status(500).json({ message: 'Failed to fetch claims by user ID', error: error.message });
+  }
 });
+
+
 
 const getCompanyIdByClaimId = async (claimId) => {
   try {
@@ -121,7 +141,6 @@ const createClaim = asyncHandler(async (req, res) => {
   // if (!orderId || !itemIndex) {
   //   return res.status(400).json({ message: 'Order ID and item index are required' });
   // }
-
   try {
     const newClaim = new Claim({
       Order: '6647977428c88b5a5a1bdd34',

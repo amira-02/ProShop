@@ -326,6 +326,11 @@ const RegularHeader = ({ userInfo, logoutHandler ,cartItems }) => (
                 <span className='text-black'>Profile</span>
               </NavDropdown.Item>
             </LinkContainer>
+            <LinkContainer to='/Claims'>
+              <NavDropdown.Item>
+                <span className='text-black'>Claims</span>
+              </NavDropdown.Item>
+            </LinkContainer>
             <NavDropdown.Item onClick={logoutHandler}>
               Logout
               <span className='text-black'></span>

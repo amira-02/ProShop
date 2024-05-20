@@ -34,6 +34,7 @@ import RepairerCompanyListScreen from './screens/admin/RepairerCompanyListScreen
 import RepairerCompanyEditScreen from './screens/admin/RepairerCompanyEditScreen';
 import InsuranceHome from './screens/InsuranceCompany/InsuranceHome';
 import StickyHeadTable from './screens/InsuranceCompany/PolicyListScreen';
+import ClaimsScreen from './screens/ClaimsScreen';
 import EditPolicy from './screens/InsuranceCompany/PolicyEditScreen';
 import { Provider } from 'react-redux';
 import store from './store';
@@ -70,6 +71,7 @@ ReactDOM.render(
                   <Route path='/contract/:id' element={<Contract />} />
                   <Route path='/order/:id' element={<OrderScreen />} />
                   <Route path='/profile' element={<ProfileScreen />} />
+                  <Route path='/Claims' element={<ClaimsScreen />} />
                 </Route>
                   <Route path='/ShopOwners/productlist' element={<ProductListScreen />} />
                   <Route path='/ShopOwners/productlist/:pageNumber' element={<ProductListScreen />} />

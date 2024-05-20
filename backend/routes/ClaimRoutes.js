@@ -1,6 +1,5 @@
 import express from 'express';
 import asyncHandler from 'express-async-handler';
-
 import {
   getClaims,
   getClaimById,
@@ -24,14 +23,16 @@ router.route('/')
 // Retrieve, update, or delete a single claim by ID
 router.route('/:id')
   .get(asyncHandler(getClaimById))
-  .put( asyncHandler(updateClaim))
-  .delete( asyncHandler(deleteClaim));
+  .put(asyncHandler(updateClaim))
+  .delete(asyncHandler(deleteClaim));
 
 // Retrieve top rated claims
 router.get('/top', asyncHandler(getTopClaim));
 
 // Retrieve claims by user ID
+// Retrieve claims by user ID with pagination
 router.get('/user/:userId', asyncHandler(getClaimsByUserId));
+
 
 // Retrieve claim count by company ID
 router.get('/count/:companyId', asyncHandler(getClaimCount));

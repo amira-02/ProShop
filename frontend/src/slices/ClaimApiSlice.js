@@ -22,7 +22,6 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       onQueryError: (error) => {
-        // Handle query errors
         console.error('Error fetching claim by ID:', error);
       },
     }),
