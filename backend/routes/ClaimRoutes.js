@@ -7,10 +7,12 @@ import {
   getClaimsByUserId,
   getCompanyIdByClaimId,
   createClaim,
+  setRepairer,
   updateClaim,
   deleteClaim,
   getTopClaim,
   getClaimCount,
+  getOrderDetailsFromClaim, 
 } from '../controllers/ClaimController.js';
 import { protect } from '../middleware/authMiddleware.js';
 
@@ -36,15 +38,6 @@ router.get('/user/:userId', asyncHandler(getClaimsByUserId));
 // Retrieve claim count by company ID
 router.get('/count/:companyId', asyncHandler(getClaimCount));
 
-// Retrieve company ID by claim ID
-router.get('/getCompanyIdByClaimId/:claimId', async (req, res) => {
-  try {
-    const { claimId } = req.params;
-    const companyId = await getCompanyIdByClaimId(claimId);
-    res.json({ companyId });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to retrieve company ID for the claim', error: error.message });
-  }
-});
+router.get('/claim/order/:orderId', getOrderDetailsFromClaim);
 
 export default router;

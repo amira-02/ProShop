@@ -284,6 +284,45 @@ const getClaimCount = async (req, res) => {
   }
 };
 
+
+
+
+
+// Fonction pour récupérer les détails de la commande à partir de l'ID de la commande dans le modèle Claim
+
+  const getOrderDetailsFromClaim = asyncHandler(async (req, res) => {
+    try {
+      // Récupérez l'ID de la commande à partir des paramètres de la requête
+      const { orderId } = req.params;
+  
+      // Recherchez le Claim correspondant avec l'ID de la commande
+      const claim = await Claim.findOne({ Order: orderId });
+  
+      // Vérifiez si le Claim existe
+      if (!claim) {
+        return res.status(404).json({ message: 'Claim not found' });
+      }
+  
+      // Récupérez les détails de la commande associée au Claim
+      const order = await Order.findById(claim.Order);
+  
+      // Vérifiez si la commande existe
+      if (!order) {
+        return res.status(404).json({ message: 'Order not found for the claim' });
+      }
+  
+      // Renvoyez les détails de la commande dans la réponse
+      res.json({ order });
+    } catch (error) {
+      // Gérez les erreurs
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+  
+
+
+
 export {
   getClaims,
   getClaimById,
@@ -295,4 +334,5 @@ export {
   deleteClaim,
   getTopClaim,
   getClaimCount,
+  getOrderDetailsFromClaim, 
 };
