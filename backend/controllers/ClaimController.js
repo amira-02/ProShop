@@ -1,10 +1,10 @@
 import asyncHandler from '../middleware/asyncHandler.js';
 import  Claim  from '../models/ClaimModel.js'; // Use a different variable name here
 
-// @desc Fetch all Claim
-// @route GET /api/Claim
+// @desc Fetch all Claims
+// @route GET /api/claims
 // @access Public
-const getClaim = asyncHandler(async (req, res) => {
+const getClaims = asyncHandler(async (req, res) => {
   const pageSize = process.env.PAGINATION_LIMIT;
   const page = Number(req.query.pageNumber) || 1;
   const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
@@ -12,25 +12,24 @@ const getClaim = asyncHandler(async (req, res) => {
   const count = await Claim.countDocuments({ ...keyword });
   const claims = await Claim.find({ ...keyword }).limit(pageSize).skip(pageSize * (page - 1)); // Use a different variable name here
 
-  res.json({ claims, page, pages: Math.ceil(count / pageSize), count }); // Update variable name here
+  res.json({ claims, page, totalPages: Math.ceil(count / pageSize), totalCount: count }); // Update variable name here
 });
 
 // @desc Fetch single Claim
-// @route GET /api/Claim/:id
+// @route GET /api/claims/:id
 // @access Public
 const getClaimById = asyncHandler(async (req, res) => {
   const claim = await Claim.findById(req.params.id); // Use a different variable name here
   if (!claim) {
-    res.status(404).json({ message: 'Claim not found with the provided ID' });
-    return;
+    return res.status(404).json({ message: 'Claim not found with the provided ID' });
   }
   res.json(claim);
 });
 
 // @desc Fetch Claims by user ID
-// @route GET /api/claim/user/:userId
+// @route GET /api/claims/user/:userId
 // @access Public
-const getClaimByUserId = asyncHandler(async (req, res) => {
+const getClaimsByUserId = asyncHandler(async (req, res) => {
   const pageSize = process.env.PAGINATION_LIMIT || 10; // Default to 10 if not set
   const page = Number(req.query.pageNumber) || 1;
 
@@ -39,10 +38,8 @@ const getClaimByUserId = asyncHandler(async (req, res) => {
     .limit(pageSize)
     .skip(pageSize * (page - 1));
 
-  res.json({ claims, page, pages: Math.ceil(count / pageSize), count });
+  res.json({ claims, page, totalPages: Math.ceil(count / pageSize), totalCount: count });
 });
-
-
 
 const getCompanyIdByClaimId = async (claimId) => {
   try {
@@ -124,27 +121,28 @@ const getCompanyIdByClaimId = async (claimId) => {
 
 
 
+
 // @desc Create a Claim
 // @route POST /api/claims
-const createClaim = asyncHandler(async (req, res) => {
-  const { Order, indexProduct, description } = req.body; // Changed variable names to camelCase
+// const createClaim = asyncHandler(async (req, res) => {
+//   const { Order, indexProduct, description } = req.body; // Changed variable names to camelCase
 
-  try {
-    const newClaim = new Claim({
-      Order,
-      indexProduct,
-      description,
-      status: 'Pending',
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
+//   try {
+//     const newClaim = new Claim({
+//       Order,
+//       indexProduct,
+//       description,
+//       status: 'Pending',
+//       createdAt: new Date(),
+//       updatedAt: new Date(),
+//     });
 
-    const createdClaim = await newClaim.save();
-    res.status(201).json({ message: 'Claim created', claim: createdClaim });
-  } catch (error) {
-    res.status(500).json({ message: 'Failed to create the claim', error: error.message });
-  }
-});
+//     const createdClaim = await newClaim.save();
+//     res.status(201).json({ message: 'Claim created', claim: createdClaim });
+//   } catch (error) {
+//     res.status(500).json({ message: 'Failed to create the claim', error: error.message });
+//   }
+// });
 
 
 
@@ -174,42 +172,80 @@ const createClaim = asyncHandler(async (req, res) => {
 //     }
 //   });
 
-// @desc    Mettre à jour une réclamation
-// @route   PUT /api/claims/:id
-// @access  Private/Admin
-const updateClaim = asyncHandler(async (req, res) => {
-    const { Repairer, Order, indexProduct, description, status } = req.body;
-  
-    // Trouver la réclamation à mettre à jour par son ID
-    let claimToUpdate = await Claim.findById(req.params.id); // Use a different variable name here
-  
+const createClaim = asyncHandler(async (req, res) => {
+  // const { orderId, itemIndex, description } = req.body;
+
+
+  // Check if required fields are missing or empty
+  // if (!orderId || !itemIndex) {
+  //   return res.status(400).json({ message: 'Order ID and item index are required' });
+  // }
+
+  try {
+    const newClaim = new Claim({
+      Order: '6647977428c88b5a5a1bdd34',
+      indexProduct: 1,
+      description : 'No description',
+      status: 'Pending',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    });
+
+    const createdClaim = await newClaim.save();
+    res.status(201).json({ message: 'Claim created', claim: createdClaim });
+  } catch (error) {
+    res.status(500).json({ message: 'Failed to create the claim from controller', error: error.message });
+  }
+});
+
+
+const setRepairer = asyncHandler(async (req, res) => {
+  const { repairer } = req.body;
+
+  try {
+    const claimToUpdate = await Claim.findById(req.params.id);
     if (!claimToUpdate) {
-      res.status(404).json({ message: 'Réclamation non trouvée avec l\'ID fourni' });
-      return;
+      return res.status(404).json({ message: 'Claim not found with the provided ID' });
     }
-  
-    // Mettre à jour les champs de la réclamation
-    claimToUpdate.Repairer = Repairer || claimToUpdate.Repairer;
-    claimToUpdate.Order = Order || claimToUpdate.Order;
-    claimToUpdate.indexProduct = indexProduct || claimToUpdate.indexProduct;
-    claimToUpdate.description = description || claimToUpdate.description;
-    claimToUpdate.status = status || claimToUpdate.status;
+
+    claimToUpdate.repairer = repairer;
     claimToUpdate.updatedAt = new Date();
-  
-    const updatedClaim = await claimToUpdate.save(); // Use a different variable name here
-  
-    res.json({ message: 'Réclamation mise à jour', claim: updatedClaim });
-  });
+
+    const updatedClaim = await claimToUpdate.save();
+    res.json({ message: 'Repairer updated', claim: updatedClaim });
+  } catch (error) {
+    console.error('Error updating repairer:', error);
+    res.status(500).json({ message: 'Failed to update repairer', error: error.message });
+  }
+});
+
+// @desc Update a Claim
+// @route PUT /api/claims/:id
+// @access Private/Admin
+const updateClaim = asyncHandler(async (req, res) => {
+  const { orderId, itemIndex, description } = req.body;
+
+  try {
+    const claimToUpdate = await Claim.findById(req.params.id);
+    if (!claimToUpdate) {
+      return res.status(404).json({ message: 'Claim not found with the provided ID' });
+    }
+
+    claimToUpdate.Order = orderId || claimToUpdate.Order;
+    claimToUpdate.indexProduct = itemIndex || claimToUpdate.indexProduct;
+    claimToUpdate.description = description || claimToUpdate.description;
+    claimToUpdate.updatedAt = new Date();
+
+    const updatedClaim = await claimToUpdate.save();
+    res.json({ message: 'Claim updated', claim: updatedClaim });
+  } catch (error) {
+    console.error('Error updating claim:', error);
+    res.status(500).json({ message: 'Failed to update claim', error: error.message });
+  }
+});
 
 
-
-
-
-
-
-
-
-  const deleteClaim = asyncHandler(async (req, res) => {
+const deleteClaim = asyncHandler(async (req, res) => {
     try {
       const claimToDelete = await Claim.findById(req.params.id);
   
@@ -249,11 +285,12 @@ const getClaimCount = async (req, res) => {
 };
 
 export {
-  getCompanyIdByClaimId,
-  getClaimByUserId,
-  getClaim,
+  getClaims,
   getClaimById,
+  getClaimsByUserId,
+  getCompanyIdByClaimId,
   createClaim,
+  setRepairer,
   updateClaim,
   deleteClaim,
   getTopClaim,

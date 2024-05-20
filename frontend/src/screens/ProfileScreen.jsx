@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Card, Button, Row, Col, Form, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
-import { FaTimes } from 'react-icons/fa';
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
@@ -10,64 +9,90 @@ import { useProfileMutation } from '../slices/usersApiSlice';
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
 import { setCredentials } from '../slices/authSlice';
 import Modal from 'react-bootstrap/Modal';
+import {
+  useCreateClaimMutation,
+  useUpdateClaimMutation,
+} from '../slices/ClaimApiSlice'; // Import the useCreateClaimMutation hook
+
+
 function MyVerticallyCenteredModal(props) {
+  const [description, setDescription] = useState('');
+  const [isTheftProtection, setIsTheftProtection] = useState(false);
+  const [createClaim, { isLoading: loadingCreateClaim }] = useCreateClaimMutation();
+  const [updateClaim, { isLoading: loadingUpdate }] = useUpdateClaimMutation();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!description) { // Check if description is empty
+      toast.error('Description is required');
+      return;
+    }
+    try {
+      const createResult = await createClaim();
+      const updateResult = await updateClaim({
+        claimId: createResult.data.claim._id,
+        orderId: props.orderId,
+        itemIndex: props.itemIndex,
+        description: description,
+        theftProtection: isTheftProtection,
+      }).unwrap();
+
+      toast.success('Claim submitted successfully');
+      setDescription('');
+      setIsTheftProtection(false);
+      props.onHide();
+    } catch (error) {
+      toast.error('Failed to submit claim');
+      console.error('Error creating claim:', error);
+    }
+  };
+
   return (
-    <Modal
-  {...props}
-  size="lg"
-  aria-labelledby="contained-modal-title-vcenter"
-  centered
-  className="custom-modal"
->
-  <Modal.Header closeButton>
-    <Modal.Title id="contained-modal-title-vcenter">
-    Add Claim
-      {/* Add Claim for Order ID: {props.orderId}, Item Index: {props.itemIndex} */}
-    </Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    <Form>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
-        <Form.Label>Description <span className="text-danger"></span></Form.Label>
-        <Form.Control as="textarea" rows={3} required />
-      </Form.Group>
-      {props.item && (
-        <div>
-          <Form.Group className="mb-3" controlId="exampleForm.ControlCheckbox1">
+    <Modal {...props} size='lg' aria-labelledby='contained-modal-title-vcenter' centered className='custom-modal'>
+      <Modal.Header closeButton>
+        <Modal.Title id='contained-modal-title-vcenter'>
+          Add Claim
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className='mb-3' controlId='exampleForm.ControlTextarea1'>
+            <Form.Label>
+              Description <span className='text-danger'>*</span>
+            </Form.Label>
+            <Form.Control
+              as='textarea'
+              rows={3}
+              required
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+          </Form.Group>
+          <Form.Group className='mb-3' controlId='exampleForm.ControlCheckbox1'>
             <Form.Check
-              type="checkbox"
-              label="Theft Incidence"
-              // disabled={!props.item.theftProtection}
+              type='checkbox'
+              label='Theft Incidence'
               onChange={(e) => {
                 if (!props.item.theftProtection) {
                   e.preventDefault();
-                  // toast.error("You cannot select this option for this item.");
-                }
-              }}
-              onClick={(e) => {
-                if (!props.item.theftProtection) {
-                  e.preventDefault();
-                  toast.error("You cannot select this option for this item.");
+                  toast.error('You cannot select this option for this item.');
                 }
               }}
             />
           </Form.Group>
-          {/* <p>Item Name: {props.item.name}</p>
-          <p>Start Date : {props.item.startDate}</p>
-          <p>Price: ${props.item.price}</p>
-          <p>Quantity:   {props.item.qty}</p>
-          <p>theftProtection: {props.item.theftProtection === true ? 'true' : props.item.theftProtection === false ? 'false' : null}</p> */}
-          {/* Add more attributes as needed */}
-        </div>
-      )}
-    </Form>
-  </Modal.Body>
-  <Modal.Footer>
-    <Button onClick={props.onHide}>Close</Button>
-    <Button variant="primary">Submit</Button>
-  </Modal.Footer>
-</Modal>
-
+        </Form>
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={props.onHide}>Close</Button>
+        <Button
+          variant='primary'
+          onClick={handleSubmit}
+          disabled={loadingCreateClaim || loadingUpdate}
+        >
+          {loadingCreateClaim || loadingUpdate ? 'Submitting...' : 'Submit'}
+        </Button>
+      </Modal.Footer>
+    </Modal>
   );
 }
 
@@ -79,7 +104,10 @@ const ProfileScreen = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [modalShow, setModalShow] = React.useState(false);
   const { userInfo } = useSelector((state) => state.auth);
-  const [selectedOrder, setSelectedOrder] = useState({ orderId: '', index: '' });
+  const [selectedOrder, setSelectedOrder] = useState({
+    orderId: '',
+    index: '',
+  });
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
   const [selectedItem, setSelectedItem] = useState(null);
   const [updateProfile, { isLoading: loadingUpdateProfile }] =
@@ -91,6 +119,7 @@ const ProfileScreen = () => {
   }, [userInfo.email, userInfo.name]);
 
   const dispatch = useDispatch();
+
   const submitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
@@ -110,17 +139,10 @@ const ProfileScreen = () => {
     }
   };
 
-  const handleAddReclamation = (orderId, itemIndex) => {
-    toast.info(`Added reclamation for Order ID: ${orderId}, Item Index: ${itemIndex}`);
-    
-  };
-
   return (
     <Row>
-    
-    <Col md={3}>
+      <Col md={3}>
         <h2>User Profile</h2>
-
         <Form onSubmit={submitHandler}>
           <Form.Group className='my-2' controlId='name'>
             <Form.Label>Name</Form.Label>
@@ -129,9 +151,8 @@ const ProfileScreen = () => {
               placeholder='Enter name'
               value={name}
               onChange={(e) => setName(e.target.value)}
-            ></Form.Control>
+            />
           </Form.Group>
-
           <Form.Group className='my-2' controlId='email'>
             <Form.Label>Email Address</Form.Label>
             <Form.Control
@@ -139,9 +160,8 @@ const ProfileScreen = () => {
               placeholder='Enter email'
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-            ></Form.Control>
+            />
           </Form.Group>
-
           <Form.Group className='my-2' controlId='password'>
             <Form.Label>Password</Form.Label>
             <Form.Control
@@ -149,9 +169,8 @@ const ProfileScreen = () => {
               placeholder='Enter password'
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-            ></Form.Control>
+            />
           </Form.Group>
-
           <Form.Group className='my-2' controlId='confirmPassword'>
             <Form.Label>Confirm Password</Form.Label>
             <Form.Control
@@ -159,9 +178,8 @@ const ProfileScreen = () => {
               placeholder='Confirm password'
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
-            ></Form.Control>
+            />
           </Form.Group>
-
           <Button type='submit' variant='primary'>
             Update
           </Button>
@@ -183,22 +201,24 @@ const ProfileScreen = () => {
                 <Card className='my-4 p-4'>
                   <h3 className='mb-4'>Order ID: {order._id}</h3>
                   <Row>
-                  <p className='text-muted'>
-  <strong>Date:</strong> {order.createdAt.substring(0, 10)}
-  <span style={{ marginRight: '260px' }}></span>
-  <strong>Total Price:</strong> ${order.totalPrice}
-  <span style={{ marginRight: '250px' }}></span>
-  <strong>Status:</strong> 
-  <Badge className='ml-2' variant={order.isDelivered ? 'success' : 'danger'}>
-    {order.isDelivered ? 'Delivered' : 'Not Delivered'}
-  </Badge>
-  </p>
-                      <LinkContainer to={`/order/${order._id}`}>
-                        <Button className='btn-sm' variant='light'>
-                          Details
-                        </Button>
-                      </LinkContainer>
-                    
+                    <p className='text-muted'>
+                      <strong>Date:</strong> {order.createdAt.substring(0, 10)}
+                      <span style={{ marginRight: '260px' }}></span>
+                      <strong>Total Price:</strong> ${order.totalPrice}
+                      <span style={{ marginRight: '200px' }}></span>
+                      <strong>Status:</strong>
+                      <Badge
+                        className='ml-2'
+                        variant={order.isDelivered ? 'success' : 'danger'}
+                      >
+                        {order.isDelivered ? 'Delivered' : 'Not Delivered'}
+                      </Badge>
+                    </p>
+                    <LinkContainer to={`/order/${order._id}`}>
+                      <Button className='btn-sm' variant='light'>
+                        Details
+                      </Button>
+                    </LinkContainer>
                   </Row>
                   <Row className='mt-4'>
                     {order.orderItems.map((item, index) => (
@@ -213,17 +233,15 @@ const ProfileScreen = () => {
                               <strong>Quantity:</strong> {item.qty}
                             </Card.Text>
                             <Button
-  variant='primary'
-  onClick={() => {
-    setSelectedItem(order.orderItems[index]);
-    setSelectedOrder({ orderId: order._id, index });
-    setModalShow(true);
-  }}
->
-  Add Reclamation
-</Button>
-
-
+                              variant='primary'
+                              onClick={() => {
+                                setSelectedItem(order.orderItems[index]);
+                                setSelectedOrder({ orderId: order._id, index });
+                                setModalShow(true);
+                              }}
+                            >
+                              Add Reclamation
+                            </Button>
                           </Card.Body>
                         </Card>
                       </Col>
@@ -236,13 +254,12 @@ const ProfileScreen = () => {
         )}
       </Col>
       <MyVerticallyCenteredModal
-  show={modalShow}
-  onHide={() => setModalShow(false)}
-  orderId={selectedOrder.orderId}
-  itemIndex={selectedOrder.index}
-  item={selectedItem}
-/>
-
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        orderId={selectedOrder.orderId}
+        itemIndex={selectedOrder.index}
+        item={selectedItem}
+      />
     </Row>
   );
 };

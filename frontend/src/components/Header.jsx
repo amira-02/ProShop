@@ -41,7 +41,7 @@ const Header = () => {
     <>
       {showPromotion && (
         <div className='promotion-bar'>
-          <p>30% off storewide — Limited time! Shop now</p>
+          <p>30% off storewide — Limited time! Shop now<span>&rarr;</span></p>
           <button className='close-button' onClick={handleClosePromotion}>
             <FaTimes className='close-icon' />
           </button>

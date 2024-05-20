@@ -10,6 +10,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       providesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching claims:', error);
+      },
     }),
 
     getClaimById: builder.query({
@@ -17,6 +21,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
         url: `${CLAIM_URL}/${claimId}`,
       }),
       keepUnusedDataFor: 5,
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching claim by ID:', error);
+      },
     }),
 
     getClaimsByUserId: builder.query({
@@ -26,6 +34,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       providesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching claims by user ID:', error);
+      },
     }),
 
     getCompanyIdByClaimId: builder.query({
@@ -34,6 +46,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       providesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching company ID by claim ID:', error);
+      },
     }),
 
     getClaimCount: builder.query({
@@ -42,6 +58,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: 5,
       providesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching claim count:', error);
+      },
     }),
 
     createClaim: builder.mutation({
@@ -51,16 +71,25 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
       invalidatesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle mutation errors
+        console.error('Error creating claim: from api slice ', error);
+      },
     }),
 
     updateClaim: builder.mutation({
-      query: (data) => ({
-        url: `${CLAIM_URL}/${data.claimId}`,
+      query: ({ claimId, orderId, itemIndex, description }) => ({
+        url: `${CLAIM_URL}/${claimId}`,
         method: 'PUT',
-        body: data,
+        body: { orderId, itemIndex, description },
       }),
       invalidatesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle mutation errors
+        console.error('Error updating claim:', error);
+      },
     }),
+    
 
     deleteClaim: builder.mutation({
       query: (claimId) => ({
@@ -68,6 +97,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
         method: 'DELETE',
       }),
       providesTags: ['Claim'],
+      onQueryError: (error) => {
+        // Handle mutation errors
+        console.error('Error deleting claim:', error);
+      },
     }),
 
     getTopClaims: builder.query({
@@ -75,6 +108,10 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
         url: `${CLAIM_URL}/top`,
       }),
       keepUnusedDataFor: 5,
+      onQueryError: (error) => {
+        // Handle query errors
+        console.error('Error fetching top claims:', error);
+      },
     }),
   }),
 });
