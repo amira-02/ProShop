@@ -33,14 +33,14 @@ const Product = ({ product }) => {
   </Card.Text>
 
   {/* Button appears on hover */}
-  <div className='card-button-container'>
+  {/* <div className='card-button-container'>
     <Button
       variant='primary'
       className='card-button'
     >
       View Details
     </Button>
-  </div>
+  </div> */}
 </Card.Body>
 
       </Card>

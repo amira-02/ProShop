@@ -4,7 +4,7 @@ const ClaimSchema = new mongoose.Schema({
   Repairer: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user',
-    required: true
+    // required: true
   },
   Order: {
     type: mongoose.Schema.Types.ObjectId,
