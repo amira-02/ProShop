@@ -38,6 +38,12 @@ import EditPolicy from './screens/InsuranceCompany/PolicyEditScreen';
 import { Provider } from 'react-redux';
 import store from './store';
 import { PayPalScriptProvider } from '@paypal/react-paypal-js';
+// import Claim from '../../backend/models/ClaimModel';
+
+
+
+
+
 ReactDOM.render(
   <React.StrictMode>
     <HelmetProvider>
