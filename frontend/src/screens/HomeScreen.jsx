@@ -5,6 +5,8 @@ import { Row, Col } from 'react-bootstrap';
 import { useGetProductsQuery } from '../slices/productsApiSlice';
 import { Link } from 'react-router-dom';
 import refrigatorImg  from '../assets/picthree.png';
+import earphone from '../assets/earphone.png';
+import phone from '../assets/phone.png'
 import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
@@ -51,32 +53,34 @@ const HomeScreen = () => {
             <>
               <Meta />
                <p className='jura-text' style={{ fontSize: '32px', fontWeight: '580', color: 'black' }}>Shop Collection</p>
-               <Row style={{  padding: '30px',   }}>
-               <Col md={6} className="d-flex flex-column align-items-center justify-content-center" style={{ padding: '30px', backgroundColor: '#F3F5F7' }}>
-  <img
-    src={refrigatorImg}
-    alt='YourImage'
-    style={{
-      maxWidth: '100%', // Ensuring the image stays within the column width
-      height: 'auto',
-      maxHeight: '400px',
-      padding: '10px',
-    }}
-  />
- <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black', textAlign: 'right' }}>Home Appliance</p>
-  <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline' ,color: 'black' }}>Collection<span>&rarr;</span></p>
-</Col>
-                <Col md={6} style={{  padding: '30px' }}>
-                <Row style={{ padding: '30px'  , backgroundColor :'#F3F5F7'  , margin : '5px'}}>
-                <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black' }}>Smart Phones</p>
-                <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline' ,color: 'black' }}>Collection<span>&rarr;</span></p>
-                </Row>
-                <Row style={{  padding: '30px', backgroundColor :'#F3F5F7'  ,margin : '5px'}}>
-                  <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black' }}>Accessories</p>
-                  <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline' ,color: 'black' }}>Collection<span>&rarr;</span></p>
-                </Row>
+               <Row style={{  padding: '60px',   }}>
+                  <Col md={6} className="d-flex flex-column align-items-center justify-content-end" style={{ padding: '70px', backgroundColor: '#F3F5F7'}}>
+                     <img src={refrigatorImg}alt='YourImage'style={{maxWidth: '100%', height: 'auto',maxHeight: '400px',padding: '10px',}}/>
+                      <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black', textAlign: 'right' }}>Home Appliance</p>
+                      <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline' ,color: 'black' }}>Collection<span>&rarr;</span></p>
+                  </Col>
+                  <Col md={6} style={{  padding: '30px' }}>
+                      {/* smart phone */}
+                      <Row style={{ padding: '30px', backgroundColor: '#F3F5F7', margin: '5px', backgroundImage: `url(${phone})`, backgroundSize: 'cover', backgroundPosition: 'center' ,  height: '300px' }}>
+                      <Col md={6} className="d-flex flex-column justify-content-end">
+                            <div>
+                              <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black' }}>Smart Phones</p>
+                              <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline', color: 'black' }}>Collection<span>&rarr;</span></p>
+                            </div>
+                          </Col>
+                        </Row>
+                        {/* earphone */}
+                        <Row style={{ padding: '30px', backgroundColor: '#F3F5F7', margin: '5px', backgroundImage: `url(${earphone})`, backgroundSize: 'cover', backgroundPosition: 'center' ,  height: '300px' }}>
+                        <Col md={6} className="d-flex flex-column justify-content-end">
+                          <div>
+                            <p className='jura-text' style={{ fontSize: '20px', fontWeight: '599', color: 'black' }}>Smart Phones</p>
+                            <p className='jura-text' style={{ fontSize: '15px', fontWeight: '599', textDecoration: 'underline', color: 'black' }}>Collection<span>&rarr;</span></p>
+                          </div>
+                        </Col>
+                      </Row>
                 </Col>
-               </Row>      
+               </Row>     
+
               <h1>Latest Products</h1>
               <Row>
                 {data.products.map((product) => (

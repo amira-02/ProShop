@@ -286,7 +286,7 @@ const OrderScreen = () => {
               {loadingDeliver && <Loader />}
 
               {/* Display "Mark As Delivered" button if the user is admin */}
-              {userInfo.isAdmin && !order.isPaid && !order.isDelivered && (
+              {userInfo.isAdmin && order.isPaid && !order.isDelivered && (
                 <ListGroup.Item>
                   <Button
                     type='button'
