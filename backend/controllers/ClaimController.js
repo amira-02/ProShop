@@ -27,7 +27,107 @@ const getClaimById = asyncHandler(async (req, res) => {
   res.json(claim);
 });
 
-// Vos fonctions CRUD
+// @desc Fetch Claims by user ID
+// @route GET /api/claim/user/:userId
+// @access Public
+const getClaimByUserId = asyncHandler(async (req, res) => {
+  const pageSize = process.env.PAGINATION_LIMIT || 10; // Default to 10 if not set
+  const page = Number(req.query.pageNumber) || 1;
+
+  const count = await Claim.countDocuments({ user: req.params.userId });
+  const claims = await Claim.find({ user: req.params.userId })
+    .limit(pageSize)
+    .skip(pageSize * (page - 1));
+
+  res.json({ claims, page, pages: Math.ceil(count / pageSize), count });
+});
+
+
+
+const getCompanyIdByClaimId = async (claimId) => {
+  try {
+    // Récupérer les détails du claim en fonction de l'ID du claim
+    const claim = await Claim.findById(claimId);
+    console.log('Claim:', claim);
+
+    // Vérifier si le claim existe
+    if (!claim) {
+      throw new Error('Claim not found');
+    }
+
+    // Récupérer l'orderId du claim
+    const orderId = claim.Order; // Assurez-vous que cela correspond bien au champ dans votre modèle Claim
+    console.log('Order ID:', orderId);
+
+    // Vérifier si l'orderId est présent
+    if (!orderId) {
+      throw new Error('Order ID not found in claim');
+    }
+
+    // Récupérer les détails de la commande en fonction de l'orderId
+    const order = await Order.findById(orderId);
+    console.log('Order:', order);
+
+    // Vérifier si la commande existe
+    if (!order) {
+      throw new Error('Order not found');
+    }
+
+    // Trouver l'élément de commande contenant le policyId
+    const orderItemWithPolicy = order.orderItems.find(item => item.policy);
+    console.log('Order Item with Policy:', orderItemWithPolicy);
+
+    // Vérifier si l'élément de commande avec le policyId a été trouvé
+    if (!orderItemWithPolicy) {
+      throw new Error('No order item with policy found');
+    }
+
+    // Récupérer le policyId
+    const policyId = orderItemWithPolicy.policy;
+    console.log('Policy ID:', policyId);
+
+    // Vérifier si le policyId est présent
+    if (!policyId) {
+      throw new Error('Policy ID not found in order item');
+    }
+
+    // Récupérer les détails de la politique en fonction du policyId
+    const policy = await Policy.findById(policyId);
+    console.log('Policy:', policy);
+
+    // Vérifier si la politique existe
+    if (!policy) {
+      throw new Error('Policy not found');
+    }
+
+    // Récupérer le companyId de la politique
+    const companyId = policy.CompanyId;
+    console.log('Company ID:', companyId);
+
+    // Vérifier si le companyId est présent
+    if (!companyId) {
+      throw new Error('Company ID not found in policy');
+    }
+
+    // Retourner le companyId
+    return companyId;
+  } catch (error) {
+    console.error('Error in getting companyId by claimId:', error);
+    throw new Error('Failed to get companyId by claimId');
+  }
+};
+
+
+
+
+
+
+
+
+
+
+
+
 // @desc Create a Claim
 // @route POST /api/claims
 
@@ -48,7 +148,7 @@ const createClaim = asyncHandler(async (req, res) => {
   
       const createdClaim = await newClaim.save(); // Use a different variable name here
   
-      res.status(201).json({ message: 'Réclamation créée avec succès', claim: createdClaim });
+      res.status(201).json({ message: 'Claim created', claim: createdClaim });
     } catch (error) {
       res.status(500).json({ message: 'Échec de la création de la réclamation', error: error.message });
     }
@@ -107,13 +207,6 @@ const updateClaim = asyncHandler(async (req, res) => {
     }
   });
   
-
-
-
-
-
-
-
 // @desc Get top rated Claim
 // @route GET /api/Claim/top
 // @access Public
@@ -136,6 +229,8 @@ const getClaimCount = async (req, res) => {
 };
 
 export {
+  getCompanyIdByClaimId,
+  getClaimByUserId,
   getClaim,
   getClaimById,
   createClaim,

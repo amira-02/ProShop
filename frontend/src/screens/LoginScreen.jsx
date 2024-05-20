@@ -54,7 +54,7 @@ const LoginScreen = () => {
           Welcome Back
         </h1>
           <Form.Group className='my-3' controlId='email'>
-            <Form.Label>Email </Form.Label>
+            <Form.Label>Email ù</Form.Label>
             <Form.Control
               type='email'
               placeholder='Enter email'
