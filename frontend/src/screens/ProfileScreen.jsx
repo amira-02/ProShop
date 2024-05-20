@@ -1,26 +1,87 @@
 import React, { useEffect, useState } from 'react';
-import { Card, Button, Row, Col, Form } from 'react-bootstrap';
+import { Card, Button, Row, Col, Form, Badge } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { FaTimes } from 'react-icons/fa';
-
 import { toast } from 'react-toastify';
 import Message from '../components/Message';
 import Loader from '../components/Loader';
 import { useProfileMutation } from '../slices/usersApiSlice';
 import { useGetMyOrdersQuery } from '../slices/ordersApiSlice';
 import { setCredentials } from '../slices/authSlice';
+import Modal from 'react-bootstrap/Modal';
+function MyVerticallyCenteredModal(props) {
+  return (
+    <Modal
+  {...props}
+  size="lg"
+  aria-labelledby="contained-modal-title-vcenter"
+  centered
+  className="custom-modal"
+>
+  <Modal.Header closeButton>
+    <Modal.Title id="contained-modal-title-vcenter">
+    Add Claim
+      {/* Add Claim for Order ID: {props.orderId}, Item Index: {props.itemIndex} */}
+    </Modal.Title>
+  </Modal.Header>
+  <Modal.Body>
+    <Form>
+      <Form.Group className="mb-3" controlId="exampleForm.ControlTextarea1">
+        <Form.Label>Description <span className="text-danger"></span></Form.Label>
+        <Form.Control as="textarea" rows={3} required />
+      </Form.Group>
+      {props.item && (
+        <div>
+          <Form.Group className="mb-3" controlId="exampleForm.ControlCheckbox1">
+            <Form.Check
+              type="checkbox"
+              label="Theft Incidence"
+              // disabled={!props.item.theftProtection}
+              onChange={(e) => {
+                if (!props.item.theftProtection) {
+                  e.preventDefault();
+                  // toast.error("You cannot select this option for this item.");
+                }
+              }}
+              onClick={(e) => {
+                if (!props.item.theftProtection) {
+                  e.preventDefault();
+                  toast.error("You cannot select this option for this item.");
+                }
+              }}
+            />
+          </Form.Group>
+          {/* <p>Item Name: {props.item.name}</p>
+          <p>Start Date : {props.item.startDate}</p>
+          <p>Price: ${props.item.price}</p>
+          <p>Quantity:   {props.item.qty}</p>
+          <p>theftProtection: {props.item.theftProtection === true ? 'true' : props.item.theftProtection === false ? 'false' : null}</p> */}
+          {/* Add more attributes as needed */}
+        </div>
+      )}
+    </Form>
+  </Modal.Body>
+  <Modal.Footer>
+    <Button onClick={props.onHide}>Close</Button>
+    <Button variant="primary">Submit</Button>
+  </Modal.Footer>
+</Modal>
+
+  );
+}
+
 
 const ProfileScreen = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-
+  const [modalShow, setModalShow] = React.useState(false);
   const { userInfo } = useSelector((state) => state.auth);
-
+  const [selectedOrder, setSelectedOrder] = useState({ orderId: '', index: '' });
   const { data: orders, isLoading, error } = useGetMyOrdersQuery();
-
+  const [selectedItem, setSelectedItem] = useState(null);
   const [updateProfile, { isLoading: loadingUpdateProfile }] =
     useProfileMutation();
 
@@ -37,9 +98,6 @@ const ProfileScreen = () => {
     } else {
       try {
         const res = await updateProfile({
-          // NOTE: here we don't need the _id in the request payload as this is
-          // not used in our controller.
-          // _id: userInfo._id,
           name,
           email,
           password,
@@ -52,9 +110,15 @@ const ProfileScreen = () => {
     }
   };
 
+  const handleAddReclamation = (orderId, itemIndex) => {
+    toast.info(`Added reclamation for Order ID: ${orderId}, Item Index: ${itemIndex}`);
+    
+  };
+
   return (
     <Row>
-      <Col md={3}>
+    
+    <Col md={3}>
         <h2>User Profile</h2>
 
         <Form onSubmit={submitHandler}>
@@ -116,79 +180,69 @@ const ProfileScreen = () => {
           <>
             {orders.map((order) => (
               <div key={order._id}>
-                <h3>Order ID: {order._id}</h3>
-                <LinkContainer to={`/order/${order._id}`}>
-                  <Button className='btn-sm' variant='light'>
-                    Details
-                  </Button>
-                </LinkContainer>
-
-                <p
-                  className='jura-text'
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: '599',
-                    color: 'black',
-                  }}
-                >
-                  {order.createdAt.substring(0, 10)}
-                </p>
-                <p
-                  className='jura-text'
-                  style={{
-                    fontSize: '15px',
-                    fontWeight: '599',
-                    color: 'black',
-                  }}
-                >
-                  {order.totalPrice}
-                </p>
-
-                <Row>
-                  {order.orderItems.map((item) => (
-                    <Col key={item._id} sm={12} md={6} lg={4} xl={12}>
-                      <Card
-                        className='my-3 p-0 rounded'
-                        style={{
-                          border: '1.8px solid black',
-                          borderRadius: '8px',
-                        }}
-                      >
-                        <Card.Body>
-                          <Card.Text>name: {item.name}</Card.Text>
-                          <Card.Text>Price: ${item.price}</Card.Text>
-                          <Card.Text>Quantity: {item.qty}</Card.Text>
-                          <Card.Text>policy: {item.policy}</Card.Text>
-                          <Card.Text>
-                            policy price : {item.policyprice}
-                          </Card.Text>
-                          <Card.Text>Start Date : {item.startDate}</Card.Text>
-                          <Card.Text>End Date : {item.endDate}</Card.Text>
-                          {/* Button appears on hover */}
-                          <div className='card-button-container'>
+                <Card className='my-4 p-4'>
+                  <h3 className='mb-4'>Order ID: {order._id}</h3>
+                  <Row>
+                  <p className='text-muted'>
+  <strong>Date:</strong> {order.createdAt.substring(0, 10)}
+  <span style={{ marginRight: '260px' }}></span>
+  <strong>Total Price:</strong> ${order.totalPrice}
+  <span style={{ marginRight: '250px' }}></span>
+  <strong>Status:</strong> 
+  <Badge className='ml-2' variant={order.isDelivered ? 'success' : 'danger'}>
+    {order.isDelivered ? 'Delivered' : 'Not Delivered'}
+  </Badge>
+  </p>
+                      <LinkContainer to={`/order/${order._id}`}>
+                        <Button className='btn-sm' variant='light'>
+                          Details
+                        </Button>
+                      </LinkContainer>
+                    
+                  </Row>
+                  <Row className='mt-4'>
+                    {order.orderItems.map((item, index) => (
+                      <Col key={item._id} sm={12} md={6} lg={4} xl={6}>
+                        <Card className='my-3 p-3 rounded'>
+                          <Card.Body>
+                            <Card.Title>{item.name}</Card.Title>
+                            <Card.Text className='text-muted'>
+                              <strong>Price:</strong> ${item.price}
+                            </Card.Text>
+                            <Card.Text className='text-muted'>
+                              <strong>Quantity:</strong> {item.qty}
+                            </Card.Text>
                             <Button
-                              variant='primary'
-                              className='card-button'
-                              style={{ margin: '5px' }}
-                            >
-                              Add Reclamation
-                            </Button>
-                            <LinkContainer to={`/order/${order._id}`}>
-                              <Button variant='primary' className='card-button'>
-                                Details
-                              </Button>
-                            </LinkContainer>
-                          </div>
-                        </Card.Body>
-                      </Card>
-                    </Col>
-                  ))}
-                </Row>
+  variant='primary'
+  onClick={() => {
+    setSelectedItem(order.orderItems[index]);
+    setSelectedOrder({ orderId: order._id, index });
+    setModalShow(true);
+  }}
+>
+  Add Reclamation
+</Button>
+
+
+                          </Card.Body>
+                        </Card>
+                      </Col>
+                    ))}
+                  </Row>
+                </Card>
               </div>
             ))}
           </>
         )}
       </Col>
+      <MyVerticallyCenteredModal
+  show={modalShow}
+  onHide={() => setModalShow(false)}
+  orderId={selectedOrder.orderId}
+  itemIndex={selectedOrder.index}
+  item={selectedItem}
+/>
+
     </Row>
   );
 };

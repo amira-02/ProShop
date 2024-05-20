@@ -151,6 +151,7 @@
 // export default ProductListScreen;
 
 //without the filter 
+import { useSelector } from 'react-redux';
 import { LinkContainer } from 'react-router-bootstrap';
 import { Table, Button, Row, Col } from 'react-bootstrap';
 import { FaEdit, FaPlus, FaTrash } from 'react-icons/fa';
@@ -159,7 +160,7 @@ import Message from '../../components/Message';
 import Loader from '../../components/Loader';
 import Paginate from '../../components/Paginate';
 import {
-  useGetProductsQuery,
+  useGetProductByuserIdQuery,
   useDeleteProductMutation,
   useCreateProductMutation,
   useGetProductCountQuery,
@@ -168,7 +169,9 @@ import { toast } from 'react-toastify';
 
 const ProductListScreen = () => {
   const { pageNumber } = useParams();
-  const { data, isLoading, error, refetch } = useGetProductsQuery({
+  const { userInfo } = useSelector((state) => state.auth);
+  const { data, isLoading, error, refetch } = useGetProductByuserIdQuery({
+    user: userInfo._id,
     pageNumber,
   });
   const {
@@ -210,13 +213,13 @@ const ProductListScreen = () => {
       <Row className='align-items-center'>
         <Col>
           <h1>Products</h1>
-          {isLoadingCount ? (
+          {/* {isLoadingCount ? (
             <p>Loading product count...</p>
           ) : errorCount ? (
             <Message variant='danger'>{errorCount.data.message}</Message>
           ) : (
             <p>Total Products: {productCount || 0}</p>
-          )}
+          )} */}
         </Col>
         <Col className='text-end'>
           <Button className='my-3' onClick={createProductHandler}>
@@ -233,43 +236,47 @@ const ProductListScreen = () => {
         <Message variant='danger'>{error.data.message}</Message>
       ) : (
         <>
-          <Table striped bordered hover responsive className='table-sm'>
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>NAME</th>
-                <th>PRICE</th>
-                <th>CATEGORY</th>
-                <th>BRAND</th>
-                <th></th>
-              </tr>
-            </thead>
-            <tbody>
-              {data.products.map((product) => (
-                <tr key={product._id}>
-                  <td>{product._id}</td>
-                  <td>{product.name}</td>
-                  <td>${product.price}</td>
-                  <td>{product.category}</td>
-                  <td>{product.brand}</td>
-                  <td>
-                    <LinkContainer to={`/ShopOwners/product/${product._id}/edit`}>
-                      <Button variant='light' className='btn-sm mx-2'>
-                        <FaEdit />
-                      </Button>
-                    </LinkContainer>
-                    <Button
-                      variant='danger'
-                      className='btn-sm'
-                      onClick={() => deleteHandler(product._id)}
-                    >
-                      <FaTrash style={{ color: 'white' }} />
-                    </Button>
-                  </td>
+          {data.products.length === 0 ? (
+            <Message>No products found. Click the button above to create one.</Message>
+          ) : (
+            <Table striped bordered hover responsive className='table-sm'>
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>NAME</th>
+                  <th>PRICE</th>
+                  <th>CATEGORY</th>
+                  <th>BRAND</th>
+                  <th></th>
                 </tr>
-              ))}
-            </tbody>
-          </Table>
+              </thead>
+              <tbody>
+                {data.products.map((product) => (
+                  <tr key={product._id}>
+                    <td>{product._id}</td>
+                    <td>{product.name}</td>
+                    <td>${product.price}</td>
+                    <td>{product.category}</td>
+                    <td>{product.brand}</td>
+                    <td>
+                      <LinkContainer to={`/ShopOwners/product/${product._id}/edit`}>
+                        <Button variant='light' className='btn-sm mx-2'>
+                          <FaEdit />
+                        </Button>
+                      </LinkContainer>
+                      <Button
+                        variant='danger'
+                        className='btn-sm'
+                        onClick={() => deleteHandler(product._id)}
+                      >
+                        <FaTrash style={{ color: 'white' }} />
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
           <Paginate pages={data.pages} page={data.page} isAdmin={true} />
         </>
       )}
