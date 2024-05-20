@@ -163,18 +163,31 @@ a:hover {
 a:hover::before {
   transform: scaleX(1);
 }
-
-.custom-btn {
-  color: black;
-  border-color: black;
+.card {
+  overflow: hidden;
+  transition: height 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid rgba(0, 0, 0, 0.125); /* Add a border to maintain layout when card expands */
+  position: relative; /* Set position to relative */
 }
 
-.custom-btn:hover {
-  color: white;
-  background-color: black;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+.card:hover {
+  height: 370px; /* Set a fixed height to expand the card */
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3); /* Add a box-shadow to highlight the card */
 }
 
-.custom-btn:active {
-  box-shadow: none;
+.card-body {
+  position: relative; /* Set position to relative for containing absolute positioned elements */
+}
+
+.card-button-container {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.card:hover .card-button-container {
+  opacity: 1;
 }

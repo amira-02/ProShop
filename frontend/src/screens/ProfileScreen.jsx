@@ -113,30 +113,80 @@ const ProfileScreen = () => {
             {error?.data?.message || error.error}
           </Message>
         ) : (
-          <Row>
+          <>
             {orders.map((order) => (
-              <Col key={order._id} sm={12} md={6} lg={4} xl={3}>
-                <Card className='my-3 p-3 rounded'>
-                  <Card.Header as='h5'>Order ID: {order._id}</Card.Header>
-                  <Card.Body>
-                    <Card.Text>Date: {order.createdAt.substring(0, 10)}</Card.Text>
-                    <Card.Text>Total: {order.totalPrice}</Card.Text>
-                    <Card.Text>
-                      Paid: {order.isPaid ? order.paidAt.substring(0, 10) : <FaTimes style={{ color: 'red' }} />}
-                    </Card.Text>
-                    <Card.Text>
-                      Delivered: {order.isDelivered ? order.deliveredAt.substring(0, 10) : <FaTimes style={{ color: 'red' }} />}
-                    </Card.Text>
-                    <LinkContainer to={`/order/${order._id}`}>
-                      <Button className='btn-sm' variant='light'>
-                        Details
-                      </Button>
-                    </LinkContainer>
-                  </Card.Body>
-                </Card>
-              </Col>
+              <div key={order._id}>
+                <h3>Order ID: {order._id}</h3>
+                <LinkContainer to={`/order/${order._id}`}>
+                  <Button className='btn-sm' variant='light'>
+                    Details
+                  </Button>
+                </LinkContainer>
+
+                <p
+                  className='jura-text'
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: '599',
+                    color: 'black',
+                  }}
+                >
+                  {order.createdAt.substring(0, 10)}
+                </p>
+                <p
+                  className='jura-text'
+                  style={{
+                    fontSize: '15px',
+                    fontWeight: '599',
+                    color: 'black',
+                  }}
+                >
+                  {order.totalPrice}
+                </p>
+
+                <Row>
+                  {order.orderItems.map((item) => (
+                    <Col key={item._id} sm={12} md={6} lg={4} xl={12}>
+                      <Card
+                        className='my-3 p-0 rounded'
+                        style={{
+                          border: '1.8px solid black',
+                          borderRadius: '8px',
+                        }}
+                      >
+                        <Card.Body>
+                          <Card.Text>name: {item.name}</Card.Text>
+                          <Card.Text>Price: ${item.price}</Card.Text>
+                          <Card.Text>Quantity: {item.qty}</Card.Text>
+                          <Card.Text>policy: {item.policy}</Card.Text>
+                          <Card.Text>
+                            policy price : {item.policyprice}
+                          </Card.Text>
+                          <Card.Text>Start Date : {item.startDate}</Card.Text>
+                          <Card.Text>End Date : {item.endDate}</Card.Text>
+                          {/* Button appears on hover */}
+                          <div className='card-button-container'>
+                            <Button
+                              variant='primary'
+                              className='card-button'
+                              style={{ margin: '5px' }}
+                            >
+                              Add Reclamation
+                            </Button>
+                            <LinkContainer to={`/order/${order._id}`}>
+                              <Button variant='primary' className='card-button'>
+                                Details
+                              </Button>
+                            </LinkContainer>
+                          </div>
+                        </Card.Body>
+                      </Card>
+                    </Col>
+                  ))}
+                </Row>
+              </div>
             ))}
-          </Row>
+          </>
         )}
       </Col>
     </Row>
