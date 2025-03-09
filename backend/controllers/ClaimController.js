@@ -4,15 +4,25 @@ import Order from '../models/orderModel.js';
 // @desc Fetch all Claims
 // @route GET /api/claims
 // @access Public
+/**
+ * @desc Fetch all Claims
+ * @route GET /api/claims
+ * @access Public
+ * @returns {
+*  claims: Array<Claim>,
+*  totalCount: Number
+* }
+*/
 const getClaims = asyncHandler(async (req, res) => {
-  const pageSize = process.env.PAGINATION_LIMIT;
-  const page = Number(req.query.pageNumber) || 1;
-  const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
+ const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
 
-  const count = await Claim.countDocuments({ ...keyword });
-  const claims = await Claim.find({ ...keyword }).limit(pageSize).skip(pageSize * (page - 1)); // Use a different variable name here
+ const count = await Claim.countDocuments({ ...keyword });
+ const claims = await Claim.find({ ...keyword });
 
-  res.json({ claims, page, totalPages: Math.ceil(count / pageSize), totalCount: count }); // Update variable name here
+ res.json({
+   claims,
+  //  totalCount: count
+ });
 });
 
 // @desc Fetch single Claim
@@ -26,14 +36,13 @@ const getClaimById = asyncHandler(async (req, res) => {
   res.json(claim);
 });
 
+
 // @desc Fetch Claims by user ID
 // @route GET /api/claims/user/:userId
 // @access Public
 const getClaimsByUserId = asyncHandler(async (req, res) => {
   try {
     const userId = req.params.userId;
-    const pageNumber = req.query.pageNumber || 1; // Default to page 1 if not provided
-    const pageSize = 10; // Adjust the page size as needed
 
     // Find orders associated with the user
     const orders = await Order.find({ user: userId });
@@ -44,20 +53,19 @@ const getClaimsByUserId = asyncHandler(async (req, res) => {
     // Loop through each order to fetch claims associated with it
     for (const order of orders) {
       // Fetch claims associated with the current order
-      const claims = await Claim.find({ Order: order._id })
-        .skip((pageNumber - 1) * pageSize)
-        .limit(pageSize);
-      
+      const claims = await Claim.find({ Order: order._id });
+
       // Add the claims to the userClaims array
       userClaims = userClaims.concat(claims);
     }
 
-    res.json({ claims: userClaims });
+    res.json({ claims: userClaims, count: userClaims.length });
   } catch (error) {
     console.error('Error fetching claims by user ID:', error);
     res.status(500).json({ message: 'Failed to fetch claims by user ID', error: error.message });
   }
 });
+
 
 
 
@@ -193,11 +201,11 @@ const getCompanyIdByClaimId = async (claimId) => {
 //   });
 
 const createClaim = asyncHandler(async (req, res) => {
-  // const { orderId, itemIndex, description } = req.body;
+  // const { orderId, indexProduct, description } = req.body;
 
 
   // Check if required fields are missing or empty
-  // if (!orderId || !itemIndex) {
+  // if (!orderId || !indexProduct) {
   //   return res.status(400).json({ message: 'Order ID and item index are required' });
   // }
   try {
@@ -241,8 +249,16 @@ const setRepairer = asyncHandler(async (req, res) => {
 // @desc Update a Claim
 // @route PUT /api/claims/:id
 // @access Private/Admin
+
+
 const updateClaim = asyncHandler(async (req, res) => {
-  const { orderId, itemIndex, description } = req.body;
+  const { orderId, indexProduct, description } = req.body;
+  // Log the value of indexProduct
+  console.log('Index Product:', indexProduct);
+  // Check if required fields are missing or empty
+  // if (!orderId || indexProduct === undefined) { // Ensure indexProduct is not falsy (0 is valid)
+  //   return res.status(400).json({ message: 'Order ID and item index are required' });
+  // }
 
   try {
     const claimToUpdate = await Claim.findById(req.params.id);
@@ -251,12 +267,14 @@ const updateClaim = asyncHandler(async (req, res) => {
     }
 
     claimToUpdate.Order = orderId || claimToUpdate.Order;
-    claimToUpdate.indexProduct = itemIndex || claimToUpdate.indexProduct;
+    claimToUpdate.indexProduct = indexProduct; // Always set the indexProduct from the request
     claimToUpdate.description = description || claimToUpdate.description;
     claimToUpdate.updatedAt = new Date();
 
     const updatedClaim = await claimToUpdate.save();
-    res.json({ message: 'Claim updated', claim: updatedClaim });
+
+
+    res.json({ message: 'Claim updated', claim: updatedClaim, indexProduct }); // Include indexProduct in the response
   } catch (error) {
     console.error('Error updating claim:', error);
     res.status(500).json({ message: 'Failed to update claim', error: error.message });

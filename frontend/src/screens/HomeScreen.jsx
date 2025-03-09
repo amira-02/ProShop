@@ -11,6 +11,7 @@ import Product from '../components/Product';
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import Paginate from '../components/Paginate';
+import Home from '../assets/Home.jpg';
 // import ProductCarousel from '../components/ProductCarousel';
 import Meta from '../components/Meta';
 import InsuranceHome from '../screens/InsuranceCompany/InsuranceHome';
@@ -52,6 +53,35 @@ const HomeScreen = () => {
           ) : (
             <>
               <Meta />
+              {/* <div style={{ height: '100px' }}></div> */}
+                <div data-aos='zoom-in-up'>
+                <div style={{ 
+  display: 'flex', /* Use flexbox */
+  justifyContent: 'center', /* Center horizontally */
+  alignItems: 'center', /* Center vertically */
+  textAlign: 'center', 
+  backgroundImage: `url(${Home})`, 
+  backgroundSize: '100% auto', 
+  height: '600px' 
+}}>
+  <div
+    data-aos='fade-up'
+    data-aos-anchor-placement='center-center'
+    data-aos-duration='1500'
+  >
+    <p className='italic-text italiana-font' style={{ fontSize: '75px', color: 'black' }}>
+      fortune favors the insured
+    </p>
+    <button className='discover-button'>
+      <span className='jura-text'>Discover More</span>
+    </button>
+  </div>
+  
+  
+</div>
+
+                </div>
+                <div style={{ height: '100px' }}></div>
                <p className='jura-text' style={{ fontSize: '32px', fontWeight: '580', color: 'black' }}>Shop Collection</p>
                <Row style={{  padding: '60px',   }}>
                   <Col md={6} className="d-flex flex-column align-items-center justify-content-end" style={{ padding: '70px', backgroundColor: '#F3F5F7'}}>

@@ -9,5 +9,5 @@ export const REPAIRER_COMPANY_URL = '/api/RepairerCompany';
 export const SHOP_URL = '/api/Shop';
 export const POLICY_URL = '/api/Policy';
 export const PAYPAL_URL = '/api/config/paypal';
-export const CLAIM_URL = '/api/claim';
+export const CLAIM_URL = '/api/claims';
 

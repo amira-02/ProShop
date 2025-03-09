@@ -13,7 +13,7 @@ const ClaimSchema = new mongoose.Schema({
   },
   indexProduct: {
     type: Number,
-    required: true
+    // required: true
   },
   description: {  
     type: String,

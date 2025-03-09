@@ -28,12 +28,16 @@ function MyVerticallyCenteredModal(props) {
       const updateResult = await updateClaim({
         claimId: createResult.data.claim._id,
         orderId: props.orderId,
-        itemIndex: props.itemIndex,
+        indexProduct: props.indexProduct,
         description: description,
         theftProtection: isTheftProtection, // Include theft protection in the update
       }).unwrap();
-
-      toast.success('Claim submitted successfully');
+      console.log('Data to be updated:', updateResult);
+      // toast.success(`Reclamation added for Order ID: ${props.orderId}, Index Product: ${props.indexProduct}`);
+      toast.success('Claim submitted successfully' );
+      // toast.success(
+      //   `Claim submitted successfully. Updated Data: ${JSON.stringify(updateResult)}`
+      // );
       setDescription('');
       setIsTheftProtection(false); // Reset theft protection state
       props.onHide();
@@ -54,7 +58,7 @@ function MyVerticallyCenteredModal(props) {
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
           Add Claim
-          for Order ID: {props.orderId}, Item Index: {props.itemIndex}
+          for Order ID: {props.orderId}, Item Index: {props.indexProduct}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
@@ -260,7 +264,7 @@ const ProfileScreen = () => {
         show={modalShow}
         onHide={() => setModalShow(false)}
         orderId={selectedOrder.orderId}
-        itemIndex={selectedOrder.index}
+        indexProduct={selectedOrder.index}
         item={selectedItem}
       />
     </Row>

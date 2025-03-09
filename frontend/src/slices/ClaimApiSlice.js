@@ -4,16 +4,10 @@ import { apiSlice } from './apiSlice';
 export const ClaimApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
     getClaims: builder.query({
-      query: ({ keyword, pageNumber }) => ({
+      query: () => ({
         url: CLAIM_URL,
-        params: { keyword, pageNumber },
       }),
       keepUnusedDataFor: 5,
-      providesTags: ['Claim'],
-      onQueryError: (error) => {
-        // Handle query errors
-        console.error('Error fetching claims:', error);
-      },
     }),
 
     getClaimById: builder.query({
@@ -27,17 +21,18 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
     }),
 
     getClaimsByUserId: builder.query({
-      query: ({ userId, pageNumber }) => ({
-        url: `/api/claim/user/${userId}`,
-        params: { userId, pageNumber },
-      }),
-      keepUnusedDataFor: 5,
-      providesTags: ['Claim'],
-      onQueryError: (error) => {
-        // Handle query errors
-        console.error('Error fetching claims by user ID:', error);
-      },
+    query: ({ userId }) => ({
+      url: `/api/claim/user/${userId}`,
+      params: { userId },
     }),
+    keepUnusedDataFor: 5,
+    providesTags: ['Claim'],
+    onQueryError: (error) => {
+      // Handle query errors
+      console.error('Error fetching claims by user ID:', error);
+    },
+  }),
+
 
     getCompanyIdByClaimId: builder.query({
       query: (claimId) => ({
@@ -77,17 +72,23 @@ export const ClaimApiSlice = apiSlice.injectEndpoints({
     }),
 
     updateClaim: builder.mutation({
-      query: ({ claimId, orderId, itemIndex, description }) => ({
+      query: ({ claimId, orderId, indexProduct, description }) => ({
         url: `${CLAIM_URL}/${claimId}`,
         method: 'PUT',
-        body: { orderId, itemIndex, description },
-      }),
+        body: { orderId, indexProduct, description },
+      }),      
       invalidatesTags: ['Claim'],
       onQueryError: (error) => {
         // Handle mutation errors
         console.error('Error updating claim:', error);
       },
+      onQueryStarted: (queryId, { claimId, orderId, indexProduct, description }) => {
+        // console.log(`Updating claim with ID ${claimId}. Order ID: ${orderId}, Index Product: ${indexProduct}`);
+        // console.log("Index Product:", indexProduct);
+
+      },
     }),
+    
     
 
     deleteClaim: builder.mutation({

@@ -30,7 +30,6 @@ router.route('/:id')
 router.get('/top', asyncHandler(getTopClaim));
 
 // Retrieve claims by user ID
-// Retrieve claims by user ID with pagination
 router.get('/user/:userId', asyncHandler(getClaimsByUserId));
 
 

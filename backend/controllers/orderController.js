@@ -194,7 +194,7 @@ const getOrdersByCompanyId = asyncHandler(async (req, res) => {
   const companyId = req.params.companyId;
 
   const orders = await Order.find({ 'orderItems.policy': companyId }).populate('user', 'id name');
-   console.log(orders)
+  console.log(orders)
   if (!orders || orders.length === 0) {
     return res.status(404).json({ message: 'No orders found for this company' });
   }
@@ -211,5 +211,5 @@ export {
   getOrders,
   getOrdersByCompanyId,
   getOrderPolicy,
-  
+
 };
